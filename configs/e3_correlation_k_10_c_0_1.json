@@ -1,0 +1,22 @@
+{
+  "experiment_id": "e3_correlation_k_10_c_0_1",
+  "data_config_path": "configs/data.json",
+  "model_name": "logistic_regression",
+  "regularization_c": 0.1,
+  "max_iter": 2000,
+  "n_splits": 5,
+  "split_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "output_dir": "outputs/results/e3_correlation_k_10_c_0_1",
+  "feature_selection_k": 10
+}

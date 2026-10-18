@@ -1,0 +1,26 @@
+{
+  "experiment_id": "e4_l1_c_10",
+  "data_config_path": "configs/data.json",
+  "model_name": "logistic_regression",
+  "regularization_c": 10.0,
+  "max_iter": 10000,
+  "n_splits": 5,
+  "split_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "output_dir": "outputs/results/e4_l1_c_10",
+  "feature_selection_k": null,
+  "regularization_type": "l1",
+  "solver": "saga",
+  "model_seed": 42,
+  "tol": 0.0001
+}

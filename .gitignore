@@ -1,0 +1,26 @@
+# Competition data and generated artifacts
+/data/
+/outputs/
+
+# Personal reflection
+/report/reflection.md
+
+# Credentials and environments
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+kaggle.json
+
+# Python and notebook caches
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local system files
+.DS_Store
+Thumbs.db

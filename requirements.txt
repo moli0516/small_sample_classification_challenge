@@ -1,0 +1,19 @@
+# Data handling and numerical computation
+numpy
+pandas
+scipy
+
+# Machine learning and model persistence
+scikit-learn
+joblib
+
+# Visualisation
+matplotlib
+seaborn
+
+# Notebook environment
+jupyterlab
+ipykernel
+
+# Testing
+pytest

@@ -5,20 +5,25 @@
 This is an early-stage research roadmap, not a claim that model selection is complete.
 Completed development studies include the all-feature L2 C sweep,
 correlation-based feature selection, the selected-feature-count / C interaction,
-and the planned four-setting L1 comparison.
+the four-setting L1 comparison, and the six-setting RBF SVM comparison.
 
 * Data audit: completed; 250 labelled rows, 19,750 test rows, 150 numeric predictors.
 * Identifier: `id`, excluded from predictors; target: `target`.
 * ValidationRunner and SubmissionWriter tests: reported passing by the project owner.
 * Baseline submission workflow: completed, as reported by the project owner;
   the actual public score, submission identifier, and timestamp remain to be recorded.
-* E0–E4: completed for the studies documented below. The optional Elastic-net
-  follow-up in E4 has not been run.
+* E0–E5: completed for the studies documented below.
+* The optional Elastic-net follow-up in E4 has not been run.
 * Current highest-mean development candidate: all-feature L1 logistic regression,
   C=1.0; mean CV AUC 0.862112, repeat SD 0.012204.
 * Sparse alternative: all-feature L1 logistic regression, C=0.1;
   mean CV AUC 0.852864, repeat SD 0.010803.
-* E4 candidate submission status: not recorded.
+* E5 did not replace either retained L1 candidate. Every tested SVM setting
+  performed worse than both candidates in all ten paired repetitions.
+* E5 warning review: completed. The 300 recorded warnings concerned the
+  deprecation of SVC's probability parameter; no convergence warnings,
+  failed fits, or iteration-limit events were recorded.
+* E4 and E5 candidate submission status: not recorded.
 * No verified Kaggle score is recorded here. The reported scores above 0.90 have not
   been identified as this project's submissions or other teams' results.
 * Individual extension: validation protocol study proposed, not yet confirmed.
@@ -42,17 +47,16 @@ and the planned four-setting L1 comparison.
 
 ## Overview
 
-
-| ID | Investigation                                    | Status                            | Priority                            |
-| -- | ------------------------------------------------ | --------------------------------- | ----------------------------------- |
-| E0 | All-feature logistic regression: C sweep         | Completed                         | Preserve                            |
-| E1 | End-to-end baseline submission                   | Completed                         | Record feedback                     |
-| E2 | Correlation-based feature selection              | Completed                         | Preserve results                    |
-| E3 | Interaction between selected feature count and C | Completed                         | Preserve results                    |
-| E4 | L1 logistic regression; optional Elastic-net     | L1 completed; Elastic-net not run | Preserve results; retain candidates |
-| E5 | RBF SVM comparison                               | Optional                          | Medium                              |
-| E6 | Validation protocol extension                    | Proposed                          | Required if chosen                  |
-| E7 | Candidate freeze and final evaluation            | Later                             | Required                            |
+| ID | Investigation | Status | Priority |
+| -- | -- | -- | -- |
+| E0 | All-feature logistic regression: C sweep | Completed | Preserve |
+| E1 | End-to-end baseline submission | Completed | Record feedback |
+| E2 | Correlation-based feature selection | Completed | Preserve results |
+| E3 | Interaction between selected feature count and C | Completed | Preserve results |
+| E4 | L1 logistic regression; optional Elastic-net | L1 completed; Elastic-net not run | Retain candidates |
+| E5 | Bounded RBF SVM comparison | Completed; warning review completed | Preserve negative finding |
+| E6 | Validation protocol extension | Proposed | Required if chosen |
+| E7 | Candidate freeze and final evaluation | Later | Required |
 
 These IDs apply to this document. Earlier chat labels used a different numbering;
 existing experiment IDs and output directories must not be renamed.
@@ -499,227 +503,207 @@ Elastic-net is not part of the completed E4 results.
 
 ## E5 — Bounded RBF SVM comparison
 
-Status: proposed; freeze this protocol before running.
+Status: completed; warning review completed.
 
 Question:
 Does an all-feature RBF SVM improve development ROC AUC over the
 retained L1 logistic-regression candidates under identical validation splits?
 
-Purpose:
-
+Scope:
 - Compare a bounded nonlinear alternative against the current linear candidates.
-- Do not simultaneously search feature subsets, probability-calibration methods,
-  class weights, or additional kernels.
-- Treat this as another development study, not independent final evaluation.
+- No simultaneous feature-subset, class-weight, kernel, or calibration search.
+- Treat this as a development study, not independent final evaluation.
 
-Primary reference:
+Implementation:
+- Executed using the standalone run_e5.py script.
+- This execution did not integrate SVM support into the existing src/ runner.
+- The initial split loader required a compatibility correction:
+  the project's saved JSON contains a metadata wrapper with a splits list,
+  and uses valid_indices rather than val_indices.
+- The correction normalised the representation in memory.
+- Existing E4 split files were not regenerated or rewritten.
 
-- Experiment ID: e4_l1_c_1.
-- All-feature L1 logistic regression, C=1.0.
-- Mean development CV AUC: 0.862112.
-- Repeat SD: 0.012204.
-
-Secondary references:
-
-- e4_l1_c_0_1:
-  all-feature L1 logistic regression, C=0.1;
-  mean development CV AUC 0.852864, repeat SD 0.010803.
-- e3_correlation_k_10_c_0_1:
-  correlation selection with k=10 and L2 logistic regression, C=0.1;
-  mean development CV AUC 0.822982, repeat SD 0.008456.
-
-Use saved repeat-level scores for paired comparisons.
-Do not reconstruct paired differences from rounded summary values.
-
-Pipeline:
-
-- StandardScaler -> SVC.
-- All 150 predictors.
-- Exclude id; target remains target.
-- No CorrelationSelector, PCA, or other feature selection.
-- Fit StandardScaler inside each training fold only.
-
-Candidate settings:
-
-
-| Experiment ID                | Kernel |    C | Gamma |
-| ---------------------------- | ------ | ---: | ----- |
-| e5_rbf_svm_c_0_1_gamma_scale | rbf    |  0.1 | scale |
-| e5_rbf_svm_c_1_gamma_scale   | rbf    |  1.0 | scale |
-| e5_rbf_svm_c_10_gamma_scale  | rbf    | 10.0 | scale |
-| e5_rbf_svm_c_0_1_gamma_0_01  | rbf    |  0.1 | 0.01  |
-| e5_rbf_svm_c_1_gamma_0_01    | rbf    |  1.0 | 0.01  |
-| e5_rbf_svm_c_10_gamma_0_01   | rbf    | 10.0 | 0.01  |
+Protocol:
+- Pipeline: StandardScaler -> SVC(kernel="rbf").
+- All 150 predictors; id excluded.
+- No correlation-based feature selection, PCA, or other feature selection.
+- Fit StandardScaler within each training fold only.
+- C in {0.1, 1.0, 10.0}.
+- gamma in {"scale", 0.01}.
+- Six configurations.
+- Reuse saved shuffled stratified five-fold split assignments for seeds 0–9.
+- Fifty CV fits per configuration: 300 fits in total.
+- Compute validation ROC AUC from decision_function scores.
+- Average the five fold AUC values within each repetition.
+- Report the mean and sample SD across the ten repetition-level means.
+- Use saved repeat-level reference scores for paired comparisons.
 
 Fixed estimator settings:
-
 - probability=False.
 - class_weight=None.
 - tol=1e-3.
 - max_iter=10000.
 - shrinking=True.
 - cache_size=200 MB.
-- random_state=42 for configuration consistency.
-- With probability=False, SVC does not use random_state for probability fitting.
-- Verify compatibility with the installed scikit-learn version before execution.
-- Save all resolved estimator parameters, not only parameters changed in the grid.
+- random_state=42, retained for configuration consistency.
+- With probability=False, SVC ignores random_state.
 
-Prediction score:
+Reference candidates:
+- Primary: e4_l1_c_1.
+  All-feature L1 logistic regression, C=1.0;
+  mean development CV AUC 0.862112, repeat SD 0.012204.
+- Secondary: e4_l1_c_0_1.
+  All-feature L1 logistic regression, C=0.1;
+  mean development CV AUC 0.852864, repeat SD 0.010803.
+- Historical reference: e3_correlation_k_10_c_0_1.
+  Correlation selection with k=10 and L2 logistic regression, C=0.1;
+  mean development CV AUC 0.822982, repeat SD 0.008456.
 
-- Use decision_function for validation ROC AUC.
-- Verify that classes_ is [0, 1] and that larger scores correspond to target=1.
-- Do not compute the primary AUC from predict() labels.
-- Do not label decision scores as probabilities.
-- Record score_method="decision_function" in configurations and artifacts.
-- Preserve the existing predict_proba path for the logistic-regression references;
-  AUC comparisons do not require both models to use the same score scale.
+Results:
 
-Validation protocol:
+| C | Gamma | Mean CV AUC | Repeat SD | Minimum repeat AUC | Maximum repeat AUC |
+|---:|---|---:|---:|---:|---:|
+| 0.1 | scale | 0.807268 | 0.011407 | 0.790022 | 0.827447 |
+| 1.0 | scale | 0.807959 | 0.012793 | 0.784573 | 0.825831 |
+| 10.0 | scale | 0.803024 | 0.013892 | 0.780751 | 0.823229 |
+| 0.1 | 0.01 | 0.811179 | 0.012608 | 0.789726 | 0.831021 |
+| 1.0 | 0.01 | 0.812318 | 0.013557 | 0.787496 | 0.833254 |
+| 10.0 | 0.01 | 0.812385 | 0.013559 | 0.788799 | 0.829382 |
 
-- Use the same 250 labelled rows, predictor order, and row order as E4.
-- Reuse and verify the saved shuffled stratified five-fold split assignments
-  for split seeds 0–9.
-- Do not assume that matching seed values alone prove identical splits.
-- Six configurations × ten repetitions × five folds = 300 planned CV fits.
-- Existing reference scores are reused; no reference refitting is required
-  if data and split provenance match.
-- Compute AUC separately for each validation fold.
-- Average the five fold AUC values within each repetition.
-- Report the mean and sample SD across the ten repetition-level means.
-- Report minimum and maximum repetition-level mean AUC.
-- Do not replace this metric with a pooled out-of-fold AUC.
+Minimum and maximum AUC refer to repetition-level mean fold AUC,
+not individual-fold AUC.
 
-Paired comparisons:
-For each candidate and each repetition, compute:
+Paired comparisons against the E4 leader, all-feature L1 C=1.0:
 
-1. Difference versus e4_l1_c_1: primary comparison.
-2. Difference versus e4_l1_c_0_1: secondary comparison.
-3. Difference versus the E3 leader: historical reference.
+| SVM C | Gamma | Mean paired AUC difference | Difference SD | Improved / worse / tied repeats |
+|---:|---|---:|---:|---|
+| 0.1 | scale | -0.054844 | 0.012358 | 0 / 10 / 0 |
+| 1.0 | scale | -0.054153 | 0.013454 | 0 / 10 / 0 |
+| 10.0 | scale | -0.059087 | 0.012564 | 0 / 10 / 0 |
+| 0.1 | 0.01 | -0.050932 | 0.013182 | 0 / 10 / 0 |
+| 1.0 | 0.01 | -0.049794 | 0.013746 | 0 / 10 / 0 |
+| 10.0 | 0.01 | -0.049726 | 0.012739 | 0 / 10 / 0 |
 
-For each reference, report:
+Paired comparisons against the sparse E4 alternative, all-feature L1 C=0.1:
 
-- Mean paired AUC difference.
-- Sample SD of paired differences.
-- Minimum and maximum paired differences.
-- Improved / worse / tied repetition counts.
-- The full repeat-level difference table.
+| SVM C | Gamma | Mean paired AUC difference | Difference SD | Improved / worse / tied repeats |
+|---:|---|---:|---:|---|
+| 0.1 | scale | -0.045595 | 0.008274 | 0 / 10 / 0 |
+| 1.0 | scale | -0.044905 | 0.007382 | 0 / 10 / 0 |
+| 10.0 | scale | -0.049839 | 0.009024 | 0 / 10 / 0 |
+| 0.1 | 0.01 | -0.041684 | 0.008385 | 0 / 10 / 0 |
+| 1.0 | 0.01 | -0.040545 | 0.008853 | 0 / 10 / 0 |
+| 10.0 | 0.01 | -0.040478 | 0.008079 | 0 / 10 / 0 |
 
-Use a fixed tie tolerance of 1e-12 for win/loss/tie classification.
-Do not interpret repetition SD as a confidence interval or treat repeated
-splits as independent datasets.
+Paired comparisons against the E3 leader:
 
-Implementation checks before the full run:
+| SVM C | Gamma | Mean paired AUC difference | Difference SD | Improved / worse / tied repeats |
+|---:|---|---:|---:|---|
+| 0.1 | scale | -0.015714 | 0.010717 | 1 / 9 / 0 |
+| 1.0 | scale | -0.015023 | 0.012967 | 1 / 9 / 0 |
+| 10.0 | scale | -0.019957 | 0.014307 | 1 / 9 / 0 |
+| 0.1 | 0.01 | -0.011803 | 0.012194 | 1 / 9 / 0 |
+| 1.0 | 0.01 | -0.010664 | 0.013668 | 2 / 8 / 0 |
+| 10.0 | 0.01 | -0.010597 | 0.014015 | 1 / 9 / 0 |
 
-- Extend ValidationRunner to accept an explicit score method if required.
-- Fail clearly if the requested scoring method is unavailable;
-  do not silently fall back to predict().
-- Confirm that decision scores are finite and one-dimensional for this
-  binary task, with one score per validation row.
-- Verify positive-class orientation.
-- Test that scaling is fitted on training-fold rows only.
-- Confirm that existing logistic-regression scoring behaviour is unchanged.
-- Verify that failed fits cannot silently become zero-AUC or missing-fold results.
-- Keep a scoring-path smoke test separate from the six-configuration comparison.
-- If the smoke test causes a scientific protocol change, document the
-  amendment before launching the full comparison.
+Numerical diagnostics:
 
-Per-fold diagnostics:
+| C | Gamma | Completed / valid folds | Failed folds | General-warning folds | Convergence-warning folds | Iteration-limit folds | Maximum n_iter | Mean support fraction |
+|---:|---|---|---:|---:|---:|---:|---:|---:|
+| 0.1 | scale | 50 / 50 | 0 | 50 | 0 | 0 | 149 | 0.9869 |
+| 1.0 | scale | 50 / 50 | 0 | 50 | 0 | 0 | 251 | 0.9851 |
+| 10.0 | scale | 50 / 50 | 0 | 50 | 0 | 0 | 396 | 0.9837 |
+| 0.1 | 0.01 | 50 / 50 | 0 | 50 | 0 | 0 | 186 | 1.0000 |
+| 1.0 | 0.01 | 50 / 50 | 0 | 50 | 0 | 0 | 292 | 1.0000 |
+| 10.0 | 0.01 | 50 / 50 | 0 | 50 | 0 | 0 | 373 | 1.0000 |
 
-- AUC.
-- Training and validation row counts.
-- Number of support vectors per class and total support-vector count.
-- Support-vector count divided by training-row count.
-- fit_status_.
-- n_iter_, when exposed by the installed version.
-- Convergence warnings and other captured warnings.
-- Fit duration.
-- Number of unique validation decision scores.
-- Validation decision-score minimum, maximum, and standard deviation.
-- Requested gamma and fitted numeric gamma, if available through a
-  documented or explicitly version-sensitive diagnostic.
+All six candidates were eligible under the predefined validity rules.
 
-Do not interpret support-vector count as selected-feature count.
-SVC retains all 150 input predictors in this experiment.
+Support fraction is the number of support vectors divided by the number
+of training rows in a fold. It is not the fraction of selected predictors.
+All 150 predictors remained available to each SVM.
 
-Failure and numerical-review rules:
+Warning review:
+- Completed using the saved e5_fold_diagnostics.csv.
+- The review reported 300 occurrences of one FutureWarning.
+- The warning concerned deprecation of SVC's probability parameter
+  in scikit-learn 1.9, with removal scheduled for version 1.11.
+- No additional warning categories or messages were reported.
+- E5 explicitly used probability=False and evaluated decision_function scores.
+- Probability calibration was not part of this experiment.
+- No convergence warnings, failed fits, or iteration-limit events were recorded.
+- Preserve warning_folds=50 for each candidate; do not replace the original
+  warning counts with zero.
+- No rerun is required solely to remove this deprecation warning.
 
-- Preserve all warnings and failed-fold records.
-- A candidate is ineligible for leader selection if any fold fails,
-  has non-finite scores, or reports non-convergence.
-- Do not rank a candidate using only its successful folds.
-- Keep partial summaries clearly marked as incomplete.
-- A numerical rerun requires a documented amendment.
-- Do not silently change max_iter, tol, C, or gamma during the experiment.
+Highest-mean E5 candidate:
+- Experiment ID: e5_rbf_svm_c_10_gamma_0_01.
+- Configuration: all-feature RBF SVM, C=10.0, gamma=0.01.
+- Mean development CV AUC: 0.812385.
+- Repeat SD: 0.013559.
+- Mean paired difference versus the E4 leader: -0.049726;
+  improved in 0/10 repetitions.
+- Paired difference range versus the E4 leader:
+  -0.075553 to -0.034599.
+- Mean paired difference versus the sparse E4 alternative: -0.040478;
+  improved in 0/10 repetitions.
+- Mean paired difference versus the E3 leader: -0.010597;
+  improved in 1/10 repetitions.
 
-Candidate-selection rule:
+Findings:
+- None of the six RBF SVM settings improved over either retained
+  L1 candidate in any of the ten paired repetitions.
+- All six SVM settings also had lower mean AUC than the E3 leader.
+- gamma=0.01 had a higher mean AUC than gamma="scale" at each tested C.
+- Within gamma=0.01, C=10.0 exceeded C=1.0 by approximately 0.000067
+  mean AUC; this small difference does not establish a meaningful advantage.
+- The bounded comparison provides no evidence for replacing the
+  current L1 candidates with these SVM settings.
+- High support-vector fractions are descriptive diagnostics, not proof
+  of overfitting or an implementation error.
 
-- Consider only candidates with all 50 valid, converged fold results.
-- Rank eligible candidates by mean repetition-level AUC.
-- Use a deterministic tie-breaker for means equal within 1e-12:
-  lower C first, then gamma="scale".
-- This selects the E5 leader, not automatically the overall project leader.
-- Promote the E5 leader to the provisional overall leader only if its
-  mean AUC exceeds the E4 leader by more than 1e-12.
-- Report paired differences and win/loss counts even if they qualify
-  or weaken the interpretation of the mean ordering.
-- Do not use the public leaderboard to choose among the six settings.
-- Do not describe a small positive development difference as statistically
-  established superiority.
+Decision:
+- Complete and stop the planned six-setting RBF SVM comparison.
+- Retain e4_l1_c_1 as the provisional overall leading pipeline.
+- Retain e4_l1_c_0_1 as the sparse alternative.
+- Preserve the E3 leader and earlier baselines as historical references.
+- Record the E5 leader as the highest-mean candidate within E5 only.
+- Do not automatically expand C or gamma because the E5 leader lies
+  on the tested C boundary.
+- Do not add feature selection, another kernel, or probability calibration
+  to this completed experiment.
+- Do not submit the six SVM candidates solely to seek a better leaderboard score.
+- E5 submission status: not recorded.
 
-Stopping rule:
+Limitations:
+- Only six all-feature RBF SVM settings were tested.
+- The result does not establish that every nonlinear model is inferior.
+- This is a comparison of complete pipelines, not an isolated test
+  of nonlinearity alone.
+- E5 reused the same labelled observations and development validation
+  protocol used in earlier studies.
+- Repeated splits are not independent datasets, and their SD is not
+  a confidence interval.
+- Choosing the highest-mean SVM setting remains development model selection,
+  not independent final evaluation.
+- No public or private leaderboard outcome is established.
 
-- Complete the six listed configurations, except where a documented
-  implementation failure requires pausing.
-- Stop after the bounded comparison and its diagnostics are reviewed.
-- Do not automatically add nearby C or gamma values, feature selection,
-  another kernel, or probability calibration.
-- If the best setting lies on the grid boundary, record that limitation;
-  it is not automatic permission to expand the search.
-
-Submission policy:
-
-- No automatic submission is part of this CV experiment.
-- If an SVM candidate is retained, first confirm the official permitted
-  prediction format.
-- Raw decision scores must not be exported as class probabilities.
-- If probabilities are required, define a separate fold-local calibration
-  procedure and evaluate that complete procedure before submission.
-- Do not tune a score-to-probability transformation using leaderboard feedback.
-- Record any later submission configuration, identifier, timestamp,
-  and actual score separately.
-
-Planned artifacts:
-
-- Six experiment directories with configs, scores, and split assignments.
-- Per-fold decision scores aligned to validation-row identifiers.
-- Per-fold diagnostic and warning records.
+Artifacts:
+- Run directory: outputs/results/e5_rbf_run_01/.
+- run_manifest.json.
+- verified_validation_assignments.csv.
+- reference_repeat_scores.csv.
 - e5_comparison.csv.
 - e5_paired_repeat_scores.csv.
 - e5_fold_diagnostics.csv.
-- Mean-AUC, repeat-trajectory, and paired-difference figures.
-- Package versions, data hashes, code revision, and protocol amendments.
+- e5_decision.json.
+- Six candidate subdirectories containing configurations, fold diagnostics,
+  and validation decision scores.
+- Standalone execution script and tests.
+- Warning-review output from python -m check_e5_warning.
 
-Interpretation limits:
-
-- E5 compares complete RBF SVM and logistic-regression procedures;
-  it does not isolate nonlinearity as the sole cause of any difference.
-- Only six RBF SVM settings are evaluated.
-- A negative result does not rule out every nonlinear model.
-- A positive result remains a development finding selected on reused data.
-- No untouched labelled evaluation set is created by adding another experiment.
-- No public or private leaderboard performance is guaranteed.
-
-Question: Does a nonlinear alternative outperform the linear candidates?
-
-* Pipeline: `StandardScaler -> RBF SVM`.
-* Initially retain all 150 predictors.
-* C in {0.1, 1, 10}; gamma in {"scale", 0.01}.
-* Maximum: six configurations; no simultaneous feature-selection search.
-* Before running, extend and test the runner if using `decision_function` instead
-  of `predict_proba`. Record which prediction score is used.
-
-Do not switch to a new model solely because another team reports a high public score.
-Probability generation for submission must be defined separately if this model is retained.
+Preserve the exact executed script version, including the split-loader
+compatibility correction, together with the original output files.
 
 ## E6 — Individual extension: validation protocol design
 
@@ -773,17 +757,22 @@ This study is separate from the completed C sweep.
 
 ## Immediate implementation order
 
-1. Archive the completed E0–E4 results and confirm configuration provenance,
-   saved split assignments, package versions, data hashes, and code revision.
-2. Preserve all four E4 L1 configurations, including the all-zero C=0.01 result.
-3. Retain e4_l1_c_1 as the current highest-mean development candidate and
+1. Archive the completed E0–E5 results, configurations, saved splits,
+   package versions, available data hashes, and code revisions.
+2. Preserve the exact E5 execution script, including the split-loader fix,
+   and record the completed warning review.
+3. Retain e4_l1_c_1 as the provisional overall leader and
    e4_l1_c_0_1 as the sparse alternative.
 4. Record the missing E1 public score, submission identifier, and timestamp;
    do not duplicate an already completed baseline submission.
-5. Confirm whether an E4 candidate has already been submitted. If not,
-   consider one documented candidate submission rather than submitting
-   every tested configuration.
-6. Confirm whether E6 is the chosen individual extension and freeze its
-   protocol before implementation.
-7. Before further model search, document whether E5, the optional Elastic-net
-   follow-up, or progression towards E7 serves a specific unresolved question.
+5. Confirm whether an E4 candidate has already been submitted.
+   If not, consider one documented candidate submission rather than
+   submitting every tested configuration.
+6. Confirm whether E6 is the chosen individual extension.
+   Freeze its pipelines, validation schemes, repetitions, and comparison
+   rules before implementation.
+7. Prepare E7: freeze a small candidate set and document whether a bounded
+   nested-CV evaluation will be used.
+8. Do not automatically reopen the completed E4 or E5 searches.
+   Any additional experiment requires a specific unresolved question,
+   bounded settings, and a stopping rule defined in advance.

@@ -1,0 +1,78 @@
+{
+  "frozen_dir": "outputs/frozen/ext03_top20_v1",
+  "l1_config": "configs/e4_l1_c_1.json",
+  "reuse_cv_run": "outputs/results/soft_vote_l1_xgb20_v1_run_01",
+  "output_dir": "outputs/results/registry_ensembles_v1_run_01",
+  "models": {
+    "l1": {
+      "type": "l1_pipeline"
+    },
+    "xgboost": {
+      "type": "xgb_topk"
+    },
+    "lightgbm": {
+      "type": "lgbm_classifier",
+      "parameters": {
+        "objective": "binary",
+        "learning_rate": 0.05,
+        "n_estimators": 100,
+        "max_depth": 3,
+        "num_leaves": 7,
+        "min_child_samples": 20,
+        "reg_lambda": 10.0,
+        "subsample": 1.0,
+        "colsample_bytree": 1.0,
+        "random_state": 42,
+        "n_jobs": 1,
+        "verbosity": 1,
+        "deterministic": true,
+        "force_col_wise": true
+      }
+    }
+  },
+  "ensembles": {
+    "l1_xgb": {
+      "members": [
+        "l1",
+        "xgboost"
+      ],
+      "weights": [
+        1,
+        1
+      ]
+    },
+    "lgbm_l1": {
+      "members": [
+        "lightgbm",
+        "l1"
+      ],
+      "weights": [
+        1,
+        1
+      ]
+    },
+    "lgbm_xgb": {
+      "members": [
+        "lightgbm",
+        "xgboost"
+      ],
+      "weights": [
+        1,
+        1
+      ]
+    },
+    "l1_xgb_lgbm": {
+      "members": [
+        "l1",
+        "xgboost",
+        "lightgbm"
+      ],
+      "weights": [
+        1,
+        1,
+        1
+      ]
+    }
+  },
+  "baseline": "l1_xgb"
+}

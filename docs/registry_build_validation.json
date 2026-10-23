@@ -1,0 +1,32 @@
+{
+  "target_repository": "moli0516/small_sample_classification_challenge",
+  "reviewed_commit": "d737af3630541095e53c5dfdcffde9ed30ace313",
+  "reviewed_soft_voting_blob": "8788108815e0ac5701e4457111a18b74487811d0",
+  "additive_patch": true,
+  "existing_files_modified": [],
+  "tests_discovered": 30,
+  "tests_passed": 28,
+  "tests_skipped": 2,
+  "native_lightgbm_available": false,
+  "native_xgboost_available": false,
+  "actual_competition_fit": false,
+  "actual_submission_generated": false,
+  "full_existing_repository_tests_run": false,
+  "synthetic_context_and_models_mocked": true,
+  "cli_help_verified": true,
+  "cli_list_verified": true,
+  "git_apply_check_verified": true,
+  "git_apply_and_payload_hashes_verified": true,
+  "github_writes": false,
+  "kaggle_upload": false,
+  "payload_sha256": {
+    "src/modeling/model_registry.py": "6f35421404e82dd95ff211403d5ba4859274991cdc67f6e1f52dfdb50afcb075",
+    "src/modeling/registered_models.py": "f7b076b23243bfb39a3632344fbb9a2e75c2e47a5bf105b239d02ddb67e4e7bf",
+    "configs/registry_ensembles.json": "36df9ecc3b49901e546f5d9308cc1bb9296b89586254c8ed3c12cc8d6e44de94",
+    "requirements-registry.txt": "2ed09af977107c671394235c5b2676c35a847679015e2548caced07e5222c297",
+    "src/experiments/registered_ensembles.py": "ab41057aa50e5d4dd546ddd9aa4429df846e373939829d3ad56943ec37170918",
+    "scripts/run_registered_ensembles.py": "d83a072f9d45bf1de30c425049f5d17a577e03f946bf504a954c48622ac6b58e",
+    "tests/test_registered_ensembles.py": "6ff2fe5fa59a232b7954c0505e76ef78a67e511a65e54843967c8b479bb7c92a",
+    "docs/registry_ensembles.md": "c7be0e23cf5e79553c60257c769b5b3b87b1a21e01c6009b125f7123e118bdc9"
+  }
+}

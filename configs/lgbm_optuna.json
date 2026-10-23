@@ -1,0 +1,9 @@
+{
+  "registry_config": "configs/registry_ensembles.json",
+  "reference_run": "outputs/results/registry_ensembles_v1_run_01",
+  "output_dir": "outputs/results/lgbm_optuna_v1_run_01",
+  "study_name": "lgbm_optuna_v1",
+  "n_trials": 20,
+  "sampler_seed": 42,
+  "objective": "l1_xgb_lgbm"
+}

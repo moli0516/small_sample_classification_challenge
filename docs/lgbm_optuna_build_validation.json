@@ -1,0 +1,45 @@
+{
+  "base_commit_observed": "ccad344b6395101f2407919817400ad670bb3bd7",
+  "test_count": 34,
+  "passed": 32,
+  "skipped": 2,
+  "native_optuna_available": false,
+  "native_lightgbm_available": false,
+  "native_xgboost_available": false,
+  "real_competition_data_used": false,
+  "real_search_performed": false,
+  "full_original_repository_test_suite_run": false,
+  "synthetic_registry_and_optuna_test_doubles": true,
+  "git_apply_check_verified": true,
+  "git_apply_verified": true,
+  "post_apply_new_tests_passed": true,
+  "cli_help_and_plan_checks": 5,
+  "all_new_files": true,
+  "modified_existing_files": [],
+  "github_writes": false,
+  "kaggle_upload": false,
+  "runtime_dependencies": [
+    "existing registry integration",
+    "existing frozen top20 snapshot",
+    "completed original soft-vote CV",
+    "completed fixed-LGBM registry CV"
+  ],
+  "limitations": [
+    "No real TPE/native model end-to-end execution in build environment.",
+    "New-file-only patch does not enforce a Git parent commit; runtime validates historical inputs, artifacts, code and versions.",
+    "SQLite is persisted but in-place resume is intentionally not exposed.",
+    "Only the predeclared equal-weight three-model objective can be promoted/exported."
+  ],
+  "file_sha256": {
+    "src/experiments/lgbm_trial_rejected.py": "109a313ce00f67f742fd7e1b138e6bc28b23c138a7c33f5cd6167bdd0cb80247",
+    "src/experiments/lgbm_optuna_experiment.py": "944c085412017b6c5e3ec927c743f9467459faf332a76de9e0224a13878aa7e2",
+    "configs/lgbm_optuna.json": "8303e68c45d5ace40c69d8bc1c2b597829dea419f2216454269601543b0c3458",
+    "requirements-lgbm-optuna.txt": "6728f69c48328574320157aa0767860d5019fa57df5089a0e4cc74fb9ac0d34c",
+    "scripts/run_lgbm_optuna.py": "5f165f6d3ad985d5ef76c5236b4cb8a2c28a7587dbaf390c420a0c48d01f7828",
+    "clil.py": "d348c98361c50574baeae4464e1e807bd57f379967be51abef217142e06fc10f",
+    "tests/test_lgbm_optuna_experiment.py": "c5ac560eaf094e0be7f2bea87dc39b186a499f1dc6ceb50fca537b49edbd13fc",
+    "tests/test_clil.py": "e83a022b5dbe7662e34964b42179b9fc6774777db2660f3816ade4af83644c11",
+    "docs/lgbm_optuna_runbook.md": "d2976d9ada511475b799bc8e83282de3df8b922250849f282ad641b9f35f7477",
+    "experiments/lgbm_optuna_v1_plan.md": "de3953215a3e1c621d02663e9a93b2e8ae10fa42b1a4a8bd2a8cc388f190098d"
+  }
+}

@@ -24,3 +24,5 @@ __pycache__/
 # Local system files
 .DS_Store
 Thumbs.db
+
+notebooks/

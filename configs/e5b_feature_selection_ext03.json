@@ -1,0 +1,11 @@
+{
+  "experiment_id": "e5b_feature_selection_ext03",
+  "source_study_dir": "outputs/results/e5b_optuna_ext02_run_01",
+  "source_trial_number": 20,
+  "output_dir": "outputs/results/e5b_feature_selection_ext03_run_01",
+  "k_values": [
+    5,
+    10,
+    20
+  ]
+}

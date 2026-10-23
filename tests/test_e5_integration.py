@@ -12,7 +12,7 @@ from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import roc_auc_score
 from sklearn.exceptions import ConvergenceWarning
 import warnings
-import run_e5 as e5
+from scripts import run_e5 as e5
 
 
 class E5Tests(unittest.TestCase):

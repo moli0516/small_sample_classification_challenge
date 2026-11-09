@@ -1,0 +1,6 @@
+{
+  "selected": null,
+  "baseline": "l1_xgb",
+  "rule": "Positive mean paired AUC difference vs existing L1+XGBoost and >=6/10 repeat wins; not a significance test.",
+  "interpretation": "Adaptive development comparison on reused splits; no independent final score."
+}

@@ -1,0 +1,547 @@
+diff --git a/scripts/run_pca_l2_v1.py b/scripts/run_pca_l2_v1.py
+new file mode 100644
+--- /dev/null
++++ b/scripts/run_pca_l2_v1.py
+@@ -0,0 +1,293 @@
++"""Bounded PCA/L2 development comparison; never loads competition test data."""
++import argparse
++import csv
++from datetime import datetime, timezone
++from hashlib import sha256
++from importlib.metadata import version
++from inspect import signature
++import json
++from pathlib import Path
++import warnings
++
++import numpy as np
++import pandas as pd
++from sklearn.decomposition import PCA
++from sklearn.exceptions import ConvergenceWarning
++from sklearn.linear_model import LogisticRegression
++from sklearn.metrics import roc_auc_score
++from sklearn.pipeline import Pipeline
++from sklearn.preprocessing import StandardScaler
++from threadpoolctl import threadpool_limits
++
++ROOT = Path(__file__).resolve().parents[1]
++TOL = 1e-12
++
++
++def read(path):
++    return json.loads(Path(path).read_text(encoding="utf-8"))
++
++
++def digest(path):
++    return sha256(Path(path).read_bytes()).hexdigest()
++
++
++def write(path, obj):
++    Path(path).write_text(json.dumps(obj, indent=2, allow_nan=False) + "\n", encoding="utf-8")
++
++
++def resolve(root, value):
++    return (root / Path(value).expanduser()).resolve()
++
++
++def validate_config(cfg):
++    required = {"train_path", "target_column", "id_column", "expected_rows", "expected_features",
++                "source_run", "output_dir", "c_values", "components", "max_iter", "tol", "model_seed"}
++    if not isinstance(cfg, dict) or set(cfg) != required:
++        raise ValueError("Unexpected config fields")
++    for key in ("train_path", "target_column", "id_column", "source_run", "output_dir"):
++        if not isinstance(cfg[key], str) or not cfg[key].strip():
++            raise ValueError("Nonempty paths/column names required")
++    if cfg["id_column"] == cfg["target_column"]:
++        raise ValueError("ID and target must differ")
++    for key in ("expected_rows", "expected_features", "max_iter"):
++        if type(cfg[key]) is not int or cfg[key] <= 0:
++            raise ValueError("Positive integer required")
++    if type(cfg["model_seed"]) is not int or type(cfg["tol"]) not in (int, float) or not 0 < cfg["tol"] < 1:
++        raise ValueError("Invalid estimator seed/tolerance")
++    cs, ks = cfg["c_values"], cfg["components"]
++    if not cs or any(type(c) not in (float, int) or not np.isfinite(c) or c <= 0 for c in cs):
++        raise ValueError("Positive finite C values required")
++    if len(set(cs)) != len(cs) or cs != sorted(cs):
++        raise ValueError("Unique ascending C values required")
++    if not ks or any(type(k) is not int or k <= 0 for k in ks) or len(set(ks)) != len(ks) or ks != sorted(ks):
++        raise ValueError("Unique ascending component counts required")
++    return cfg
++
++
++def load_train(path, cfg):
++    with path.open(encoding="utf-8-sig", newline="") as stream:
++        header = next(csv.reader(stream), [])
++    if not header or any(not s.strip() for s in header) or len(set(header)) != len(header):
++        raise ValueError("Blank/duplicate CSV header")
++    frame = pd.read_csv(path, dtype={cfg["id_column"]: "string"})
++    if not {cfg["id_column"], cfg["target_column"]} <= set(frame):
++        raise ValueError("Explicit ID/target missing; edit config, never infer from test.csv")
++    ids, y = frame[cfg["id_column"]], frame[cfg["target_column"]]
++    x = frame.drop(columns=[cfg["id_column"], cfg["target_column"]])
++    if x.shape != (cfg["expected_rows"], cfg["expected_features"]):
++        raise ValueError("Unexpected training shape")
++    if ids.isna().any() or not ids.is_unique or ids.str.strip().eq("").any():
++        raise ValueError("Invalid row IDs")
++    if any(not pd.api.types.is_numeric_dtype(x[c]) or pd.api.types.is_bool_dtype(x[c]) for c in x):
++        raise ValueError("Numeric predictors required")
++    if not np.isfinite(x.to_numpy(dtype=float)).all():
++        raise ValueError("Nonfinite predictors")
++    if pd.api.types.is_bool_dtype(y) or y.isna().any() or set(y.unique()) != {0, 1}:
++        raise ValueError("Numeric binary target required")
++    return x, y.astype(int), ids
++
++
++def validate_splits(records, y, cfg):
++    if len(records) != 50:
++        raise ValueError("Need all 50 saved cv5 splits")
++    keys = [(s["repeat"], s["fold"]) for s in records]
++    if len(set(keys)) != 50 or set(keys) != {(r, f) for r in range(10) for f in range(5)}:
++        raise ValueError("Incomplete/duplicate split keys")
++    n, universe = len(y), set(range(len(y)))
++    for repeat in range(10):
++        seen = []
++        for s in [s for s in records if s["repeat"] == repeat]:
++            tr, va = s["train_indices"], s["valid_indices"]
++            if s["scheme"] != "cv5" or s["split_seed"] != repeat:
++                raise ValueError("Unexpected split scheme/seed")
++            if any(type(i) is not int for i in tr + va):
++                raise ValueError("Integer indices required")
++            if len(tr) != len(set(tr)) or len(va) != len(set(va)) or set(tr) & set(va) or set(tr) | set(va) != universe:
++                raise ValueError("Invalid split partition")
++            if len(va) != n // 5 or len(tr) != n - n // 5:
++                raise ValueError("Unexpected five-fold sizes")
++            if y.iloc[tr].nunique() != 2 or y.iloc[va].nunique() != 2:
++                raise ValueError("Both classes required in every partition")
++            if max(cfg["components"]) > min(len(tr) - 1, cfg["expected_features"]):
++                raise ValueError("Component count exceeds centered training rank bound")
++            seen.extend(va)
++        if sorted(seen) != list(range(n)):
++            raise ValueError("Each row must be validated once per repeat")
++    return sorted(records, key=lambda s: (s["repeat"], s["fold"]))
++
++
++def prepare(config_path, root=ROOT, output=None):
++    path = resolve(root, config_path)
++    cfg = validate_config(read(path))
++    train = resolve(root, cfg["train_path"])
++    source = resolve(root, cfg["source_run"])
++    dest = resolve(root, output or cfg["output_dir"])
++    if dest.exists():
++        raise FileExistsError("Use a fresh output directory; no overwrite/resume")
++    manifest_path = source / "run_manifest.json"
++    manifest = read(manifest_path)
++    checks = manifest.get("artifact_sha256", {})
++    if manifest.get("status") != "completed" or not {"settings.json", "split_indices.json"} <= checks.keys():
++        raise ValueError("Completed validation_protocol_v1 source with checksums required")
++    watched = [path, train, manifest_path, Path(__file__).resolve()]
++    for name, expected in checks.items():
++        p = (source / name).resolve()
++        if not p.is_relative_to(source) or not p.is_file() or digest(p) != expected:
++            raise ValueError("Changed/unsafe source artifact: " + name)
++        watched.append(p)
++    settings = read(source / "settings.json")
++    historical = settings.get("input_and_code_sha256", {})
++    train_suffix = Path(cfg["train_path"]).as_posix()
++    matches = [v for k, v in historical.items()
++               if Path(k).as_posix() == train.as_posix() or Path(k).as_posix().endswith("/" + train_suffix)]
++    if not matches or len(set(matches)) != 1 or matches[0] != digest(train):
++        raise ValueError("Training CSV does not match the source study SHA256")
++    x, y, ids = load_train(train, cfg)
++    splits = validate_splits([s for s in read(source / "split_indices.json") if s.get("scheme") == "cv5"], y, cfg)
++    return cfg, dest, x, y, ids, splits, {str(p): digest(p) for p in watched}
++
++
++def candidates(cfg):
++    rows = []
++    for k in [None] + cfg["components"]:
++        for c in cfg["c_values"]:
++            rows.append(dict(candidate=f"{'no_pca' if k is None else 'pca_' + str(k)}_C{c:g}",
++                             branch="control" if k is None else "pca", components=k, C=c))
++    return rows
++
++
++def build_model(candidate, cfg):
++    parameters = dict(C=candidate["C"], solver="lbfgs", max_iter=cfg["max_iter"],
++                      tol=cfg["tol"], random_state=cfg["model_seed"])
++    penalty = signature(LogisticRegression).parameters.get("penalty")
++    if penalty is None or penalty.default == "deprecated":
++        parameters["l1_ratio"] = 0.0
++    else:
++        parameters["penalty"] = "l2"
++    steps = [("scaler", StandardScaler())]
++    if candidate["components"] is not None:
++        steps.append(("pca", PCA(n_components=candidate["components"], svd_solver="full", whiten=False)))
++    steps.append(("classifier", LogisticRegression(**parameters)))
++    return Pipeline(steps)
++
++
++def compare(repeats, b, a):
++    left = repeats[repeats.candidate == a].set_index("repeat").mean_fold_auc.sort_index()
++    right = repeats[repeats.candidate == b].set_index("repeat").mean_fold_auc.sort_index()
++    if list(left.index) != list(range(10)) or not left.index.equals(right.index):
++        raise ValueError("Unpaired repeat scores")
++    d = right - left
++    detail = pd.DataFrame(dict(repeat=d.index, reference=a, candidate=b, difference=d.to_numpy()))
++    summary = dict(reference=a, candidate=b, mean_difference=float(d.mean()), difference_sd=float(d.std(ddof=1)),
++                   wins=int((d > TOL).sum()), losses=int((d < -TOL).sum()), ties=int((abs(d) <= TOL).sum()))
++    return detail, summary
++
++
++def summarize(folds, specs):
++    expected = {(s["candidate"], r, f) for s in specs for r in range(10) for f in range(5)}
++    keys = list(folds[["candidate", "repeat", "fold"]].itertuples(index=False, name=None))
++    if len(keys) != len(expected) or set(keys) != expected or not np.isfinite(folds.auc).all():
++        raise ValueError("Missing/duplicate/invalid fold scores")
++    repeats = folds.groupby(["candidate", "repeat"], as_index=False).auc.mean().rename(columns={"auc": "mean_fold_auc"})
++    summary = repeats.groupby("candidate", sort=False).mean_fold_auc.agg(mean_auc="mean", repeat_sd="std").reset_index()
++    summary = pd.DataFrame(specs).merge(summary, on="candidate", validate="one_to_one")
++    winners = {}
++    for branch in ("control", "pca"):
++        part = summary[summary.branch == branch]
++        winners[branch] = part.loc[part.mean_auc.idxmax(), "candidate"]
++    details, comparisons = [], []
++    for s in specs:
++        if s["branch"] != "pca":
++            continue
++        same_c = next(a["candidate"] for a in specs if a["branch"] == "control" and a["C"] == s["C"])
++        d, stat = compare(repeats, s["candidate"], same_c)
++        d["comparison"] = "same_C"; stat["comparison"] = "same_C"
++        details.append(d); comparisons.append(stat)
++    d, stat = compare(repeats, winners["pca"], winners["control"])
++    d["comparison"] = "selected_branches"; stat["comparison"] = "selected_branches"
++    details.append(d); comparisons.append(stat)
++    decision = dict(selected_control=winners["control"], selected_pca=winners["pca"],
++                    selection_rule="Highest mean per branch; exact ties use config order (control: smaller C; PCA: smaller k then C). No fallback.",
++                    screening_passed=bool(stat["mean_difference"] > TOL and stat["wins"] >= 6),
++                    automatic_promotion=False, **stat,
++                    interpretation="Adaptive development comparison, not nested CV or an independent generalisation estimate. Screening is descriptive, not a significance test. No incumbent ensemble changed.")
++    return repeats, summary, pd.concat(details, ignore_index=True), pd.DataFrame(comparisons), decision
++
++
++def run(config_path, output=None, dry_run=False, root=ROOT):
++    cfg, dest, x, y, ids, splits, hashes = prepare(config_path, root, output)
++    specs = candidates(cfg)
++    plan = dict(status="preflight_passed", candidates=len(specs), splits=50,
++                planned_pipeline_fits=len(specs) * 50, test_opened=False, output=str(dest))
++    if dry_run:
++        return plan
++    dest.mkdir(parents=True, exist_ok=False)
++    manifest = dict(plan, status="running", completed_pipeline_fits=0,
++                    started_utc=datetime.now(timezone.utc).isoformat(), kaggle_upload_performed=False)
++    rows, predictions, diagnostics, warning_rows = [], [], [], []
++    write(dest / "run_manifest.json", manifest)
++    try:
++        write(dest / "settings.json", dict(config=cfg, candidates=specs, input_and_code_sha256=hashes,
++              versions={p: version(p) for p in ("numpy", "pandas", "scikit-learn", "scipy", "threadpoolctl")},
++              preprocessing="Training-fitted StandardScaler then optional full-SVD PCA, whiten=False; L2 lbfgs for both branches"))
++        write(dest / "split_indices.json", splits)
++        with threadpool_limits(limits=1):
++            for s in splits:
++                tr, va = s["train_indices"], s["valid_indices"]
++                for spec in specs:
++                    model = build_model(spec, cfg)
++                    with warnings.catch_warnings(record=True) as caught:
++                        warnings.simplefilter("always")
++                        model.fit(x.iloc[tr], y.iloc[tr])
++                    key = dict(candidate=spec["candidate"], repeat=s["repeat"], split_seed=s["split_seed"], fold=s["fold"])
++                    warning_rows.extend(dict(key, category=w.category.__name__, message=str(w.message)) for w in caught)
++                    write(dest / "warnings.json", warning_rows)
++                    if any(issubclass(w.category, ConvergenceWarning) for w in caught):
++                        raise RuntimeError("ConvergenceWarning: review failed run; do not select partial results")
++                    p = model.predict_proba(x.iloc[va])[:, 1]
++                    if p.shape != (len(va),) or not np.isfinite(p).all() or ((p < 0) | (p > 1)).any():
++                        raise ValueError("Invalid probabilities")
++                    rows.append(dict(key, auc=float(roc_auc_score(y.iloc[va], p)), train_rows=len(tr), valid_rows=len(va)))
++                    predictions.extend(dict(key, row_index=int(i), id=str(ids.iloc[i]), target=int(y.iloc[i]), probability=float(q)) for i, q in zip(va, p))
++                    if "pca" in model.named_steps:
++                        pca = model.named_steps["pca"]
++                        diagnostics.append(dict(key, explained_variance_ratio=pca.explained_variance_ratio_.tolist(),
++                                                explained_variance_sum=float(pca.explained_variance_ratio_.sum())))
++                    manifest["completed_pipeline_fits"] += 1
++                pd.DataFrame(rows).to_csv(dest / "fold_scores.csv", index=False)
++                write(dest / "run_manifest.json", manifest)
++                print(f"[{manifest['completed_pipeline_fits']}/{plan['planned_pipeline_fits']}] repeat={s['repeat']} fold={s['fold']}", flush=True)
++        for path, expected in hashes.items():
++            if digest(path) != expected:
++                raise RuntimeError("Input/source/code changed during run: " + path)
++        repeats, summary, paired, comparisons, decision = summarize(pd.DataFrame(rows), specs)
++        for name, table in (("repeat_scores", repeats), ("model_summary", summary),
++                            ("paired_repeat_differences", paired), ("comparison", comparisons)):
++            table.to_csv(dest / (name + ".csv"), index=False)
++        pd.DataFrame(predictions).to_csv(dest / "validation_probabilities.csv", index=False)
++        write(dest / "pca_diagnostics.json", diagnostics)
++        write(dest / "decision.json", decision)
++        manifest["status"] = "completed"
++        manifest["artifact_sha256"] = {p.name: digest(p) for p in dest.iterdir() if p.is_file() and p.name != "run_manifest.json"}
++        return dict(status="completed", output=str(dest), automatic_promotion=False)
++    except BaseException as exc:
++        manifest.update(status="failed_or_interrupted", error=f"{type(exc).__name__}: {exc}")
++        pd.DataFrame(rows).to_csv(dest / "partial_fold_scores.csv", index=False)
++        write(dest / "warnings.json", warning_rows)
++        raise
++    finally:
++        manifest["finished_utc"] = datetime.now(timezone.utc).isoformat()
++        write(dest / "run_manifest.json", manifest)
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("--config", default="configs/pca_l2_v1.json")
++    parser.add_argument("--output")
++    parser.add_argument("--dry-run", action="store_true")
++    args = parser.parse_args()
++    print(json.dumps(run(args.config, args.output, args.dry_run), indent=2))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/configs/pca_l2_v1.json b/configs/pca_l2_v1.json
+new file mode 100644
+--- /dev/null
++++ b/configs/pca_l2_v1.json
+@@ -0,0 +1,25 @@
++{
++  "train_path": "data/raw/train.csv",
++  "target_column": "target",
++  "id_column": "id",
++  "expected_rows": 250,
++  "expected_features": 150,
++  "source_run": "outputs/results/validation_protocol_v1_run_01",
++  "output_dir": "outputs/results/pca_l2_v1_run_01",
++  "c_values": [
++    0.001,
++    0.01,
++    0.1,
++    1.0,
++    10.0
++  ],
++  "components": [
++    5,
++    10,
++    20,
++    50
++  ],
++  "max_iter": 5000,
++  "tol": 0.0001,
++  "model_seed": 42
++}
+diff --git a/tests/test_pca_l2_v1.py b/tests/test_pca_l2_v1.py
+new file mode 100644
+--- /dev/null
++++ b/tests/test_pca_l2_v1.py
+@@ -0,0 +1,130 @@
++"""Synthetic tests only: no competition data or model training at import time."""
++import json
++from pathlib import Path
++
++import numpy as np
++import pandas as pd
++import pytest
++from sklearn.datasets import make_classification
++from sklearn.model_selection import StratifiedKFold
++
++from scripts import run_pca_l2_v1 as m
++
++
++def fixture_project(tmp_path):
++    x, y = make_classification(n_samples=40, n_features=8, n_informative=3, random_state=2)
++    frame = pd.DataFrame(x, columns=[f"x{i}" for i in range(8)])
++    frame.insert(0, "id", [f"row{i}" for i in range(40)])
++    frame["target"] = y
++    train = tmp_path / "data/raw/train.csv"
++    train.parent.mkdir(parents=True)
++    frame.to_csv(train, index=False)
++    (train.parent / "test.csv").write_text("DO NOT OPEN THIS FILE")
++    source = tmp_path / "source"
++    source.mkdir()
++    records = []
++    for r in range(10):
++        for f, (tr, va) in enumerate(StratifiedKFold(5, shuffle=True, random_state=r).split(x, y)):
++            records.append(dict(scheme="cv5", repeat=r, fold=f, split_seed=r,
++                                train_indices=tr.tolist(), valid_indices=va.tolist()))
++    m.write(source / "split_indices.json", records)
++    m.write(source / "settings.json", {"input_and_code_sha256": {str(train): m.digest(train)}})
++    m.write(source / "run_manifest.json", dict(status="completed", artifact_sha256={
++        p.name: m.digest(p) for p in source.iterdir()}))
++    cfg = dict(train_path="data/raw/train.csv", target_column="target", id_column="id",
++               expected_rows=40, expected_features=8, source_run="source", output_dir="result",
++               c_values=[.1, 1.0], components=[2], max_iter=1000, tol=.0001, model_seed=42)
++    m.write(tmp_path / "config.json", cfg)
++    return cfg, frame
++
++
++def test_preflight_no_fit_or_output(tmp_path, monkeypatch):
++    cfg, _ = fixture_project(tmp_path)
++    def forbidden(*args, **kwargs):
++        raise AssertionError("No fit during dry run")
++    monkeypatch.setattr(m.Pipeline, "fit", forbidden)
++    original = pd.read_csv
++    def train_only(path, *args, **kwargs):
++        assert Path(path).name == "train.csv"
++        return original(path, *args, **kwargs)
++    monkeypatch.setattr(m.pd, "read_csv", train_only)
++    result = m.run("config.json", root=tmp_path, dry_run=True)
++    assert result["planned_pipeline_fits"] == 200
++    assert not (tmp_path / "result").exists()
++
++
++def test_complete_synthetic_run(tmp_path):
++    fixture_project(tmp_path)
++    result = m.run("config.json", root=tmp_path)
++    assert result["status"] == "completed"
++    out = tmp_path / "result"
++    manifest = m.read(out / "run_manifest.json")
++    assert manifest["completed_pipeline_fits"] == 200
++    assert not manifest["test_opened"]
++    assert len(pd.read_csv(out / "fold_scores.csv")) == 200
++    assert len(pd.read_csv(out / "validation_probabilities.csv")) == 1600
++    assert len(pd.read_csv(out / "repeat_scores.csv")) == 40
++    decision = m.read(out / "decision.json")
++    assert decision["automatic_promotion"] is False
++    assert decision["wins"] + decision["losses"] + decision["ties"] == 10
++    for name, expected in manifest["artifact_sha256"].items():
++        assert m.digest(out / name) == expected
++    with pytest.raises(FileExistsError):
++        m.run("config.json", root=tmp_path, dry_run=True)
++
++
++def test_pipeline_fits_training_only(tmp_path):
++    cfg, _ = fixture_project(tmp_path)
++    _, _, x, y, _, splits, _ = m.prepare("config.json", tmp_path)
++    split = splits[0]
++    tr, va = split["train_indices"], split["valid_indices"]
++    x.iloc[va] += 1000
++    model = m.build_model(m.candidates(cfg)[2], cfg)
++    model.fit(x.iloc[tr], y.iloc[tr])
++    assert np.allclose(model.named_steps["scaler"].mean_, x.iloc[tr].mean())
++    assert not np.allclose(model.named_steps["scaler"].mean_, x.mean())
++    assert model.named_steps["pca"].n_samples_ == len(tr)
++
++
++def test_reject_tampered_source(tmp_path):
++    fixture_project(tmp_path)
++    with (tmp_path / "source/split_indices.json").open("a") as stream:
++        stream.write(" ")
++    with pytest.raises(ValueError, match="source artifact"):
++        m.prepare("config.json", tmp_path)
++
++
++def test_reject_changed_training(tmp_path):
++    fixture_project(tmp_path)
++    with (tmp_path / "data/raw/train.csv").open("a") as stream:
++        stream.write("\n")
++    with pytest.raises(ValueError, match="SHA256"):
++        m.prepare("config.json", tmp_path)
++
++
++def test_reject_overlap(tmp_path):
++    cfg, frame = fixture_project(tmp_path)
++    records = m.read(tmp_path / "source/split_indices.json")
++    records[0]["valid_indices"][0] = records[0]["train_indices"][0]
++    with pytest.raises(ValueError, match="partition"):
++        m.validate_splits(records, frame.target, cfg)
++
++
++def test_paired_direction_and_ties():
++    table = pd.DataFrame([dict(candidate=name, repeat=r, mean_fold_auc=.7 + (r % 2) * .01)
++                          for name in ["a", "b"] for r in range(10)])
++    _, stat = m.compare(table, "b", "a")
++    assert stat["ties"] == 10
++    table.loc[table.candidate == "b", "mean_fold_auc"] += .02
++    _, stat = m.compare(table, "b", "a")
++    assert stat["wins"] == 10 and np.isclose(stat["mean_difference"], .02)
++
++
++def test_default_design_and_bad_components():
++    root = Path(__file__).resolve().parents[1]
++    cfg = m.validate_config(m.read(root / "configs/pca_l2_v1.json"))
++    assert len(m.candidates(cfg)) == 25
++    assert len(m.candidates(cfg)) * 50 == 1250
++    cfg["components"] = [5, 5]
++    with pytest.raises(ValueError):
++        m.validate_config(cfg)
+diff --git a/docs/pca_l2_v1.md b/docs/pca_l2_v1.md
+new file mode 100644
+--- /dev/null
++++ b/docs/pca_l2_v1.md
+@@ -0,0 +1,79 @@
++# PCA–L2 development study v1
++
++This additive patch does not modify clil.py, existing source files, frozen registries,
++historical study outputs, ensemble weights, or submissions. Use the module entry point.
++
++## Apply and check (from the project root)
++
++    git apply --check pca_l2_v1.patch
++    git apply pca_l2_v1.patch
++    python -m pytest -q tests/test_pca_l2_v1.py
++    python -m scripts.run_pca_l2_v1 --dry-run
++    python -m scripts.run_pca_l2_v1
++    python clil.py results --run outputs/results/pca_l2_v1_run_01
++
++The patch file can be stored outside the project; substitute its actual location in git apply.
++Existing numpy, pandas, scikit-learn, scipy, threadpoolctl and pytest are required.
++No new model library is required. Run in the established project environment.
++
++## Preconditions
++
++The completed local outputs/results/validation_protocol_v1_run_01 directory must exist,
++with its original run_manifest.json and artifact checksums. The study reuses its 50 saved
++cv5 assignments, NOT newly generated splits. It verifies all source artifact checksums
++and checks train.csv against the source study training hash. Only the labelled training
++CSV is loaded. target and id are explicit config names; if your target column has a
++different name, edit the config before running. Missing historical outputs fail closed.
++
++Dry-run validates inputs and saved splits but performs zero fits and creates no output.
++A nonexisting output directory is mandatory; no overwrite or resume. For another run:
++
++    python -m scripts.run_pca_l2_v1 --output outputs/results/pca_l2_v1_run_02 --dry-run
++    python -m scripts.run_pca_l2_v1 --output outputs/results/pca_l2_v1_run_02
++
++## Design frozen before running
++
++Control: StandardScaler -> L2 logistic regression.
++PCA: StandardScaler -> PCA(full SVD, whiten=False) -> L2 logistic regression.
++Both use lbfgs, max_iter=5000, tol=1e-4, random_state=42.
++C values: 0.001, 0.01, 0.1, 1, 10 for BOTH branches.
++PCA component counts: 5, 10, 20, 50. Thus 5 controls + 20 PCA candidates,
++50 shared splits, 1,250 complete pipeline fits (classifier fits), including 1,000 PCA fits.
++Each scaler and PCA is fitted strictly inside the training fold. Explained variance is
++recorded for diagnosis, never used to select candidates or component counts.
++
++Score: mean fold ROC AUC within each repeat, then mean across 10 repeats.
++SD: sample SD across repeat means, NOT SD across 50 folds or a confidence interval.
++Select highest mean in each branch; exact ties use configuration order (smaller C for
++controls; smaller k then C for PCA). No fallback candidate selection.
++Report each PCA candidate versus its same-C control AND selected PCA versus selected
++control. A descriptive screening flag requires mean delta > 1e-12 and >=6/10 wins.
++Tie tolerance: abs(delta)<=1e-12. No automatic promotion or submission is performed.
++
++## Important interpretation
++
++This is adaptive DEVELOPMENT tuning, not nested CV or independent evaluation.
++Selecting the best of 20 PCA candidates versus 5 controls has unequal search opportunity;
++report the full grid and same-C contrasts, not just a winning score. This experiment
++answers whether a PCA/L2 procedure is promising, not whether to replace the incumbent
++three-model ensemble. Any later ensemble addition needs its own controlled experiment.
++The new matched L2 controls are not claimed to reproduce old historical L2 scores;
++solver/iteration settings are explicitly common to both new branches.
++
++## Artifacts
++
++settings.json: resolved design, versions, source/input/code hashes.
++split_indices.json: exact ordered saved cv5 splits.
++fold_scores.csv: 1,250 rows on successful default run.
++repeat_scores.csv: 250 candidate/repeat scores.
++model_summary.csv: 25 candidate means and repeat SDs.
++comparison.csv: 20 same-C comparisons and 1 selected-branch comparison.
++paired_repeat_differences.csv: 210 rows.
++validation_probabilities.csv: 62,500 held-out predictions (not competition test predictions).
++pca_diagnostics.json: per-fold explained variance for PCA candidates.
++warnings.json; decision.json; run_manifest.json with artifact hashes.
++ConvergenceWarning stops the run. Failed/partial output must never be used for selection.
++
++Tests include a complete synthetic 200-fit run and leakage/provenance/preflight guards.
++They do not certify scores, performance, or compatibility with unshared local changes.
++The real 250-row PCA experiment has NOT been run by the patch author.

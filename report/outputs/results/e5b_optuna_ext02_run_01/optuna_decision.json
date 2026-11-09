@@ -1,0 +1,13 @@
+{
+  "status": "adaptive_development_selection_only",
+  "selected_trial_number": 20,
+  "optuna_best_trial_number": 20,
+  "mean_auc": 0.8819374908505344,
+  "mean_difference_vs_e4_leader": 0.0198257941736202,
+  "mean_difference_vs_e4_sparse": 0.0290738649434301,
+  "wins_vs_e4_leader": 10,
+  "losses_vs_e4_leader": 0,
+  "promote_over_e4": true,
+  "tie_rule": "Within 1e-12: lower depth, fewer estimators, lower trial number.",
+  "note": "Best tuned CV score is not independent confirmation; no final refit/submission performed."
+}

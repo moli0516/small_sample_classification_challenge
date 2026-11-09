@@ -1,0 +1,13 @@
+{
+  "baseline": "trial14_three_model",
+  "rf_v1_control": "blend_sqrt",
+  "best_candidate": "blend_sqrt",
+  "selected_new_candidate": null,
+  "promote_new_configuration": false,
+  "minimum_mean_gain_vs_v1": 0.0001,
+  "stability_observed": true,
+  "selection_rule": "Highest blend mean AUC, exact ties use declared max_features order. No fallback.",
+  "promotion_rule": "Winner must be new; positive mean and >=6 wins vs Trial14; gain > minimum_mean_gain and >=6 wins vs V1. Pragmatic gate, not significance test.",
+  "interpretation": "Adaptive development on reused splits; not independent evaluation or proof of private performance.",
+  "next_action": "Manual review only. No final refit, competition test reading, or upload implemented."
+}

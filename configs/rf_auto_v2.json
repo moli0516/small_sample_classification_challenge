@@ -1,0 +1,6 @@
+{
+  "v1_config": "configs/rf_stabilizer_v1.json",
+  "reference_v1_run": "outputs/results/rf_stabilizer_v1_run_01",
+  "output_dir": "outputs/results/rf_auto_v2_run_01",
+  "minimum_mean_gain": 0.0001
+}

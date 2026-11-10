@@ -1,822 +1,565 @@
 # Experiment List
 
-## Scope and current status
+## Scope, evidence and current checkpoint
 
-This is a development research record and roadmap, not a claim that model selection
-or independent final evaluation is complete.
+Last updated: 2026-10-24, approximately 03:53 HKT.
 
-Completed studies now include E0–E5, the bounded XGBoost comparison (E5b),
-a single-setting XGBoost extension (E5b extension 01), and a bounded 30-trial
-Optuna search (E5b extension 02).
+This is the current development research record and roadmap. It distinguishes
+completed numerical studies, engineering changes, competition feedback and
+unexecuted proposals. It is not a claim of independent final evaluation.
 
-- Data audit: completed; 250 labelled rows, 19,750 test rows, 150 numeric predictors.
-- Identifier: `id`, excluded from predictors; target: `target`.
-- ValidationRunner and SubmissionWriter tests: reported passing by the project owner.
-  This is not a claim that every subsequent code revision has been independently audited.
-- Baseline submission workflow: completed, as reported by the project owner;
-  public score, submission identifier, and timestamp remain to be recorded.
-- Current highest-mean development candidate: Optuna Trial 20,
-  `e5b_optuna_ext02_trial_0020_depth_4_trees_50`.
-- Trial 20 mean development CV AUC: 0.881937; repeat SD: 0.013949.
-- Trial 20 versus L1 C=1.0: mean paired improvement +0.019826;
-  improved / worse / tied repetitions: 10 / 0 / 0.
-- Trial 20 versus L1 C=0.1: mean paired improvement +0.029074;
-  improved / worse / tied repetitions: 10 / 0 / 0.
-- Retained linear reference: all-feature L1 C=1.0,
-  mean development CV AUC 0.862112, repeat SD 0.012204.
-- Retained sparse alternative: all-feature L1 C=0.1,
-  mean development CV AUC 0.852864, repeat SD 0.010803.
-- The original six-setting XGBoost grid and depth-4/1000-round extension did not
-  replace L1. The later joint Optuna search found a higher-mean development candidate.
-- Optional Elastic-net: not run.
-- Pruning and early stopping: not used in the completed Optuna search;
-  no subsequent study using them has been confirmed or completed.
-- Trial 20 parameters have been selected. A freeze procedure and proposed snapshot
-  version `e5b_optuna_trial20_v1` have been supplied, but successful snapshot creation
-  has not yet been confirmed. Do not mark the physical archive as completed without evidence.
-- No final full-data XGBoost refit, saved final XGBoost model, or XGBoost submission
-  has been confirmed. Do not confuse parameter selection with these later steps.
-- E4/E5/XGBoost submission outcomes: not recorded.
-- No verified Kaggle score is recorded here. Unattributed reports above 0.90 are
-  not evidence of this project's leaderboard performance. The XGBoost smoke-test
-  AUC above 0.90 was a local single-fold diagnostic, not a Kaggle score.
-- E6 individual extension: proposed, not yet confirmed.
-- All model-selection scores remain development results. No independent final
-  evaluation has been completed.
+Evidence used for this update:
 
-Historical leading-candidate decisions in E0–E5 describe the state at the end of
-those studies. The current leader is stated above and in E5b extension 02.
+- Existing repository experiment_list.md (historical Git blob
+  `227ec043a8f72a5127443745e59f6b98c1f1b81f`). Earlier detailed tables and diagnostic
+  narratives remain recoverable from Git history; this update consolidates them.
+- Repository configurations, registry/Optuna implementations and runbooks inspected
+  through GitHub. Historical settings are not silently rewritten.
+- Owner-supplied soft-voting summary, fixed-LightGBM comparison, completed LightGBM
+  Optuna manifest/decision/best-trial/trial table, and subsequent submission reports.
+- Actual local artifacts/checksums were not independently recomputed during this
+  documentation update. Public scores and current rank are owner-reported.
+
+Current checkpoint:
+
+- 250 labelled rows; 19,750 unlabelled competition test rows; 150 numeric predictors.
+- `id` is excluded from predictors; `target` contains 0/1 labels.
+- Current retained submitted candidate: equal-weight L1 + top-20 XGBoost + tuned
+  LightGBM, using LightGBM Optuna Trial 14.
+- Selected development CV AUC: 0.9083364180103309.
+- Difference vs existing L1+XGBoost development reference: +0.00545799611017.
+- Paired repeat wins/losses/ties vs that reference: 8/2/0.
+- Latest reported public AUC: 0.91993; owner-confirmed public rank: fifth.
+- Retained earlier submitted candidates: XGBoost top20 (0.91132 public), and fixed
+  equal-weight L1+XGBoost (0.91514 public).
+- No private score, nested-CV result or untouched final evaluation is recorded.
+- Early stopping and Optuna pruning were not used in the completed searches.
+- Early stopping is a possible next experiment, not an implemented or completed result.
+- Current stage is a valid stopping/checkpoint point; no extra experiment is required
+  merely because another technique remains available.
 
 ## Shared experimental rules
 
-1. Use the same training data and row order across comparisons; verify saved split indices.
-2. Unless studying validation itself, use shuffled stratified five-fold CV with seeds 0–9.
-3. Fit scaling and supervised feature selection inside each training fold only.
-   The completed XGBoost studies used neither scaling nor explicit feature selection.
-4. Keep estimator randomness fixed separately from the split seed; do not tune model seeds.
-5. Report mean fold AUC per repetition, then mean and sample SD across repetitions.
-6. Compare candidates using paired repeat-level differences on identical splits.
-7. Do not interpret repeated splits as independent datasets or their SD as a confidence interval.
-8. Preserve configurations, scores, split indices, package versions, data hashes, and code revision.
-9. Define the question, settings/search space, budget, validity rules, and stopping rule
-   before each new experiment. Identify adaptive follow-ups honestly.
-10. Treat scores used to choose models as development results, not independent final evaluation.
-11. Do not submit every candidate or tune directly to public leaderboard feedback.
-12. Keep course code, data, and generated artifacts private under the assignment rules.
-13. Preserve failures, warnings and rejected trials; never average only successful folds
-    to create a scored candidate after a fold has failed.
-14. New experiments and snapshots must not overwrite historical results or reuse an
-    existing output directory silently.
-15. Changes to parameters, early-stopping/pruning rules, features or evaluation after
-    candidate selection require an explicit new protocol/version.
+1. Preserve labelled data, feature/row order and verified saved split assignments.
+2. Unless studying validation explicitly, use the established shuffled stratified
+   five-fold splits repeated with seeds 0-9 (50 folds).
+3. Fit all learned scaling and supervised selection only on the current training
+   portion. Later XGBoost top-k selection is fold-local; earlier all-feature XGBoost
+   experiments did not use explicit selection or scaling.
+4. Keep model randomness fixed separately from split randomness; do not tune seeds.
+5. Compute mean fold AUC per repeat, then mean/sample SD across the ten repeats.
+6. Compare methods with paired repeat-level differences on identical splits. Do not
+   treat overlapping repeats as independent datasets or repeat SD as a confidence interval.
+7. Save configurations, versions, input/code/artifact hashes, split indices, scores,
+   predictions, diagnostics and warnings. Local manifests are the detailed authority.
+8. Define questions, search budgets, validity checks, objective and stopping rules
+   before new execution. Mark adaptive follow-ups honestly.
+9. Development scores used to select procedures are not independent final estimates.
+   Public leaderboard feedback is also not a private/final generalisation estimate.
+10. Use class-1 probabilities for the current probability-submission workflow; align
+    component predictions and submissions by verified IDs/row/fold keys.
+11. Do not submit every setting or choose parameters/weights using public feedback.
+12. Do not overwrite historical outputs, candidate snapshots or submission files.
+13. Preserve failures/warnings; do not average only successful folds after failures.
+14. Changes to features, hyperparameters, weights, early stopping, pruning or validation
+    require an explicit new protocol/version. Never bypass hashes or relax control tolerances.
+15. Keep course code/data/artifacts private according to assignment rules; this record
+    does not grant permission to redistribute them.
 
-## Overview
+## Overview and stable document IDs
 
-| ID | Investigation | Status | Priority |
-|---|---|---|---|
-| E0 | All-feature logistic regression: C sweep | Completed | Preserve |
-| E1 | End-to-end baseline submission | Completed | Record actual feedback |
-| E2 | Correlation-based feature selection | Completed | Preserve |
-| E3 | Selected feature count / C interaction | Completed | Preserve |
-| E4 | L1 logistic regression; optional Elastic-net | L1 completed; Elastic-net not run | Retain linear references |
-| E5 | Bounded RBF SVM comparison | Completed; warning review completed | Preserve negative finding |
-| E5b | Bounded shallow XGBoost grid | Completed | Preserve |
-| E5b extension 01 | Depth 4, 1000 boosting rounds | Completed | Preserve negative finding |
-| E5b extension 02 | Joint XGBoost tuning with Optuna | 30 trials completed; Trial 20 selected | Archive and freeze candidate |
-| E6 | Validation protocol extension | Proposed; not confirmed | Required if chosen |
-| E7 | Candidate freeze and final evaluation | Candidate identified; snapshot confirmation/evaluation pending | Required |
+Historical E0-E7 numbering is retained. ENS-01, REG-01 and LGBM-OPT-01 below are
+additional documentation labels, not renamed directories or new historical claims.
 
-These IDs apply to this document. Do not renumber E6/E7 or rename existing experiment
-IDs/output directories when recording E5b and its extensions.
 
-## E0 — Completed C sweep
+| ID               | Investigation                                           | Current status                                                                                   | Retained decision                                |
+| ---------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------ |
+| E0               | All-feature L2 logistic-regression C sweep              | Completed                                                                                        | Initial C=0.001 reference                        |
+| E1               | Baseline refit/predict/submission workflow              | Owner-reported completed                                                                         | Recover original submission metadata             |
+| E2               | Correlation-based feature selection                     | Completed                                                                                        | k=10 provisional leader; k=20 follow-up          |
+| E3               | Selected feature count / C interaction                  | Completed                                                                                        | k=10, C=0.1 then led                             |
+| E4               | L1 regularisation                                       | Four settings completed                                                                          | C=1 linear reference; C=0.1 sparse alternative   |
+| E5               | Bounded RBF SVM comparison                              | Completed; warning review recorded                                                               | Not promoted                                     |
+| E5b              | Six-setting shallow XGBoost grid                        | Completed                                                                                        | Did not replace L1                               |
+| E5b extension 01 | Depth4 / 1000-round XGBoost                             | Completed                                                                                        | Not promoted                                     |
+| E5b extension 02 | 30-trial XGBoost Optuna search                          | Completed                                                                                        | Trial20 selected at that stage                   |
+| E5b extension 03 | Fold-local XGBoost total_gain top-k selection           | Completed                                                                                        | Top20 retained; top10 alternative                |
+| ENS-01           | Fixed 50/50 L1 + top20 XGBoost                          | Completed; submitted                                                                             | Public 0.91514; retained reference               |
+| REG-01           | Fixed-LightGBM single/ensemble comparison               | Completed                                                                                        | No new candidate promoted                        |
+| LGBM-OPT-01      | 20-trial LightGBM tuning for fixed three-model ensemble | Completed; Trial14 submitted                                                                     | Current candidate; public 0.91993                |
+| E6               | Validation-protocol individual extension                | Proposed; not confirmed executed                                                                 | Separate research question if chosen             |
+| E7               | Candidate freezing, refit, export and evaluation        | Submission workflow completed for retained candidates; final independent assessment not recorded | Preserve snapshots and actual submission records |
+| ES-01            | Early-stopping comparison                               | Idea/protocol discussion only                                                                    | Not started; no numerical claim                  |
 
-Question: How does C affect a fixed all-feature logistic-regression baseline?
+## E0 — All-feature L2 logistic-regression C sweep
 
-Fixed pipeline: `StandardScaler -> LogisticRegression`, solver `lbfgs`,
-max_iter=2000, all 150 predictors, no feature selection.
+Question: how does C affect the fixed baseline?
+Pipeline: StandardScaler -> LogisticRegression, all 150 predictors, lbfgs,
+max_iter=2000. Sequential exploratory development study, not a retrospectively
+preregistered grid.
 
-| C | Mean CV AUC | Repeat SD |
-|---:|---:|---:|
-| 1.0 | 0.751411 | 0.019922 |
-| 0.1 | 0.771935 | 0.013106 |
-| 0.01 | 0.792885 | 0.011157 |
-| 0.001 | 0.793999 | 0.009091 |
-| 0.0001 | 0.790600 | 0.008026 |
 
-Decision at E0 completion: retain C=0.001 as the provisional baseline;
-C=0.01 remains a close alternative. This was a sequential exploratory study,
-not a fully preregistered grid. Stop the sweep. Subsequent investigations are
-recorded separately below.
+|      C | Mean CV AUC | Repeat SD |
+| -----: | ----------: | --------: |
+|    1.0 |    0.751411 |  0.019922 |
+|    0.1 |    0.771935 |  0.013106 |
+|   0.01 |    0.792885 |  0.011157 |
+|  0.001 |    0.793999 |  0.009091 |
+| 0.0001 |    0.790600 |  0.008026 |
 
-## E1 — Baseline submission
+Historical decision: retain C=0.001; C=0.01 close alternative. Sweep closed.
 
-Status: completed, as reported by the project owner.
+## E1 — Baseline submission workflow
 
-Question: Can the complete refit/predict/export/upload workflow run successfully?
-
-Configuration:
-- `StandardScaler -> LogisticRegression`, all 150 predictors, id excluded.
-- C=0.001; refit on all 250 labelled rows.
-- Predict class-1 probabilities for all 19,750 test rows.
-- Submission columns: `id,target`, aligned to the official template by ID.
-
-Completed:
-- [x] Generate the baseline submission.
-- [x] Confirm submission format and ID alignment.
-- [x] Complete the Kaggle submission workflow.
-- [x] Save the submission, fitted pipeline, and configuration.
-
-Results:
-- Mean development CV AUC: 0.793999.
-- Repeat SD: 0.009091.
-- Public leaderboard score: to be recorded.
-- Kaggle submission identifier and timestamp: to be recorded.
-
-Decision: retain as the initial external submission reference. Successful upload
-is not evidence of model optimality. Do not duplicate an already completed baseline
-submission; recover its actual feedback. This was not the final-solution claim.
+Owner-reported complete: all-feature scaled L2 C=0.001 refitted on all 250 rows,
+class-1 probabilities generated for 19,750 test rows, template-ID alignment,
+submission/model/configuration saved and baseline upload completed.
+Development AUC 0.793999; repeat SD 0.009091.
+Original public score, exact submission ID/time remain unrecorded in available evidence.
+Do not label later XGBoost submission as the project's first-ever submission.
 
 ## E2 — Correlation-based feature selection
 
-Status: completed.
+Pipeline: fold-local absolute Pearson-correlation ranking -> scaling -> L2 logistic
+regression, C=0.001. Preserve original column order after choosing k.
 
-Question: Does removing low-ranked features improve the baseline?
 
-Protocol:
-- `CorrelationSelector -> StandardScaler -> LogisticRegression`.
-- Absolute Pearson correlation ranking, fitted within each training fold.
-- k in {5,10,20,50,150}; C=0.001.
-- Stratified five-fold CV repeated with seeds 0–9.
-- Retain original column order after selection; save per-fold selected features.
+|   k | Mean CV AUC | Repeat SD | Difference vs k=150 | Wins / losses |
+| --: | ----------: | --------: | ------------------: | ------------- |
+|   5 |    0.795349 |  0.006414 |           +0.001350 | 6 / 4         |
+|  10 |    0.808618 |  0.008244 |           +0.014619 | 10 / 0        |
+|  20 |    0.798767 |  0.008428 |           +0.004769 | 6 / 4         |
+|  50 |    0.797398 |  0.008861 |           +0.003400 | 4 / 6         |
+| 150 |    0.793999 |  0.009091 |                   0 | Control       |
 
-| k | Mean CV AUC | Repeat SD | Mean difference vs k=150 | Improved / worse repeats |
-|---:|---:|---:|---:|---|
-| 5 | 0.795349 | 0.006414 | +0.001350 | 6 / 4 |
-| 10 | 0.808618 | 0.008244 | +0.014619 | 10 / 0 |
-| 20 | 0.798767 | 0.008428 | +0.004769 | 6 / 4 |
-| 50 | 0.797398 | 0.008861 | +0.003400 | 4 / 6 |
-| 150 | 0.793999 | 0.009091 | 0.000000 | Control |
-
-Findings:
-- k=10 had the highest mean and improved over all features in all ten repetitions.
-- k=5,20,50 did not consistently improve; k=50 had a positive mean difference
-  despite six worse repetitions.
-- k=150 reproduced baseline repeat scores.
-- Fold-selection frequencies are descriptive, not a bootstrap study.
-
-Decision: retain k=10 and the second-highest-mean k=20 for E3; stop the k sweep.
-
-Limitations: only C=0.001 tested; selected identities vary by fold; the evidence
-supports a selection procedure, not exactly ten truly relevant predictors.
-The winning score is a development model-selection result.
-
-Artifacts: per-configuration settings/scores/splits/selected_features.json,
-comparison and paired tables, selection frequencies, AUC and difference figures.
+Historical decision: retain k=10 and k=20 for E3; close k sweep.
+Selection frequencies are descriptive, not bootstrap results or a fixed validated selector.
 
 ## E3 — Feature-count / C interaction
 
-Status: completed.
+Same fold-local correlation/scaling pipeline, k={10,20}, C={0.001,0.01,0.1}.
+Two E2 settings reused; four new settings added 200 fits.
 
-Question: Is C=0.001 still appropriate after feature selection?
 
-Protocol:
-- `CorrelationSelector -> StandardScaler -> LogisticRegression`.
-- k in {10,20}; C in {0.001,0.01,0.1}.
-- Reuse two E2 C=0.001 configurations; four new configurations, 200 additional fits.
-- Same data, order, splits and other settings; seeds 0–9, five folds.
-- Selection and scaling remain fold-local.
+|  k |     C | Mean CV AUC | Repeat SD |
+| -: | ----: | ----------: | --------: |
+| 10 | 0.001 |    0.808618 |  0.008244 |
+| 10 |  0.01 |    0.812664 |  0.007200 |
+| 10 |   0.1 |    0.822982 |  0.008456 |
+| 20 | 0.001 |    0.798767 |  0.008428 |
+| 20 |  0.01 |    0.799816 |  0.010557 |
+| 20 |   0.1 |    0.794235 |  0.013509 |
 
-| k | C | Mean CV AUC | Repeat SD | Mean difference vs E2 leader | Improved / worse repeats |
-|---:|---:|---:|---:|---:|---|
-| 10 | 0.001 | 0.808618 | 0.008244 | 0.000000 | Control |
-| 10 | 0.01 | 0.812664 | 0.007200 | +0.004046 | 10 / 0 |
-| 10 | 0.1 | 0.822982 | 0.008456 | +0.014364 | 10 / 0 |
-| 20 | 0.001 | 0.798767 | 0.008428 | -0.009851 | 2 / 8 |
-| 20 | 0.01 | 0.799816 | 0.010557 | -0.008801 | 3 / 7 |
-| 20 | 0.1 | 0.794235 | 0.013509 | -0.014382 | 2 / 8 |
+Historical leader: e3_correlation_k_10_c_0_1. Versus E2 k10/C0.001:
++0.014364 and 10/0 repeat wins/losses. C effect depended on k; no global optimum established.
 
-The reference above is the E2 leader k=10/C=0.001, not the all-feature model.
+## E4 — L1 regularisation
 
-| k | Change from C=0.001 | Mean paired difference | Improved / worse repeats |
-|---:|---|---:|---|
-| 10 | C=0.01 | +0.004046 | 10 / 0 |
-| 10 | C=0.1 | +0.014364 | 10 / 0 |
-| 20 | C=0.01 | +0.001049 | 5 / 5 |
-| 20 | C=0.1 | -0.004532 | 3 / 7 |
+All-feature StandardScaler -> L1 logistic regression; no correlation selector.
+Four settings/200 fits. Intended configuration: saga, model_seed42, tol1e-4,
+max_iter10000; saved configuration/factory remain the precise provenance.
 
-Findings:
-- k=10/C=0.1 had the highest mean; the C effect depended on k.
-- At k=10, both increases improved over C=0.001 in all ten repetitions.
-- At k=20, C=0.01 was mixed and C=0.1 reduced the mean.
-- Highest mean did not imply lowest repeat SD.
-- The supplied summary did not establish direct win/loss counts between
-  k=10/C=0.1 and k=10/C=0.01.
 
-Leading candidate at E3 completion:
-- `e3_correlation_k_10_c_0_1`, mean 0.822982, SD 0.008456.
-- Versus E2 leader: +0.014364, ten improvements.
-- Versus all-feature C=0.001: +0.028983, ten improvements.
+|    C | Mean CV AUC | Repeat SD | Mean effective nonzero coefficients |
+| ---: | ----------: | --------: | ----------------------------------: |
+| 0.01 |    0.500000 |  0.000000 |                                0.00 |
+|  0.1 |    0.852864 |  0.010803 |                               15.76 |
+|  1.0 |    0.862112 |  0.012204 |                               74.96 |
+| 10.0 |    0.817571 |  0.015909 |                               97.06 |
 
-Decision at E3 completion: retain this provisional leader and earlier references;
-stop E3 and proceed to E4. Candidate submission outcome must be recorded separately.
+C1 versus C0.1: +0.009248, 8/2 wins/losses. Both beat E3 and the all-feature L2
+reference in all ten repeats. C0.01 produced all-zero feature coefficients in all
+50 folds; retain this negative/degenerate result. No warning or iteration-limit
+folds were reported in the supplied E4 diagnostics.
 
-Limitations: adaptive follow-up using reused observations; C=0.1 was the largest
-value tested; no global k/C optimum or leaderboard guarantee established.
-
-Artifacts: four new and two reused experiment directories, configs, scores,
-splits/selected_features.json, e3_comparison.csv, e3_paired_repeat_scores.csv,
-and mean-AUC/repeat-trajectory/paired-difference figures.
-
-## E4 — Sparse regularisation
-
-Status: four planned L1 settings completed. Optional Elastic-net not run.
-
-Question: Can model-based sparsity compete with explicit correlation filtering?
-
-Protocol:
-- `StandardScaler -> L1 LogisticRegression`; all 150 predictors, no correlation selector.
-- C in {0.01,0.1,1.0,10.0}; same ten repetitions of five-fold CV; 200 fits.
-- Scaling fold-local; fixed estimator randomness separate from split seed.
-- Save exact/effective nonzero counts, identities/frequencies, iterations and warnings.
-
-Configuration provenance:
-- Intended settings: solver=saga, model_seed=42, tol=1e-4, max_iter=10000.
-- Verify saved settings, library interface and actual estimator construction.
-  Result tables alone do not independently verify training parameters.
-- Initial notebook validation failed because regularisation-field mapping did not
-  match config schema. Resolve the schema/interface, not by disabling checks or relabelling runs.
-- Preserve versions, data hashes, splits and code revision.
-
-References: all-feature L2 C=0.001 (mean 0.793999), and E3 k=10/C=0.1 (mean 0.822982).
-
-| L1 C | Mean CV AUC | Repeat SD | Minimum repeat AUC | Maximum repeat AUC |
-|---:|---:|---:|---:|---:|
-| 0.01 | 0.500000 | 0.000000 | 0.500000 | 0.500000 |
-| 0.1 | 0.852864 | 0.010803 | 0.838038 | 0.876227 |
-| 1.0 | 0.862112 | 0.012204 | 0.844883 | 0.878112 |
-| 10.0 | 0.817571 | 0.015909 | 0.790680 | 0.842070 |
-
-Ranges here and below refer to repetition-level mean fold AUC, not individual folds.
-
-| L1 C | Mean difference vs all-feature L2 | Difference SD | Improved / worse / tied |
-|---:|---:|---:|---|
-| 0.01 | -0.293999 | 0.009091 | 0 / 10 / 0 |
-| 0.1 | +0.058865 | 0.008286 | 10 / 0 / 0 |
-| 1.0 | +0.068113 | 0.012379 | 10 / 0 / 0 |
-| 10.0 | +0.023573 | 0.016327 | 9 / 1 / 0 |
-
-| L1 C | Mean difference vs E3 leader | Difference SD | Improved / worse / tied |
-|---:|---:|---:|---|
-| 0.01 | -0.322982 | 0.008456 | 0 / 10 / 0 |
-| 0.1 | +0.029882 | 0.010501 | 10 / 0 / 0 |
-| 1.0 | +0.039130 | 0.015253 | 10 / 0 / 0 |
-| 10.0 | -0.005411 | 0.019133 | 3 / 7 / 0 |
-
-Direct C=1.0 minus C=0.1 comparison:
-- Mean difference +0.009248; sample difference SD 0.014681.
-- Improved / worse / tied: 8 / 2 / 0; worse at seeds 7 and 8.
-- Difference range -0.016263 to +0.028807.
-
-| L1 C | Mean exact nonzero | Mean effective nonzero | Effective range | All-zero folds | Warning folds | Iteration-limit folds | Max n_iter |
-|---:|---:|---:|---|---:|---:|---:|---:|
-| 0.01 | 0.00 | 0.00 | 0–0 | 50 | 0 | 0 | 3 |
-| 0.1 | 15.76 | 15.76 | 11–22 | 0 | 0 | 0 | 127 |
-| 1.0 | 74.96 | 74.96 | 64–85 | 0 | 0 | 0 | 1684 |
-| 10.0 | 97.06 | 97.06 | 85–107 | 0 | 0 | 0 | 3978 |
-
-Exact/effective counts matched in every supplied fold. Preserve the threshold.
-All four numerical_review_required flags were False; recorded absence of warnings
-is not an independent audit of the warning-capture implementation or exact optimality.
-
-Feature-frequency diagnostics (nonzero folds / 50):
-
-| Metric | C=0.1 | C=1.0 |
-|---|---:|---:|
-| Ever nonzero | 61 | 145 |
-| Nonzero in every fold | 4 | 11 |
-| Nonzero in at least 90% of folds | 7 | 21 |
-| Never nonzero | 89 | 5 |
-
-Frequency totals reproduce mean counts: 788/50=15.76; 3748/50=74.96.
-- C=0.1, >=90%: 46/80/100/138 at 50/50; 30/67 at 49/50; 108 at 48/50.
-- C=1.0, 50/50: 6,17,22,30,46,80,85,100,115,138,141.
-- Shared 50/50 core: 46,80,100,138.
-- Feature 67 frequencies: 98% at C=0.1, 0% at C=1.0, 92% at C=10.0.
-  Selection was not nested across C; frequency alone does not identify the cause.
-
-Findings:
-- C=1.0 had highest L1 mean; C=0.1 is the sparse alternative.
-- Both exceeded E3 and all-feature L2 in all ten repetitions.
-- C=0.01 had all-zero feature coefficients and AUC=0.5 in every fold; preserve it.
-- C=10 retained more coefficients but had worse mean AUC than C=0.1 and C=1.
-- Average count is not a fixed selected set. Frequency is not coefficient magnitude,
-  sign stability, causal relevance or the true number of informative predictors.
-
-Decision at E4 completion:
-- Retain `e4_l1_c_1` (mean 0.862112, SD 0.012204) as the then-leader.
-- Retain `e4_l1_c_0_1` (mean 0.852864, SD 0.010803) as sparse alternative.
-- Preserve earlier references; stop the four-setting L1 sweep.
-- Do not convert global frequencies into a selector and reuse old CV scores.
-- Verify provenance before refit; record any actual submission separately.
-
-Limitations: adaptive reused-data development study; no independent final estimate;
-complete-pipeline comparison, not solver-controlled ablation; no global optimum or
-leaderboard guarantee. Any new frequency-based selector needs appropriate fold-local evaluation.
-
-Artifacts: e4_l1_c_0_01/e4_l1_c_0_1/e4_l1_c_1/e4_l1_c_10 directories,
-configs/scores/splits/coefficients/versions/hashes/revision, comparison,
-feature-frequency and fold diagnostics, e4_paired_repeat_scores.csv,
-e4_direct_paired_comparison.csv, and figures. Verify archive completeness.
-
-Optional Elastic-net, not run: saga; C in {0.1,1.0}; l1_ratio=0.5.
-Confirm a new question/protocol before execution; not part of completed E4 results.
+Retain e4_l1_c_1 as the linear reference and e4_l1_c_0_1 as sparse alternative.
+Do not turn global coefficient frequencies into a selector and reuse historical CV.
+Optional Elastic-net was not run.
 
 ## E5 — Bounded RBF SVM comparison
 
-Status: completed; warning review completed.
+All-feature StandardScaler -> SVC(rbf), saved splits unchanged; six settings/300 fits.
+AUC used decision_function, not calibrated probabilities. probability=False,
+max_iter10000, tol1e-3; exact execution settings in historical artifacts.
 
-Question: Does an all-feature RBF SVM improve over retained L1 candidates on identical splits?
 
-Implementation:
-- Originally executed through standalone run_e5.py, not the src/ ValidationRunner.
-- Split-loader fix supported metadata-wrapped splits and valid_indices;
-  normalization occurred in memory, without rewriting/regenerating E4 splits.
-- Later file reorganization instructions move execution to scripts/run_e5.py,
-  warning inspection to scripts/check_e5_warning.py and tests into tests/,
-  retaining a root compatibility entry point. This reorganization is not a new numerical experiment;
-  verify actual local paths and preserve the exact executed historical source revision.
+|   C | Gamma | Mean CV AUC | Repeat SD |
+| --: | ----- | ----------: | --------: |
+| 0.1 | scale |    0.807268 |  0.011407 |
+|   1 | scale |    0.807959 |  0.012793 |
+|  10 | scale |    0.803024 |  0.013892 |
+| 0.1 | 0.01  |    0.811179 |  0.012608 |
+|   1 | 0.01  |    0.812318 |  0.013557 |
+|  10 | 0.01  |    0.812385 |  0.013559 |
 
-Protocol:
-- `StandardScaler -> SVC(kernel="rbf")`, all 150 predictors, id excluded.
-- C={0.1,1,10}, gamma={scale,0.01}; six candidates, 300 fits.
-- Same saved ten repetitions of stratified five-fold CV; fold-local scaling.
-- decision_function ROC AUC; mean fold AUC per repeat, then mean/sample SD.
-- No feature selection, PCA, calibration or simultaneous extra search.
-- probability=False, class_weight=None, tol=1e-3, max_iter=10000,
-  shrinking=True, cache_size=200 MB, random_state=42.
-  SVC ignores random_state with probability=False.
+All six lost to both retained L1 references in all ten repeats. Best E5 mean was
+0.812385, below L1 C1 by 0.049726. No convergence/iteration-limit failures reported.
+300 SVC probability-parameter FutureWarnings were reviewed and retained, not erased.
+Historical standalone implementation and later source reorganisation are not separate
+numerical experiments. Close bounded SVM comparison; do not claim all nonlinear methods fail.
 
-References: E4 L1 C=1.0 (0.862112/0.012204), E4 L1 C=0.1
-(0.852864/0.010803), E3 k=10/C=0.1 (0.822982/0.008456).
+## E5b — Original shallow XGBoost grid
 
-| C | Gamma | Mean CV AUC | Repeat SD | Min repeat AUC | Max repeat AUC |
-|---:|---|---:|---:|---:|---:|
-| 0.1 | scale | 0.807268 | 0.011407 | 0.790022 | 0.827447 |
-| 1.0 | scale | 0.807959 | 0.012793 | 0.784573 | 0.825831 |
-| 10.0 | scale | 0.803024 | 0.013892 | 0.780751 | 0.823229 |
-| 0.1 | 0.01 | 0.811179 | 0.012608 | 0.789726 | 0.831021 |
-| 1.0 | 0.01 | 0.812318 | 0.013557 | 0.787496 | 0.833254 |
-| 10.0 | 0.01 | 0.812385 | 0.013559 | 0.788799 | 0.829382 |
+All raw predictors, no scaling/selector. Fixed learning_rate0.05, min_child_weight5,
+reg_lambda10, full row/column sampling, seed42, hist, n_jobs1. Six settings/300 fits;
+no early stopping, pruning or eval_set.
 
-| C | Gamma | Mean difference vs L1 leader | Difference SD | Improved / worse / tied |
-|---:|---|---:|---:|---|
-| 0.1 | scale | -0.054844 | 0.012358 | 0 / 10 / 0 |
-| 1.0 | scale | -0.054153 | 0.013454 | 0 / 10 / 0 |
-| 10.0 | scale | -0.059087 | 0.012564 | 0 / 10 / 0 |
-| 0.1 | 0.01 | -0.050932 | 0.013182 | 0 / 10 / 0 |
-| 1.0 | 0.01 | -0.049794 | 0.013746 | 0 / 10 / 0 |
-| 10.0 | 0.01 | -0.049726 | 0.012739 | 0 / 10 / 0 |
 
-| C | Gamma | Mean difference vs sparse L1 | Difference SD | Improved / worse / tied |
-|---:|---|---:|---:|---|
-| 0.1 | scale | -0.045595 | 0.008274 | 0 / 10 / 0 |
-| 1.0 | scale | -0.044905 | 0.007382 | 0 / 10 / 0 |
-| 10.0 | scale | -0.049839 | 0.009024 | 0 / 10 / 0 |
-| 0.1 | 0.01 | -0.041684 | 0.008385 | 0 / 10 / 0 |
-| 1.0 | 0.01 | -0.040545 | 0.008853 | 0 / 10 / 0 |
-| 10.0 | 0.01 | -0.040478 | 0.008079 | 0 / 10 / 0 |
+| Depth | Trees | Mean CV AUC | Repeat SD |
+| ----: | ----: | ----------: | --------: |
+|     1 |    50 |    0.787117 |  0.014404 |
+|     1 |   100 |    0.804358 |  0.015245 |
+|     1 |   200 |    0.808197 |  0.017836 |
+|     2 |    50 |    0.833019 |  0.014400 |
+|     2 |   100 |    0.839271 |  0.010432 |
+|     2 |   200 |    0.833426 |  0.014514 |
 
-| C | Gamma | Mean difference vs E3 leader | Difference SD | Improved / worse / tied |
-|---:|---|---:|---:|---|
-| 0.1 | scale | -0.015714 | 0.010717 | 1 / 9 / 0 |
-| 1.0 | scale | -0.015023 | 0.012967 | 1 / 9 / 0 |
-| 10.0 | scale | -0.019957 | 0.014307 | 1 / 9 / 0 |
-| 0.1 | 0.01 | -0.011803 | 0.012194 | 1 / 9 / 0 |
-| 1.0 | 0.01 | -0.010664 | 0.013668 | 2 / 8 / 0 |
-| 10.0 | 0.01 | -0.010597 | 0.014015 | 1 / 9 / 0 |
+All 300 fits valid, no captured Python warnings reported. Best depth2/100 still
+lost to L1 C1 by mean 0.022840 (1/9 repeat wins/losses). Original study closed.
+A prior single-fold smoke AUC of 0.910628 was an environment diagnostic, NOT CV mean
+or leaderboard score. macOS libomp/path-resolution fixes are engineering events.
 
-| C | Gamma | Completed / valid | Failed | General-warning folds | Convergence-warning folds | Iteration-limit folds | Max n_iter | Mean support fraction |
-|---:|---|---|---:|---:|---:|---:|---:|---:|
-| 0.1 | scale | 50 / 50 | 0 | 50 | 0 | 0 | 149 | 0.9869 |
-| 1.0 | scale | 50 / 50 | 0 | 50 | 0 | 0 | 251 | 0.9851 |
-| 10.0 | scale | 50 / 50 | 0 | 50 | 0 | 0 | 396 | 0.9837 |
-| 0.1 | 0.01 | 50 / 50 | 0 | 50 | 0 | 0 | 186 | 1.0000 |
-| 1.0 | 0.01 | 50 / 50 | 0 | 50 | 0 | 0 | 292 | 1.0000 |
-| 10.0 | 0.01 | 50 / 50 | 0 | 50 | 0 | 0 | 373 | 1.0000 |
+### E5b extension 01 — Depth4 / 1000 rounds
 
-All six eligible under the E5 rules. Support fraction counts training samples,
-not selected features; all 150 predictors remain available.
+One adaptive follow-up, 50 fits, original remaining parameters unchanged.
+Mean AUC0.828091, repeat SD0.018197; -0.034020 versus L1 C1, 0/10 wins/losses.
+No captured warnings or failed folds reported. Not promoted.
+Depth and rounds changed jointly; this does not isolate a causal parameter effect.
+Output: outputs/results/e5b_xgb_ext01_depth4_trees1000/.
 
-Warning review:
-- 300 occurrences of one FutureWarning: SVC probability parameter deprecated
-  in sklearn 1.9, removal scheduled for 1.11.
-- No additional captured categories/messages reported; probability=False and
-  decision_function used, so calibration was not added.
-- No convergence warnings, failed fits or iteration-limit events.
-- Preserve warning_folds=50 per candidate. No rerun solely to remove this warning.
+### E5b extension 02 — XGBoost Optuna
 
-Highest-mean E5 candidate: `e5_rbf_svm_c_10_gamma_0_01`, mean 0.812385,
-SD 0.013559. Versus L1 leader: -0.049726, 0/10 improved, difference range
--0.075553 to -0.034599. Versus sparse L1: -0.040478, 0/10 improved.
-Versus E3: -0.010597, 1/10 improved.
+30-trial bounded adaptive search; config configs/e5b_optuna_ext02.json;
+output outputs/results/e5b_optuna_ext02_run_01/; sampler seed42, startup trials10.
+Search: depth1..4, rounds{50,100,200,500,1000}, learning rate 0.01..0.2 log,
+min_child_weight1..20 log, reg_lambda.1..100 log, subsample.6..1,
+colsample_bytree.5..1. No early stopping/pruning.
 
-Findings and decision at E5 completion:
-- All six lost to both L1 references in all ten repetitions; all had lower mean than E3.
-- gamma=0.01 had higher mean at each C. Its C=10 versus C=1 gap was only 0.000067.
-- Stop six-setting study, retain L1 references, do not promote SVM or automatically
-  expand grid/calibration/kernels/features. High support fraction is not proof of overfitting.
-- No E5 submission outcome recorded.
+Historical selected candidate: Trial20,
+e5b_optuna_ext02_trial_0020_depth_4_trees_50.
+Mean development AUC0.881937; repeat SD0.013949.
+Versus L1 C1: +0.019826 and 10/0/0 repeat wins/losses/ties.
+Versus L1 C0.1: +0.029074 and 10/0/0.
+Full-precision constructor settings must come from stored source parameters; the
+rounded historical summary is not a substitute for them.
 
-Limitations: six settings only, not all nonlinear models; complete-pipeline comparison;
-reused development observations/splits; no independence, confidence-interval or leaderboard claim.
+### E5b extension 03 — Fold-local total_gain feature selection
 
-Artifacts: outputs/results/e5_rbf_run_01/, run_manifest.json,
-verified_validation_assignments.csv, reference_repeat_scores.csv, e5_comparison.csv,
-e5_paired_repeat_scores.csv, e5_fold_diagnostics.csv, e5_decision.json,
-six candidate configs/diagnostics/decision-score tables, source/tests and warning review.
-Preserve the original execution version and the later organization history separately.
+Config: configs/e5b_feature_selection_ext03.json.
+Source: Trial20 from e5b_optuna_ext02_run_01. Reuse its exact parameters.
+For every training fold, fit the full-feature control/ranker, select total_gain
+k={5,10,20}, then refit a fresh classifier on selected columns. Zero-fill unused
+gains, tie-break by original predictor order, retain original order after selection.
+All-feature control plus three subsets: 200 fits; 50 historical control checks.
 
-## E5b — Bounded shallow XGBoost comparison
 
-Status: completed; all six configurations eligible.
+| Procedure                   |       Mean development CV AUC |                     Repeat SD |
+| --------------------------- | ----------------------------: | ----------------------------: |
+| All-feature Trial20 control | 0.881937 (historical rounded) | 0.013949 (historical rounded) |
+| Fold-local top10            |   0.888786 (reported rounded) |   Not supplied in this update |
+| Fold-local top20            |            0.8906718321935714 |          0.009546924598731034 |
 
-Question: Can shallow, regularised boosted trees outperform the retained L1 candidates
-on the same saved validation splits?
+Top20 versus top10: reported six repeat wins/four losses; mean gap about0.001886.
+Top20 retained as the then-leading procedure; top10 remains a compact alternative.
+Top5 result is not reproduced here because its numerical row was not supplied;
+consult the original feature_selection_comparison.csv, rather than inventing a value.
 
-Protocol:
-- Integrated CLI: `python -m scripts.run_e5b`.
-- All 150 predictors; raw-feature XGBClassifier pipeline; no scaling or selector.
-- max_depth in {1,2}; n_estimators in {50,100,200}; six configurations, 300 fits.
-- Load saved E4 assignments and verify both L1 references used matching splits.
-- Same ten repeats / five folds / mean-fold-AUC aggregation.
-- Fixed: booster=gbtree, objective=binary:logistic, eval_metric=auc,
-  tree_method=hist, learning_rate=0.05, min_child_weight=5, reg_lambda=10.0,
-  reg_alpha=0, gamma=0, subsample=1.0, colsample_bytree=1.0,
-  random_state=42, n_jobs=1, verbosity=1.
-- No early stopping, pruning, eval_set, calibration or test-data prediction.
-- Reuse existing ValidationResult for score aggregation; training-only loader.
+Output: outputs/results/e5b_feature_selection_ext03_run_01/.
+Frozen procedure used in subsequent completed workflows: outputs/frozen/ext03_top20_v1/.
+Final full-data selection must rerank on all labelled training rows, not use global
+cross-fold selection frequencies. First reported submission of this candidate: public0.91132.
 
-Environment and implementation notes:
-- Initial macOS import failed because libomp.dylib was unavailable; the subsequent
-  real-library smoke test passed after the installation issue was resolved.
-- Smoke test: depth 1, 50 rounds, 200 train / 50 validation rows,
-  diagnostic fold AUC 0.9106280193236715, 50 fitted rounds, zero captured warnings.
-- This was one fold, not repeated-CV mean or leaderboard feedback.
-- The frozen six-setting grid was retained; the smoke fold was refitted in the full run.
-- A macOS test compared resolved /private/var paths with unresolved /var paths;
-  normalizing the fixture root with Path(...).resolve() corrected the test expectation,
-  not the model/data/splits.
+## ENS-01 — Fixed L1 + XGBoost soft voting
 
-| Depth | Trees | Mean CV AUC | Repeat SD | Min repeat AUC | Max repeat AUC |
-|---:|---:|---:|---:|---:|---:|
-| 1 | 50 | 0.787117 | 0.014404 | 0.761198 | 0.809572 |
-| 1 | 100 | 0.804358 | 0.015245 | 0.771887 | 0.825582 |
-| 1 | 200 | 0.808197 | 0.017836 | 0.772094 | 0.833691 |
-| 2 | 50 | 0.833019 | 0.014400 | 0.807568 | 0.857621 |
-| 2 | 100 | 0.839271 | 0.010432 | 0.821956 | 0.858252 |
-| 2 | 200 | 0.833426 | 0.014514 | 0.811318 | 0.859844 |
+Question: do the existing linear and tree procedures complement each other?
+Fixed branches: original all-feature L1 C1 pipeline; frozen Trial20/top20 XGBoost.
+Fixed weights: .5/.5. No new parameter/weight search.
+Same 50 folds; 150 fits when rerun (L1, XGB ranker and subset classifier per fold).
 
-| Depth | Trees | Mean difference vs L1 leader | Difference SD | Improved / worse | Mean difference vs sparse L1 | Difference SD | Improved / worse |
-|---:|---:|---:|---:|---|---:|---:|---|
-| 1 | 50 | -0.074995 | 0.018410 | 0 / 10 | -0.065746 | 0.019223 | 0 / 10 |
-| 1 | 100 | -0.057754 | 0.018556 | 0 / 10 | -0.048506 | 0.018745 | 0 / 10 |
-| 1 | 200 | -0.053915 | 0.018472 | 0 / 10 | -0.044667 | 0.018581 | 0 / 10 |
-| 2 | 50 | -0.029092 | 0.014534 | 0 / 10 | -0.019844 | 0.016663 | 2 / 8 |
-| 2 | 100 | -0.022840 | 0.012873 | 1 / 9 | -0.013592 | 0.014159 | 2 / 8 |
-| 2 | 200 | -0.028686 | 0.016277 | 0 / 10 | -0.019437 | 0.015063 | 1 / 9 |
 
-No ties recorded. All six completed 50 valid fits each; zero failed folds and
-zero captured Python warnings. No candidate required warning review.
+| Candidate               |        Mean CV AUC |            Repeat SD |
+| ----------------------- | -----------------: | -------------------: |
+| L1                      |  0.862111696676914 | 0.012203784380591066 |
+| Top20 XGBoost           | 0.8906718321935714 | 0.009546924598731034 |
+| Equal-weight L1+XGBoost | 0.9028784219001611 |  0.00883941169930424 |
 
-Best within original E5b:
-- `e5b_xgboost_depth_2_trees_100`.
-- Mean 0.839271; SD 0.010432.
-- Versus L1 leader: mean -0.022840, range -0.039438 to +0.005208, 1 / 9 wins/losses.
-- Versus sparse L1: mean -0.013592, range -0.045381 to +0.001681, 2 / 8.
+Mean paired difference versus XGB: +0.01220658970658971; wins/losses/ties9/1/0.
+Passed predeclared pragmatic promotion rule (positive mean and >=6/10 wins).
+This is not a significance test. Full-data refit/export/submission subsequently reported.
+Public AUC0.91514, improving on the top20 XGB submission by0.00382.
 
-Findings:
-- Depth 2 exceeded depth 1 at each matching tree count.
-- Depth 1 improved across tested counts; depth 2 peaked at 100 among tested counts.
-- No setting exceeded either L1 reference in mean.
+Output: outputs/results/soft_vote_l1_xgb20_v1_run_01/.
+Submission output: outputs/submissions/soft_vote_l1_xgb20_v1_run_01/.
+Retain this as the baseline for every subsequent ensemble comparison.
 
-Decision at original E5b completion: stop the six-setting grid, retain L1 as leader,
-and preserve the negative finding. Subsequent extensions below were separate,
-adaptive decisions, not retrospectively part of a larger preregistered grid.
+## REG-01 — Fixed LightGBM and seven-candidate ensemble comparison
 
-Limitations: six shallow settings with several parameters fixed; no claim about all
-XGBoost configurations. Single-fold smoke AUC is not comparable with repeated-CV mean.
-No global optimum, independent final estimate or leaderboard outcome established.
+Purpose: test the three single models and four equal-weight combinations without
+changing the existing L1/XGB controls. The registry integration is engineering;
+its numerical seven-candidate comparison is the experiment recorded here.
 
-Artifacts: outputs/results/e5b_xgb_run_01/, resolved config, saved split copy,
-reference scores, manifest, e5b_comparison.csv, e5b_paired_repeat_scores.csv,
-e5b_fold_diagnostics.csv, e5b_decision.json, candidate configs, fitted booster configs,
-probability tables and standard fold_scores/repeat_scores/summary files.
+LightGBM: all150 predictors; objective binary, learning_rate.05, n_estimators100,
+max_depth3, num_leaves7, min_child_samples20, reg_lambda10, subsample1,
+colsample_bytree1, seed42, n_jobs1, deterministic=True, force_col_wise=True.
+No early stopping or pruning. Existing L1/XGB OOF reused only after hash, version,
+split, ID/label and probability/AUC checks; default additional budget50 fits.
 
-## E5b extension 01 — Depth 4, 1000 boosting rounds
 
-Status: completed.
+| Candidate   | Mean CV AUC | Repeat SD | Difference vs L1+XGB | Wins / losses / ties |
+| ----------- | ----------: | --------: | -------------------: | -------------------- |
+| L1+XGB      |    0.902878 |  0.008839 |                    0 | 0/0/10               |
+| L1+XGB+LGBM |    0.900614 |  0.009702 |            -0.002264 | 1/9/0                |
+| XGB         |    0.890672 |  0.009547 |            -0.012207 | 1/9/0                |
+| LGBM+XGB    |    0.886114 |  0.011460 |            -0.016765 | 0/10/0               |
+| LGBM+L1     |    0.884225 |  0.011864 |            -0.018653 | 0/10/0               |
+| L1          |    0.862112 |  0.012204 |            -0.040767 | 0/10/0               |
+| LGBM        |    0.856224 |  0.015250 |            -0.046655 | 0/10/0               |
 
-Question: Does jointly increasing tree depth and boosting rounds improve the previous
-fixed-parameter XGBoost results?
+Rounded values above follow the owner-supplied comparison. No new blend promoted
+or reported submitted from this fixed-setting experiment. Baseline promotable=False
+means it is the reference, not that it failed a test against itself.
+Conclusion limited to THIS LightGBM configuration and equal weights, not the entire
+LightGBM family. This motivated the separately bounded tuning study below.
 
-Protocol:
-- Proposed after reviewing the six-setting E5b results.
-- max_depth=4; n_estimators=1000; all other original E5b settings unchanged.
-- Same saved 50 folds; one additional candidate, 50 fits.
-- Fixed rounds, no early stopping/pruning.
-- Configuration: configs/e5b_xgboost_ext01.json.
+Config: configs/registry_ensembles.json.
+Output: outputs/results/registry_ensembles_v1_run_01/.
+Key artifacts: comparison.csv, decision.json, fold_scores.csv, repeat_scores.csv,
+validation_probabilities.csv, diagnostics.json, fit.log, warnings.json, run_manifest.json.
 
-Candidate: `e5b_xgboost_ext01_depth_4_trees_1000`.
+## LGBM-OPT-01 — Bounded LightGBM Optuna for the fixed three-model ensemble
 
-| Mean CV AUC | Repeat SD | Min repeat AUC | Max repeat AUC |
-|---:|---:|---:|---:|
-| 0.828091 | 0.018197 | 0.792248 | 0.853693 |
+### Question, objective and budget
 
-| Reference | Mean paired difference | Difference SD | Min difference | Max difference | Improved / worse / tied |
-|---|---:|---:|---:|---:|---|
-| L1 C=1.0 | -0.034020 | 0.019259 | -0.072105 | -0.008868 | 0 / 10 / 0 |
-| L1 C=0.1 | -0.024772 | 0.016792 | -0.045790 | +0.002006 | 1 / 9 / 0 |
+Can tuning only the LightGBM branch improve (L1+XGB+LGBM)/3 over the retained
+(L1+XGB)/2 baseline? This is not a search for the best standalone LightGBM.
 
-- All 50 fits valid; zero failed folds and captured warnings.
-- Mean AUC was 0.011180 lower than the original E5b leader; repeat SD was larger.
-- Direct paired win/loss counts against the original XGBoost leader were not supplied.
-
-Decision at extension 01 completion: do not promote; retain depth 2 / 100 as the
-then-best XGBoost setting and L1 as overall leader. Stop this single-setting extension.
-
-Limitations: depth and rounds changed together; the result does not isolate either
-parameter's effect or prove overfitting. Adaptive development study, not independent evaluation.
-
-Artifacts: outputs/results/e5b_xgb_ext01_depth4_trees1000/ and its standard E5b outputs.
-
-## E5b extension 02 — Joint XGBoost tuning with Optuna
-
-Status: completed; 30/30 trials COMPLETE and eligible. Trial 20 selected.
-Candidate snapshot creation remains to be confirmed separately under E7.
-
-Question: Can joint adjustment of parameters fixed in earlier XGBoost studies improve
-mean development ROC AUC over the retained L1 candidates?
-
-Study design:
-- Adaptive follow-up after E5b and extension 01, not independent confirmation.
-- 30 trial attempts total, including two queued historical reference settings.
-- Each completed trial uses all 50 saved folds: 1500 valid fits reported.
-- TPESampler(seed=42, n_startup_trials=10), direction=maximize.
-- Optuna n_jobs=1; XGBoost n_jobs=1 and model_seed=42.
-- No pruning (NopPruner), early stopping, eval_set or automatic budget extension.
-- Objective: mean across ten repeat-level means of five fold AUCs.
-- Same raw predictors, row order and saved split assignments; no scaling/selector.
-- All captured warnings require review; partial/failed candidates are not scored
-  by averaging only successful folds. No rejected trials occurred in this run.
-- SQLite study and per-trial artifacts retained; no automatic resume was used.
+Config: configs/lgbm_optuna.json; primary objective l1_xgb_lgbm.
+Reference: completed REG-01. L1/XGB branches and their verified OOF predictions fixed.
+20 total trials including control/failures; maximum1000 additional LightGBM fits.
+TPESampler(seed42,n_startup_trials5), sequential, NopPruner; no early stopping,
+weight search, test-label use or leaderboard-driven trial selection.
 
 Search space:
 
-| Parameter | Search domain | Sampling |
-|---|---|---|
-| max_depth | 1–4 | Integer |
-| n_estimators | 50,100,200,500,1000 | Categorical |
-| learning_rate | 0.01–0.2 | Log scale |
-| min_child_weight | 1–20 | Log scale |
-| reg_lambda | 0.1–100 | Log scale |
-| subsample | 0.6–1.0 | Linear |
-| colsample_bytree | 0.5–1.0 | Linear |
+- tree_shape (depth:leaves): 2:3,3:3,3:7,4:3,4:7,4:15.
+- min_child_samples:5..30.
+- learning_rate:0.02..0.15, log.
+- n_estimators:{50,100,200}.
+- reg_lambda:.1..30, log.
+- colsample_bytree:.6..1.
+- All other constructor settings retained from fixed reference.
 
-Other fixed settings: booster=gbtree, objective=binary:logistic, eval_metric=auc,
-tree_method=hist, reg_alpha=0, gamma=0, verbosity=1, and model/randomness settings above.
-Sampler seed and model seed were fixed separately; neither was an optimized parameter.
+Trial0 enqueued the original LightGBM parameters and reproduced all seven historical
+candidate fold AUCs within1e-12. Subsequent trials retained fixed control checks.
 
-Reference reproduction checks:
-- Trial 0 queued depth 2 / 100 with the original fixed parameters:
-  mean AUC 0.8392713888366062, reproducing original E5b.
-- Trial 1 queued depth 4 / 1000 with original fixed parameters:
-  mean AUC 0.8280912123303427, reproducing extension 01.
-- Both reference trials were refitted and counted within the 30-trial budget.
+### Execution status
 
-All-trial summary:
-- All 30 trials COMPLETE; all 1500 fits valid; no failed folds or captured Python warnings.
-- 14/30 trials had a mean above the L1 C=1.0 reference.
-- 20/30 trials had a mean above the L1 C=0.1 reference.
-- These are counts among adaptively selected trials, not independent replications.
-- The following table omits five searched parameters for space; depth/rounds alone
-  do not identify a model. Preserve full-precision trial parameters separately.
+Owner-supplied manifest:
 
-| Trial | Max depth | Trees | Mean CV AUC | Repeat SD | Mean difference vs L1 leader | Improved / worse repeats |
-|---:|---:|---:|---:|---:|---:|---|
-| 0 | 2 | 100 | 0.839271 | 0.010432 | -0.022840 | 1 / 9 |
-| 1 | 4 | 1000 | 0.828091 | 0.018197 | -0.034020 | 0 / 10 |
-| 2 | 2 | 50 | 0.784454 | 0.011689 | -0.077658 | 0 / 10 |
-| 3 | 4 | 50 | 0.861304 | 0.012874 | -0.000808 | 5 / 5 |
-| 4 | 2 | 200 | 0.851715 | 0.014225 | -0.010397 | 2 / 8 |
-| 5 | 4 | 50 | 0.853306 | 0.010223 | -0.008805 | 2 / 8 |
-| 6 | 2 | 50 | 0.797905 | 0.016864 | -0.064207 | 0 / 10 |
-| 7 | 4 | 1000 | 0.776743 | 0.017531 | -0.085368 | 0 / 10 |
-| 8 | 1 | 200 | 0.780406 | 0.011870 | -0.081705 | 0 / 10 |
-| 9 | 1 | 200 | 0.818531 | 0.012257 | -0.043580 | 0 / 10 |
-| 10 | 4 | 50 | 0.871335 | 0.011479 | +0.009223 | 8 / 2 |
-| 11 | 4 | 50 | 0.871008 | 0.012838 | +0.008896 | 7 / 3 |
-| 12 | 3 | 50 | 0.861066 | 0.014529 | -0.001045 | 6 / 4 |
-| 13 | 3 | 50 | 0.855894 | 0.016830 | -0.006218 | 2 / 8 |
-| 14 | 4 | 200 | 0.863943 | 0.016778 | +0.001831 | 4 / 6 |
-| 15 | 3 | 50 | 0.865334 | 0.008801 | +0.003222 | 7 / 3 |
-| 16 | 3 | 50 | 0.863453 | 0.017550 | +0.001341 | 6 / 4 |
-| 17 | 4 | 50 | 0.858072 | 0.015525 | -0.004040 | 3 / 7 |
-| 18 | 4 | 500 | 0.846201 | 0.016241 | -0.015911 | 1 / 9 |
-| 19 | 4 | 500 | 0.852410 | 0.014155 | -0.009701 | 3 / 7 |
-| 20 | 4 | 50 | 0.881937 | 0.013949 | +0.019826 | 10 / 0 |
-| 21 | 4 | 50 | 0.859896 | 0.016992 | -0.002216 | 4 / 6 |
-| 22 | 4 | 50 | 0.872346 | 0.012090 | +0.010234 | 8 / 2 |
-| 23 | 3 | 50 | 0.870344 | 0.012153 | +0.008232 | 7 / 3 |
-| 24 | 3 | 50 | 0.873313 | 0.012738 | +0.011202 | 8 / 2 |
-| 25 | 4 | 50 | 0.878294 | 0.013941 | +0.016182 | 9 / 1 |
-| 26 | 3 | 50 | 0.867781 | 0.011307 | +0.005669 | 6 / 4 |
-| 27 | 3 | 50 | 0.872332 | 0.012155 | +0.010220 | 7 / 3 |
-| 28 | 4 | 100 | 0.878066 | 0.012679 | +0.015955 | 9 / 1 |
-| 29 | 4 | 50 | 0.877573 | 0.012541 | +0.015461 | 9 / 1 |
+- status=completed; planned20, completed20, failed0.
+- control_trial_reproduced=true; test_opened=false; kaggle_upload_performed=false
+  at search completion. Later manual upload is recorded separately below.
+- started UTC2026-10-23T19:44:55.112134+00:00.
+- finished UTC2026-10-23T19:45:51.047160+00:00.
+- best_trial14; promote=true.
 
-Selected candidate:
-- Trial number: 20.
-- Experiment ID: `e5b_optuna_ext02_trial_0020_depth_4_trees_50`.
-- Mean development CV AUC: 0.8819374908505344.
-- Repeat SD: 0.0139490659001846.
-- Repeat-level mean AUC range: 0.8545679360896752–0.8984597528075788.
+### Trial results
 
-Full-precision searched parameters:
+All20 trials COMPLETE. AUC is the fixed three-model primary objective. Win/loss/tie
+counts compare each trial with the existing L1+XGB baseline across ten repeats.
+Trial13 has one tie (10 minus7 wins minus2 losses).
+
+
+| Trial | Primary objective AUC | Difference vs L1+XGB | Wins / losses / ties | Passes promotion rule |
+| ----: | --------------------: | -------------------: | -------------------- | --------------------- |
+|     0 |           0.900614321 |         -0.002264101 | 1 / 9 / 0            | No                    |
+|     1 |           0.896479129 |         -0.006399293 | 0 / 10 / 0           | No                    |
+|     2 |           0.901639427 |         -0.001238994 | 2 / 8 / 0            | No                    |
+|     3 |           0.908013311 |         +0.005134889 | 9 / 1 / 0            | Yes                   |
+|     4 |           0.898419861 |         -0.004458561 | 2 / 8 / 0            | No                    |
+|     5 |           0.901967240 |         -0.000911182 | 4 / 6 / 0            | No                    |
+|     6 |           0.905134419 |         +0.002255997 | 8 / 2 / 0            | Yes                   |
+|     7 |           0.901576584 |         -0.001301838 | 3 / 7 / 0            | No                    |
+|     8 |           0.904778583 |         +0.001900161 | 7 / 3 / 0            | Yes                   |
+|     9 |           0.900836889 |         -0.002041533 | 3 / 7 / 0            | No                    |
+|    10 |           0.902458435 |         -0.000419987 | 3 / 7 / 0            | No                    |
+|    11 |           0.902160999 |         -0.000717423 | 5 / 5 / 0            | No                    |
+|    12 |           0.907426020 |         +0.004547598 | 8 / 2 / 0            | Yes                   |
+|    13 |           0.907297980 |         +0.004419558 | 7 / 2 / 1            | Yes                   |
+|    14 |           0.908336418 |         +0.005457996 | 8 / 2 / 0            | Yes                   |
+|    15 |           0.905975438 |         +0.003097016 | 8 / 2 / 0            | Yes                   |
+|    16 |           0.901906749 |         -0.000971673 | 3 / 7 / 0            | No                    |
+|    17 |           0.905915469 |         +0.003037047 | 8 / 2 / 0            | Yes                   |
+|    18 |           0.902939697 |         +0.000061275 | 6 / 4 / 0            | Yes                   |
+|    19 |           0.904322208 |         +0.001443786 | 7 / 3 / 0            | Yes                   |
+
+### Selection decision
+
+Select highest primary-objective AUC, earliest trial for exact ties. Only that winner
+can be promoted if its mean paired difference is positive and it wins >=6/10 repeats.
+Do not replace it with another trial based on more wins or a secondary ensemble score.
+
+Winner: Trial14.
+
+- Mean objective CV AUC:0.9083364180103309.
+- Difference vs L1+XGB:+0.00545799611017.
+- Wins/losses/ties:8/2/0.
+- Trial3:0.9080133111654851,9/1/0; not selected because objective AUC was lower.
+- Best trial repeat SD and standalone LightGBM AUC are not in supplied best_trial.json;
+  obtain them from trials/trial_0014/cv/comparison.csv, not from the fixed-LightGBM table.
+
+Selected LightGBM constructor parameters:
 
 ```json
 {
-  "max_depth": 4,
+  "objective": "binary",
+  "learning_rate": 0.08060078627579852,
   "n_estimators": 50,
-  "learning_rate": 0.08316404045417083,
-  "min_child_weight": 1.229594255114693,
-  "reg_lambda": 0.1877052106059947,
-  "subsample": 0.9920641940615834,
-  "colsample_bytree": 0.7550128116345981
+  "max_depth": 4,
+  "num_leaves": 7,
+  "min_child_samples": 6,
+  "reg_lambda": 0.12763701705576885,
+  "subsample": 1.0,
+  "colsample_bytree": 0.771566198351983,
+  "random_state": 42,
+  "n_jobs": 1,
+  "verbosity": 1,
+  "deterministic": true,
+  "force_col_wise": true
 }
 ```
 
-Preserve these together with the fixed constructor settings, library versions,
-feature order, label definition and execution code. Do not round parameters when
-reconstructing this candidate or confuse parameter JSON with fitted model weights.
+Study: outputs/results/lgbm_optuna_v1_run_01/.
+Winner: trials/trial_0014/cv/ within that study.
+Artifacts: study.sqlite3, settings.json, trials.csv, trial_results.json, best_trial.json,
+decision.json, run_manifest.json, per-trial resolved registry configuration and full
+CV tables/probabilities/diagnostics/logs/manifests. The supplied manifest contains hashes;
+this document intentionally does not duplicate its long checksum list.
 
-Paired Trial 20 comparisons:
+### Final refit and reported competition feedback
 
-| Reference | Mean paired difference | Difference SD | Min difference | Max difference | Improved / worse / tied |
-|---|---:|---:|---:|---:|---|
-| L1 C=1.0 | +0.019826 | 0.012237 | +0.000862 | +0.042695 | 10 / 0 / 0 |
-| L1 C=0.1 | +0.029074 | 0.013955 | +0.004069 | +0.049155 | 10 / 0 / 0 |
+Selected composition remains (p_L1+p_XGB+p_LGBM)/3, not .5*p_old_ensemble+.5*p_LGBM.
+Full-data workflow refits all250 labelled rows: L1 once, XGB ranker/classifier twice,
+LightGBM once (four fits). Save/load agreement and CSV/template checks belong in
+prediction_manifest.json. Owner subsequently reported completed submission.
 
-Values above are rounded for presentation; preserve raw precision in artifacts.
-Trial 20 mean AUC was 0.042666 above the original E5b leader and 0.003644 above
-Optuna Trial 25, the second-highest mean. Direct paired win/loss counts between
-these XGBoost trials were not supplied and must not be inferred from their means.
+Submission output: outputs/submissions/lgbm_optuna_v1_run_01/.
+Reported public AUC:0.91993; owner-confirmed rank:fifth at that checkpoint.
+Public increment vs L1+XGB:0.00479; increment vs first top20 XGB submission:0.00861.
+Exact Kaggle submission ID/time not supplied. No private score recorded.
 
-Findings:
-- Joint tuning found a higher-mean development candidate than the earlier fixed
-  XGBoost settings and both L1 references.
-- Trial 20 exceeded both L1 references in every one of the ten matched repetitions.
-- Compared with original E5b settings, it used greater maximum depth, fewer rounds,
-  higher learning rate, lower child-weight and lambda settings, and column sampling.
-- This is a joint configuration result; no individual parameter's causal contribution
-  was isolated. The initial fixed settings may have limited the earlier search,
-  but a controlled one-parameter attribution was not performed.
-- Nine of the ten highest-mean trials used 50 rounds. This is a search observation,
-  not proof that 50 is optimal; 50 was also the lower tested round-count boundary.
-- Successful joint search does not establish that TPE outperforms random search;
-  no equal-budget sampler comparison was conducted.
+Conclusion: fixed-setting LightGBM failed to add value, but a bounded parameter
+search found a three-model candidate with higher development CV and higher reported
+public AUC. This does not isolate which parameter caused the improvement or prove
+an independent/private performance gain.
 
-Decision:
-- Stop the completed 30-trial search without automatically adding trials.
-- Retain Trial 20 as the current provisional development leader.
-- Retain L1 C=1.0 as the main linear reference and L1 C=0.1 as the sparse alternative.
-- Preserve all 30 trials, including lower-scoring results and historical reference reproductions.
-- Freeze the full Trial 20 configuration and evidence under a separate snapshot version.
-  Snapshot execution/verification is pending confirmation; do not state it is already archived.
-- No automatic follow-up using pruning/early stopping is approved or completed.
-  Either requires a specific new efficiency/training question and frozen protocol.
-- Do not automatically generate submissions for all trials.
+## E6 — Validation-protocol extension
 
-Limitations:
-- The trial maximum was selected using the same development CV objective used to
-  judge candidates; its mean is not an independent estimate and may be optimistic.
-- Ten paired improvements do not remove model-selection bias or make repeated
-  splits independent datasets. No formal significance claim is made.
-- Model families have received unequal search budgets. This does not establish
-  that boosted trees intrinsically outperform every equally tuned linear model.
-- Search-space boundaries remain; no global optimum claimed.
-- Starting nested CV after prior exploration does not create a new untouched labelled dataset.
-- No actual XGBoost Kaggle score, final refit or independent final evaluation is recorded.
+Status: proposed; not confirmed chosen or executed. Do not mark completed.
+Possible question: how do hold-out and different fold counts alter model ranking
+or apparent differences? A new protocol must specify candidates, repeats, seeds,
+training sizes, aggregation and budget. Repeatedly changing splits is not a new
+independent test set. Do not reopen completed searches automatically.
 
-Artifacts:
-- Study directory: outputs/results/e5b_optuna_ext02_run_01/.
-- study.sqlite3, config.json, base_config.json, run_manifest.json.
-- verified_split_indices.json, reference_repeat_scores.csv.
-- optuna_trials.csv, optuna_comparison.csv, optuna_paired_repeat_scores.csv.
-- best_parameters.json, optuna_decision.json.
-- trials/trial_0000/ through trials/trial_0029/: full E5b-style diagnostics,
-  probability tables, per-candidate settings, booster configs and standard score files.
-- Selected directory: trials/trial_0020/.
-- configs/e5b_optuna_ext02.json and exact executed source/dependency versions.
+## E7 — Candidate lifecycle and evaluation
 
-## Current retained candidates
+Reported milestones now supersede the old 'XGBoost submission not confirmed' status:
 
-| Role | Candidate | Mean development CV AUC | Repeat SD |
-|---|---|---:|---:|
-| Provisional overall leader | Optuna Trial 20, full configuration above | 0.881937 | 0.013949 |
-| Main linear reference | All-feature L1 C=1.0 | 0.862112 | 0.012204 |
-| Sparse alternative | All-feature L1 C=0.1 | 0.852864 | 0.010803 |
+- Baseline end-to-end submission workflow completed earlier (score still unrecorded).
+- Frozen top20 XGBoost procedure used in subsequent verified development workflows.
+- Full-data top20 XGB submission reported:0.91132.
+- Full-data 50/50 L1+XGB submission reported:0.91514.
+- Selected Trial14 three-model submission reported:0.91993; rank fifth reported.
 
-Earlier E3, SVM and XGBoost candidates remain historical references, not automatically
-additional finalists. Final shortlist and submission choices remain to be documented.
+Preserve all candidates and their models, selected features, configurations, inputs,
+versions, code provenance and CSV hashes; do not overwrite earlier snapshots.
+Repository command support and successful reported workflows are not a claim that
+all local metadata files have been independently audited here.
 
-## E6 — Individual extension: validation protocol design
+Final evaluation remains distinct: no nested-CV result or private-leaderboard result
+has been supplied. Course-specific final deliverables/grading have not been verified.
 
-Status: proposed; not confirmed or executed.
+### Submission ledger (owner-reported feedback)
 
-Question: How sensitive are validation schemes to row assignment, and how consistently
-do they compare two fixed models with an observed development AUC gap?
 
-Protocol to freeze before running:
-- Stratified 80/20 hold-out and shuffled stratified 3-,5-,10-fold CV.
-- Thirty repetitions, seeds 0–29.
-- One fixed pipeline for score-spread comparisons.
-- If comparing two candidates, choose both before the study and use matching splits.
-  Trial 20 versus L1 C=1.0 is now a possible pair, not an already approved protocol.
-- Keep model randomness fixed and preprocessing fold-local.
-- State per-scheme training/validation sizes; schemes do not train on equal data amounts.
-- Do not rerun Optuna or retune candidates separately for each validation scheme.
-- New split seeds are another development stability study, not fresh independent data.
+| Submission/candidate                  | Development CV AUC |   Public AUC | Exact Kaggle ID/time | Status                               |
+| ------------------------------------- | -----------------: | -----------: | -------------------- | ------------------------------------ |
+| E1 L2 baseline C0.001                 |           0.793999 | Not recorded | Pending              | Baseline workflow reported complete  |
+| Frozen Trial20/top20 XGB              | 0.8906718321935714 |      0.91132 | Pending              | Submitted                            |
+| ENS-01 L1+XGB, equal weights          | 0.9028784219001611 |      0.91514 | Pending              | Submitted; retained reference        |
+| LGBM-OPT-01 Trial14 three-model blend | 0.9083364180103309 |      0.91993 | Pending              | Current retained submitted candidate |
 
-Outputs: distributions, means/sample SD/ranges; paired differences and ordering
-consistency; discussion of observed gaps (including approximately 0.01 AUC if relevant).
-Do not claim that the true gap is known or treat repeat SD as a confidence interval.
+No submission from fixed REG-01 was reported. Public scores are not classification
+accuracy; rank is time-specific, not a prediction of final/private placement.
+At the time of inspection experiments/log.csv and experiments/submissions.csv had
+headers only. Recover actual submission IDs/timestamps before marking those ledgers
+complete; documentation here does not silently populate them.
 
-Write-up: Question, Protocol, Results, Conclusion; maximum two pages.
-This study is separate from both the original C sweep and Optuna tuning.
+## ES-01 — Early stopping: future experiment only
 
-## E7 — Candidate freeze and finalise evaluation
+Status: discussed, not run; no new code execution or score claimed.
+Question: with Trial14's other LightGBM parameters and equal weights fixed, does
+training-only selection of boosting rounds improve the existing procedure?
 
-Status: candidate selection has begun; physical freeze confirmation, final evaluation,
-final full-data XGBoost refit and final submission remain pending.
+Items to define BEFORE any execution:
 
-Current candidate-freeze record:
-- Selected candidate: Optuna Trial 20 with full-precision parameters above.
-- Proposed snapshot version: e5b_optuna_trial20_v1.
-- Proposed local snapshot directory: outputs/frozen/e5b_optuna_trial20_v1/.
-- Freeze instructions supplied: copy complete parameters and supporting study/trial
-  evidence; create a snapshot SHA-256 manifest; refuse overwriting an existing snapshot.
-- Execution outcome: not yet confirmed by the project owner.
-- Parameter/evidence freeze is not the same as saving a final trained model.
+- Fixed maximum rounds and patience; inner split seed/fraction or inner-CV scheme.
+- Whether stopping monitors LightGBM-only AUC or ensemble AUC; these are different objectives.
+- Inner training/validation drawn only from each outer training fold.
+- Round-selection rule, then refit at selected rounds on the full outer training fold.
+- Score the outer validation fold only after round selection, not use it to stop training.
+- Final full-labelled-data round-selection/refit rule, diagnostics, budget and promotion rule.
+- Fixed50-round Trial14 procedure as reference; new immutable output/version.
 
-Checklist:
-- [x] Identify the current development leader and retain L1 references.
-- [x] Record selected trial and full-precision searched parameters.
-- [ ] Confirm snapshot creation, required artifacts and hashes.
-- [ ] Freeze the final candidate shortlist and the next evaluation protocol.
-- [ ] Decide/document whether a bounded nested-CV evaluation will be used.
-- [ ] If nested CV is used, freeze inner candidates/search budget/selection rules
-      before outer runs; distinguish a selection procedure from a fixed-model evaluation.
-- [ ] Acknowledge that previous exploration used all labelled rows; no new untouched
-      labelled dataset is created by starting nested CV later.
-- [ ] Choose final submissions according to official competition/assignment rules.
-- [ ] Refit the selected pipeline on all labelled rows using frozen settings,
-      preserve the fitted model, feature order and full provenance.
-- [ ] Record actual submission identifiers/timestamps/public scores only after submission.
-- [ ] Complete report, extension, video and individual reflection.
+Do not add early stopping silently to the completed Optuna study, overwrite its
+hashes, or call this unexecuted idea a proven improvement. The existing procedure
+already searched coarse round counts; early stopping is a new selection rule.
+Optuna pruning is distinct and remains unused; it is not required to close this stage.
 
-A changed hyperparameter, feature procedure, pruning rule or early-stopping procedure
-requires a new experiment/candidate version. Do not overwrite the frozen v1 record.
+## Other proposals not executed or selected for this checkpoint
 
-## Required record for each experiment
+- Optional Elastic-net.
+- XGB-selected-feature transfer to L1.
+- Shrinkage LDA.
+- Learned stacking, arbitrary ensemble weight optimisation or new model families.
 
-- Question/hypothesis and whether exploratory, adaptive or prospectively specified.
-- Fixed/changed settings; full-precision parameters and complete pipeline.
-- Data/feature order and label definition; configs, code revision and source hashes.
-- Saved split assignments, split seeds and model/sampler seeds separately.
-- Search space/budget, sampler/pruner/early-stopping rules where applicable.
-- Mean fold AUC per repetition, mean/sample SD/range across repetitions.
-- Full paired differences on matching splits; wins/losses/ties and tie tolerance.
-- Completed/failed/rejected/pruned states; warnings and numerical diagnostics.
-- Decisions/reasons, negative findings and explicit stopping rule.
-- Snapshot status, later refit/model/submission status as separate milestones.
-- Kaggle feedback only when actually submitted; no unattributed score claims.
+These are ideas, not completed experiments or mandatory next tasks.
 
-## Immediate implementation order
+## Engineering changes versus numerical experiments
 
-1. Archive the completed E0–E5, original E5b, extension 01 and Optuna extension 02
-   artifacts; preserve their separate protocols and exact executed code.
-2. Verify Optuna manifest completion (30 finished trials), SQLite study and all
-   Trial 20 parameters/diagnostics; keep the reproduced reference trials.
-3. Execute/confirm the proposed Trial 20 v1 freeze snapshot, then verify its files
-   and hash list. Do not mark it complete based only on supplied instructions.
-4. Update the active candidate record to Trial 20; retain L1 C=1.0 and C=0.1.
-5. Recover E1's missing actual public score/submission identifier/timestamp;
-   confirm whether any later candidate was submitted before planning another upload.
-6. Confirm whether E6 is the chosen individual extension and freeze its candidates,
-   validation schemes, repetition counts and analysis rules before implementation.
-7. Decide the E7 evaluation/shortlist/submission protocol before additional runs.
-8. Do not automatically reopen searches or add pruning/early stopping. New work
-   needs a specific unresolved question and bounded protocol, not just a higher-score target.
-9. Complete final refit/submission and report deliverables only when their preceding
-   selection/evaluation decisions are documented; record actual outcomes separately.
+- Registry/wrapper adapters standardise complete train/predict procedures and lazy
+  model creation; they do not themselves establish score gains.
+- Four ensemble compositions are configuration-driven probability combinations.
+- Verified OOF reuse reduces new fits without changing fold membership.
+- clil.py (intentional filename) forwards to existing runners and supplies doctor,
+  tests, plan and results inspection. It does not automatically submit to Kaggle.
+- Package build tests and mocked/synthetic adapters are not real-data model validation.
+  Completion of the owner-reported numerical study is recorded separately above.
+- Patches do not alter old results merely by being applied; preserve executed revisions.
+
+## Commands for inspecting this checkpoint (not rerunning searches)
+
+```bash
+python clil.py results --run outputs/results/lgbm_optuna_v1_run_01
+python clil.py results --run outputs/submissions/lgbm_optuna_v1_run_01
+```
+
+The raw original two-model and registry reports remain under their respective
+outputs/results/ directories. Do not edit hashed configs/artifacts of completed runs.
+Updating this research record is not permission to rerun, overwrite, retune or upload.
+
+## Stage-close checklist
+
+- [X]  Preserve historical E0-E5b decisions, including negative results.
+- [X]  Record extension03, ENS-01, REG-01 and LGBM-OPT-01 outcomes.
+- [X]  Separate development AUC from reported public scores.
+- [X]  Record selected Trial14 and actual reported0.91993/fifth-place checkpoint.
+- [X]  Mark early stopping, E6 and other unexecuted ideas accurately.
+- [ ]  Recover exact Kaggle submission IDs and timestamps for the submission ledger.
+- [ ]  Verify local final model/CSV/manifest archives and preserve a code revision.
+- [ ]  Complete any required report/course deliverables against the actual rubric.
+- [ ]  Record private/final evaluation only when it exists; never infer it from public AUC.
+
+Current decision: retain Trial14's equal-weight three-model submission as the
+best reported submitted candidate and preserve the0.91514 two-model fallback.
+Stop at this checkpoint; any next experiment requires an explicit new plan.

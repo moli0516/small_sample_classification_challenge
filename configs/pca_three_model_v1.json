@@ -1,0 +1,10 @@
+{
+  "validation_config": "configs/validation_protocol_v1.json",
+  "components": [
+    5,
+    10,
+    20,
+    50
+  ],
+  "output_dir": "outputs/results/pca_three_model_v1_run_01"
+}

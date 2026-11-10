@@ -1,0 +1,919 @@
+diff --git a/src/modeling/elasticnet_trial_model.py b/src/modeling/elasticnet_trial_model.py
+new file mode 100644
+--- /dev/null
++++ b/src/modeling/elasticnet_trial_model.py
+@@ -0,0 +1,35 @@
++"""Unregistered frozen Elastic-net procedure; one class per module."""
++from inspect import signature
++import numpy as np
++from sklearn.linear_model import LogisticRegression
++from sklearn.pipeline import Pipeline
++from sklearn.preprocessing import StandardScaler
++from src.modeling.model_registry import RegisteredModel
++
++
++class ElasticnetTrialModel(RegisteredModel):
++    def __init__(self, parameters):
++        if set(parameters) != {"C", "l1_ratio"}:
++            raise ValueError("Expected only C and l1_ratio")
++        self.parameters = dict(parameters)
++
++    def fit(self, x, y):
++        self._remember(x)
++        params = dict(self.parameters, solver="saga", max_iter=20000, tol=1e-4, random_state=42)
++        penalty = signature(LogisticRegression).parameters.get("penalty")
++        if penalty is not None and penalty.default != "deprecated":
++            params["penalty"] = "elasticnet"
++        self.model = Pipeline([("scaler", StandardScaler()),
++                               ("classifier", LogisticRegression(**params))])
++        self.model.fit(x, y)
++        return self
++
++    def predict_proba(self, x):
++        self._check(x)
++        return self.model.predict_proba(x)
++
++    def diagnostics(self):
++        fitted = self.model.named_steps["classifier"]
++        return dict(super().diagnostics(), parameters=self.parameters,
++                    nonzero_coefficients=int(np.count_nonzero(fitted.coef_)),
++                    n_iter=int(fitted.n_iter_.max()))
+diff --git a/src/submission/elasticnet_trial_snapshot.py b/src/submission/elasticnet_trial_snapshot.py
+new file mode 100644
+--- /dev/null
++++ b/src/submission/elasticnet_trial_snapshot.py
+@@ -0,0 +1,195 @@
++"""Read-only verification of the completed, selected Elastic-net Trial25."""
++from importlib.metadata import version
++from pathlib import Path
++import json
++import numpy as np
++import pandas as pd
++from sklearn.metrics import roc_auc_score
++
++
++class ElasticnetTrialSnapshot:
++    tolerance = 1e-12
++    expected_auc = 0.9092096430139908
++    control_auc = 0.9084647196603719
++    expected_parameters = dict(C=0.18702703609689042,
++                               l1_ratio=0.9589771634360093,
++                               alpha=0.06655791394873416)
++
++    def __init__(self, helper=None, prepare_study=None, version_reader=version):
++        if helper is None:
++            from src.submission.frozen_xgboost_submission import FrozenXGBoostSubmission
++            helper = FrozenXGBoostSubmission()
++        self.helper = helper
++        self.prepare_study = prepare_study
++        self.version_reader = version_reader
++
++    @staticmethod
++    def read(path):
++        return json.loads(Path(path).read_text(encoding="utf-8"))
++
++    def verify_hashes(self, hashes):
++        for path, digest in hashes.items():
++            if self.helper._sha(path) != digest:
++                raise ValueError("Input/code/artifact changed: " + str(path))
++
++    def artifacts(self, run):
++        manifest = self.read(run / "run_manifest.json")
++        if (manifest.get("status") != "completed" or manifest.get("planned_trials") != 30
++                or manifest.get("completed_trials") != 30 or manifest.get("planned_fits") != 1500
++                or manifest.get("completed_fits") != 1500
++                or manifest.get("test_opened") is not False
++                or manifest.get("kaggle_upload_performed") is not False):
++            raise ValueError("Expected original completed 30-trial/1500-fit no-test study")
++        checks = manifest.get("artifact_sha256", {})
++        required = {"settings.json", "decision.json", "best_trial.json", "trials.json", "trials.csv",
++                    "cohort.csv", "split_indices.json", "trials/trial_0000/result.json",
++                    "trials/trial_0000/predictions.npz", "trials/trial_0025/result.json",
++                    "trials/trial_0025/parameters.json", "trials/trial_0025/predictions.npz"}
++        if not required <= checks.keys():
++            raise ValueError("Study artifact hashes incomplete")
++        hashes = {str(run / "run_manifest.json"): self.helper._sha(run / "run_manifest.json")}
++        for name, digest in checks.items():
++            path = (run / name).resolve()
++            if not path.is_relative_to(run) or not path.is_file():
++                raise ValueError("Unsafe/missing study artifact: " + name)
++            hashes[str(path)] = digest
++        self.verify_hashes(hashes)
++        return hashes
++
++    @staticmethod
++    def probability(values, size):
++        p = np.asarray(values, dtype=float)
++        if p.shape != (size,) or not np.isfinite(p).all() or ((p < 0) | (p > 1)).any():
++            raise ValueError("Invalid probability vector")
++        return p
++
++    def score(self, context, values):
++        scores = []
++        for split in context["groups"]:
++            sl = slice(split["start"], split["stop"])
++            scores.append(dict(repeat=split["repeat"], fold=split["fold"],
++                               auc=roc_auc_score(context["frame"].target.iloc[sl], values[sl])))
++        frame = pd.DataFrame(scores)
++        if len(frame) != 50 or frame.duplicated(["repeat", "fold"]).any():
++            raise ValueError("Expected50 unique folds")
++        for repeat in range(10):
++            if set(frame.loc[frame.repeat == repeat, "fold"]) != set(range(5)):
++                raise ValueError("Expected10 complete repetitions")
++        return frame.groupby("repeat").auc.mean().sort_index()
++
++    def close(self, actual, expected, label):
++        if not np.isclose(actual, expected, rtol=0, atol=self.tolerance):
++            raise ValueError("Score mismatch: " + label)
++
++    def compare(self, current, reference, recorded):
++        delta = current - reference
++        actual = dict(mean_difference=float(delta.mean()), difference_sd=float(delta.std(ddof=1)),
++                      wins=int((delta > self.tolerance).sum()),
++                      losses=int((delta < -self.tolerance).sum()),
++                      ties=int((abs(delta) <= self.tolerance).sum()))
++        for key, value in actual.items():
++            self.close(value, recorded[key], key)
++        if actual["mean_difference"] <= self.tolerance or actual["wins"] < 6:
++            raise ValueError("Selected trial did not pass both-control screening")
++
++    def load(self, run_path, config_path, output):
++        h = self.helper
++        run, dest = h._path(run_path), h._path(output)
++        if dest.exists():
++            raise FileExistsError("Fresh prediction output required; no overwrite/resume")
++        if dest.is_relative_to(run) or run.is_relative_to(dest):
++            raise ValueError("Output overlaps source study")
++        hashes = self.artifacts(run)
++        settings, decision, best = (self.read(run / name) for name in
++                                   ("settings.json", "decision.json", "best_trial.json"))
++        if (decision.get("selected_trial") != 25 or best.get("number") != 25
++                or best.get("state") != "COMPLETE"
++                or decision.get("control_reproduced") is not True
++                or decision.get("screening_passed") is not True
++                or decision.get("screening_both_controls") is not True
++                or decision.get("automatic_promotion") is not False
++                or best.get("parameters") != self.expected_parameters
++                or decision.get("parameters") != best["parameters"]):
++            raise ValueError("Expected frozen, both-controls-passed Trial25")
++        self.close(best["objective_auc"], self.expected_auc, "Trial25 identity")
++        self.close(decision["selected_mean_auc"], best["objective_auc"], "decision")
++        selected = run / "trials/trial_0025"
++        if self.read(selected / "result.json") != best or self.read(selected / "parameters.json") != best["parameters"]:
++            raise ValueError("Selected result/parameters disagree")
++        trials = self.read(run / "trials.json")
++        if (len(trials) != 30 or [t["number"] for t in trials] != list(range(30))
++                or any(t["state"] != "COMPLETE" or not np.isfinite(t["value"]) for t in trials)):
++            raise ValueError("Incomplete trial accounting")
++        for trial in trials:
++            p = trial["parameters"]
++            if (set(p) != {"C", "l1_ratio", "alpha"} or not .001 <= p["C"] <= 1.
++                    or not .5 <= p["l1_ratio"] <= 1. or not .01 <= p["alpha"] <= .2):
++                raise ValueError("Trial outside declared space")
++        winner = min(trials, key=lambda t: (-t["value"], t["number"]))
++        if winner["number"] != 25 or winner["parameters"] != best["parameters"]:
++            raise ValueError("Winner rule does not select Trial25")
++        self.close(winner["value"], best["objective_auc"], "trials.json")
++        table = pd.read_csv(run / "trials.csv", float_precision="round_trip")
++        if len(table) != 30 or table.number.tolist() != list(range(30)):
++            raise ValueError("Invalid trials.csv")
++        for row, trial in zip(table.to_dict("records"), trials):
++            if row["state"] != trial["state"]:
++                raise ValueError("Trial states disagree")
++            self.close(row["objective_auc"], trial["value"], "trial CSV objective")
++            for key in ("C", "l1_ratio", "alpha"):
++                self.close(row[key], trial["parameters"][key], "trial CSV parameter")
++        if trials[0]["parameters"] != dict(C=.1, l1_ratio=.75, alpha=.05):
++            raise ValueError("Incorrect control parameters")
++        if trials[0]["user_attrs"].get("control_reproduced") is not True:
++            raise ValueError("Missing control reproduction")
++        control = self.read(run / "trials/trial_0000/result.json")
++        if control.get("control_reproduced") is not True or control.get("parameters") != trials[0]["parameters"]:
++            raise ValueError("Invalid control result")
++        self.close(control["objective_auc"], self.control_auc, "control identity")
++        self.close(trials[0]["value"], self.control_auc, "control trial value")
++        if self.prepare_study is None:
++            # Read-only compatibility adapter: historical hashed scripts MUST stay unchanged.
++            from scripts.run_elasticnet_optuna_v1 import prepare
++        else:
++            prepare = self.prepare_study
++        c = prepare(str(h._path(config_path)), output=str(dest))
++        if (c["optuna_config"] != settings["config"]
++                or c["elasticnet_hashes"] != settings["input_and_code_sha256"]):
++            raise ValueError("Study inputs/config/code changed")
++        for package, expected in settings["versions"].items():
++            if self.version_reader(package) != expected:
++                raise ValueError("Study package version changed: " + package)
++        if (settings.get("solver"), settings.get("max_iter"), settings.get("tol"), settings.get("model_seed")) != ("saga", 20000, 1e-4, 42):
++            raise ValueError("Unexpected evaluated Elastic-net procedure")
++        cohort = pd.read_csv(run / "cohort.csv", dtype={"id": "string"}, float_precision="round_trip")
++        expected_frame = c["frame"].copy()
++        expected_frame["id"] = expected_frame["id"].astype("string")
++        if not cohort.equals(expected_frame) or self.read(run / "split_indices.json") != c["groups"]:
++            raise ValueError("Cohort or ordered split identity changed")
++        size = len(c["frame"])
++        for number, expected_auc in ((0, self.control_auc), (25, best["objective_auc"])):
++            with np.load(run / "trials" / f"trial_{number:04d}" / "predictions.npz", allow_pickle=False) as saved:
++                raw = self.probability(saved["elasticnet"], size)
++                p = self.probability(saved["ensemble"], size)
++            alpha = trials[number]["parameters"]["alpha"]
++            reconstructed = (1 - alpha) * c["baseline"] + alpha * raw
++            if not np.allclose(p, reconstructed, rtol=0, atol=self.tolerance):
++                raise ValueError("Saved ensemble is not the evaluated formula")
++            repeats = self.score(c, reconstructed)
++            self.close(repeats.mean(), expected_auc, "recomputed ensemble")
++            if number == 25:
++                self.close(repeats.std(ddof=1), best["repeat_sd"], "repeat SD")
++                self.close(self.score(c, raw).mean(), best["standalone_auc"], "standalone")
++                reference = self.score(c, c["baseline"])
++                catboost = self.score(c, c["catboost_control"])
++                self.compare(repeats, reference, best["reference_comparison"])
++                self.compare(repeats, catboost, best["catboost_comparison"])
++                if (decision["reference_comparison"] != best["reference_comparison"]
++                        or decision["catboost_control_comparison"] != best["catboost_comparison"]):
++                    raise ValueError("Decision comparisons disagree")
++        hashes.update(c["elasticnet_hashes"])
++        if any(Path(path).resolve().is_relative_to(dest) for path in hashes):
++            raise ValueError("Output overlaps watched inputs")
++        self.verify_hashes(hashes)
++        return dict(run=run, output=dest, context=c, parameters=best["parameters"],
++                    best=best, decision=decision, hashes=hashes, settings=settings)
+diff --git a/src/submission/elasticnet_trial_submission.py b/src/submission/elasticnet_trial_submission.py
+new file mode 100644
+--- /dev/null
++++ b/src/submission/elasticnet_trial_submission.py
+@@ -0,0 +1,167 @@
++"""Full-data Trial25 refit, model persistence and manual-submission export."""
++from contextlib import redirect_stdout, redirect_stderr
++from datetime import datetime, timezone
++import inspect
++from pathlib import Path
++import traceback
++import warnings
++import numpy as np
++import pandas as pd
++from threadpoolctl import threadpool_limits
++from src.modeling.elasticnet_trial_model import ElasticnetTrialModel
++from src.modeling.model_registry import RegisteredModel
++from src.submission.elasticnet_trial_snapshot import ElasticnetTrialSnapshot
++
++
++class ElasticnetTrialSubmission:
++    candidate_name = "elasticnet_optuna_trial_25"
++
++    def __init__(self, snapshot=None, model_factory=None):
++        self.snapshot = snapshot or ElasticnetTrialSnapshot()
++        self.model_factory = model_factory or self.create_model
++
++    @staticmethod
++    def create_model(alias, c, parameters):
++        from src.modeling.registered_models import L1Model, XGBTopKModel, LightGBMModel
++        if alias == "l1":
++            return L1Model(context=c["context"])
++        if alias == "xgboost":
++            return XGBTopKModel(context=c["context"])
++        if alias == "lightgbm":
++            return LightGBMModel(parameters=c["lightgbm_parameters"])
++        if alias == "elasticnet":
++            return ElasticnetTrialModel({k: parameters[k] for k in ("C", "l1_ratio")})
++        raise ValueError("Unknown branch: " + alias)
++
++    def prepare(self, run, config, output, test=None, template=None):
++        saved = self.snapshot.load(run, config, output)
++        c, h = saved["context"], self.snapshot.helper
++        ctx = c["context"]
++        features = list(ctx["x"].columns)
++        test_path = h._path(test or ctx["candidate"]["default_test_path"])
++        template_path = h._path(template or ctx["candidate"]["default_template_path"])
++        if any(p.is_relative_to(saved["output"]) for p in (test_path, template_path)):
++            raise ValueError("Output overlaps prediction inputs")
++        # Hash BEFORE reading: any edit during the read/refit is detected before publication.
++        inputs = {str(p): h._sha(p) for p in (test_path, template_path)}
++        xt, ids, target = h._test_inputs(test_path, template_path, features,
++                        ctx["base"].id_column, ctx["base"].target_column,
++                        ctx["candidate"]["expected_test_rows"])
++        self.snapshot.verify_hashes(inputs)
++        code = [Path(inspect.getfile(cls)).resolve() for cls in
++                (ElasticnetTrialSubmission, ElasticnetTrialSnapshot, ElasticnetTrialModel)]
++        cli = h._path("scripts/predict_elasticnet_trial_25.py")
++        if cli.is_file():
++            code.append(cli)
++        saved["hashes"].update({str(p): h._sha(p) for p in code})
++        saved.update(test=xt, test_ids=ids, template=target, features=features, input_hashes=inputs)
++        return saved
++
++    @staticmethod
++    def blend(probabilities, alpha):
++        original = (probabilities["l1"] + probabilities["xgboost"] + probabilities["lightgbm"]) / 3
++        return original, (1 - alpha) * original + alpha * probabilities["elasticnet"]
++
++    def predict(self, run="outputs/results/elasticnet_optuna_v1_run_01",
++                config="configs/elasticnet_optuna_v1.json",
++                output="outputs/submissions/elasticnet_optuna_trial_25_run_01",
++                test=None, template=None, dry_run=False):
++        saved = self.prepare(run, config, output, test, template)
++        c, out, h = saved["context"], saved["output"], self.snapshot.helper
++        if dry_run:
++            return dict(status="prediction_preflight_passed", candidate=self.candidate_name,
++                        selected_trial=25, train_rows=len(c["context"]["x"]), rows=len(saved["test"]),
++                        planned_estimator_fits=5, fits_performed=0, test_opened=True,
++                        output_created=False, kaggle_upload_performed=False, output=str(out))
++        out.mkdir(parents=True, exist_ok=False)
++        (out / "models").mkdir()
++        manifest = dict(status="running", candidate=self.candidate_name, selected_trial=25,
++                        source_study=str(saved["run"]), started_utc=datetime.now(timezone.utc).isoformat(),
++                        planned_estimator_fits=5, attempted_estimator_fits=0, fits_performed=0,
++                        test_opened=True, kaggle_upload_performed=False, automatic_promotion=False,
++                        train_rows=len(c["context"]["x"]), parameters=saved["parameters"],
++                        versions=dict(c.get("versions", {}), **saved["settings"]["versions"]),
++                        source_input_and_code_sha256=saved["hashes"],
++                        prediction_input_sha256=saved["input_hashes"],
++                        interpretation="Full-data refit/export of adaptive-development Trial25; not an independent evaluation.")
++        probabilities, details, warning_rows = {}, {}, []
++        final_csv, pending_csv = out / "submission.csv", out / "submission.pending.csv"
++        h._write(out / "prediction_manifest.json", manifest)
++        try:
++            h._write(out / "source_decision.json", saved["decision"])
++            h._write(out / "source_best_trial.json", saved["best"])
++            with threadpool_limits(limits=1):
++                for alias in ("l1", "xgboost", "lightgbm", "elasticnet"):
++                    self.snapshot.verify_hashes(saved["hashes"])
++                    cost = 2 if alias == "xgboost" else 1
++                    manifest["attempted_estimator_fits"] += cost
++                    h._write(out / "prediction_manifest.json", manifest)
++                    caught = []
++                    try:
++                        with warnings.catch_warnings(record=True) as caught, (out / "fit.log").open("a", encoding="utf-8") as log:
++                            warnings.simplefilter("always")
++                            with redirect_stdout(log), redirect_stderr(log):
++                                model = self.model_factory(alias, c, saved["parameters"])
++                                model.fit(c["context"]["x"], c["context"]["y"])
++                                manifest["fits_performed"] += cost
++                                before = self.snapshot.probability(model.positive_probability(saved["test"]), len(saved["test"]))
++                                path = out / "models" / (alias + ".joblib")
++                                model.save(path)
++                                loaded = RegisteredModel.load(path)
++                                after = self.snapshot.probability(loaded.positive_probability(saved["test"]), len(saved["test"]))
++                                if not np.allclose(before, after, rtol=0, atol=1e-12):
++                                    raise ValueError("Reloaded model predictions differ: " + alias)
++                                probabilities[alias] = after
++                                details[alias] = loaded.diagnostics()
++                    finally:
++                        warning_rows.extend(dict(model=alias, category=w.category.__name__, message=str(w.message)) for w in caught)
++                        h._write(out / "warnings.json", warning_rows)
++                    if caught:
++                        raise RuntimeError("Python warnings require review; no final submission written")
++            original, blended = self.blend(probabilities, saved["parameters"]["alpha"])
++            blended = self.snapshot.probability(blended, len(saved["test"]))
++            id_column = c["context"]["base"].id_column
++            target_column = c["context"]["base"].target_column
++            audit = pd.DataFrame({id_column: saved["test_ids"], **probabilities,
++                                  "original_three_model": original, "ensemble": blended})
++            audit.to_csv(out / "component_predictions.csv", index=False)
++            h._write(out / "ensemble.json", dict(candidate=self.candidate_name,
++                     formula="(1-alpha)*(p_l1+p_xgboost+p_lightgbm)/3+alpha*p_elasticnet",
++                     alpha=saved["parameters"]["alpha"], feature_order=saved["features"],
++                     model_diagnostics=details, elasticnet_parameters=saved["parameters"],
++                     l1_configuration=c["context"]["linear"].to_dict(),
++                     xgboost_parameters=c["context"]["candidate"]["estimator_parameters"],
++                     xgboost_k=c["context"]["candidate"]["k"],
++                     lightgbm_parameters=c["lightgbm_parameters"],
++                     model_files={alias: "models/" + alias + ".joblib" for alias in probabilities}))
++            frame = h._align(saved["test_ids"], blended, saved["template"], id_column, target_column)
++            frame.to_csv(pending_csv, index=False)
++            reread = h._read_csv(pending_csv, id_column)
++            if (list(reread.columns) != [id_column, target_column] or len(reread) != len(saved["test"])
++                    or not reread[id_column].equals(saved["template"][id_column])
++                    or not np.allclose(reread[target_column], frame[target_column], rtol=0, atol=1e-12)):
++                raise ValueError("Submission CSV round-trip/ID alignment failed")
++            self.snapshot.probability(reread[target_column], len(frame))
++            self.snapshot.verify_hashes(saved["hashes"])
++            self.snapshot.verify_hashes(saved["input_hashes"])
++            if manifest["fits_performed"] != 5:
++                raise ValueError("Full-data estimator fit budget changed")
++            pending_csv.replace(final_csv)
++            manifest.update(rows=len(frame), saved_and_reloaded_models_verified=True,
++                            submission_sha256=h._sha(final_csv),
++                            prediction_min=float(blended.min()), prediction_max=float(blended.max()))
++            manifest["artifact_sha256"] = {str(p.relative_to(out)): h._sha(p) for p in sorted(out.rglob("*"))
++                                           if p.is_file() and p.name != "prediction_manifest.json"}
++            manifest["status"] = "ready_for_manual_submission"
++            return dict(status=manifest["status"], candidate=self.candidate_name,
++                        submission=str(final_csv), rows=len(frame), fits_performed=5)
++        except BaseException as exc:
++            # Never leave a final-named CSV behind after failed validation.
++            final_csv.unlink(missing_ok=True)
++            pending_csv.unlink(missing_ok=True)
++            manifest.update(status="failed_or_interrupted", error=f"{type(exc).__name__}: {exc}")
++            h._write(out / "error.json", dict(error=manifest["error"], traceback=traceback.format_exc()))
++            raise
++        finally:
++            manifest["finished_utc"] = datetime.now(timezone.utc).isoformat()
++            h._write(out / "prediction_manifest.json", manifest)
+diff --git a/scripts/predict_elasticnet_trial_25.py b/scripts/predict_elasticnet_trial_25.py
+new file mode 100644
+--- /dev/null
++++ b/scripts/predict_elasticnet_trial_25.py
+@@ -0,0 +1,30 @@
++"""Predict/export the frozen Elastic-net Trial25; never upload to Kaggle."""
++import argparse
++import json
++import sys
++from src.submission.elasticnet_trial_submission import ElasticnetTrialSubmission
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("--run", default="outputs/results/elasticnet_optuna_v1_run_01")
++    parser.add_argument("--config", default="configs/elasticnet_optuna_v1.json")
++    parser.add_argument("--output", default="outputs/submissions/elasticnet_optuna_trial_25_run_01")
++    parser.add_argument("--test")
++    parser.add_argument("--template")
++    parser.add_argument("--dry-run", action="store_true")
++    args = parser.parse_args(argv)
++    result = ElasticnetTrialSubmission().predict(**vars(args))
++    print(json.dumps(result, indent=2, allow_nan=False))
++    return 0
++
++
++if __name__ == "__main__":
++    try:
++        sys.exit(main())
++    except KeyboardInterrupt:
++        print("Interrupted; preserve outputs and use a fresh output directory.", file=sys.stderr)
++        sys.exit(130)
++    except Exception as exc:
++        print(f"Trial25 export stopped: {type(exc).__name__}: {exc}", file=sys.stderr)
++        sys.exit(1)
+diff --git a/tests/test_elasticnet_trial_submission.py b/tests/test_elasticnet_trial_submission.py
+new file mode 100644
+--- /dev/null
++++ b/tests/test_elasticnet_trial_submission.py
+@@ -0,0 +1,331 @@
++"""Trial25 integrity, actual sklearn persistence and failure-safe export tests."""
++from pathlib import Path
++from types import SimpleNamespace
++import csv
++import hashlib
++import importlib.util
++import json
++import numpy as np
++import pandas as pd
++import pytest
++from sklearn.datasets import make_classification
++from sklearn.exceptions import ConvergenceWarning
++from sklearn.model_selection import StratifiedKFold
++from src.modeling.elasticnet_trial_model import ElasticnetTrialModel
++from src.modeling.model_registry import RegisteredModel
++from src.submission.elasticnet_trial_snapshot import ElasticnetTrialSnapshot
++from src.submission.elasticnet_trial_submission import ElasticnetTrialSubmission
++
++
++def digest(path):
++    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
++
++
++def write(path, value):
++    Path(path).parent.mkdir(parents=True, exist_ok=True)
++    Path(path).write_text(json.dumps(value, allow_nan=False))
++
++
++def test_helper(root):
++    # On the real repository use its actual strict CSV helper; contract fallback in sandbox.
++    try:
++        from src.submission.frozen_xgboost_submission import FrozenXGBoostSubmission
++        return FrozenXGBoostSubmission()
++    except ModuleNotFoundError as exc:
++        if exc.name != "src.submission.frozen_xgboost_submission":
++            raise
++    def read_csv(path, id_column):
++        with Path(path).open(newline="") as stream:
++            header = next(csv.reader(stream))
++        if len(header) != len(set(header)):
++            raise ValueError("Duplicate CSV header")
++        return pd.read_csv(path, dtype={id_column: "string"})
++    def inputs(test, template, features, id_col, target_col, expected):
++        t, target = read_csv(test, id_col), read_csv(template, id_col)
++        if set(t.columns) != {id_col, *features} or list(target.columns) != [id_col, target_col]:
++            raise ValueError("Schema mismatch")
++        if len(t) != expected or len(target) != expected:
++            raise ValueError("Row count mismatch")
++        for f in (t, target):
++            if f[id_col].isna().any() or not f[id_col].is_unique or f[id_col].str.strip().eq("").any():
++                raise ValueError("Invalid IDs")
++        if set(t[id_col]) != set(target[id_col]):
++            raise ValueError("ID sets differ")
++        x = t[features]
++        if not np.isfinite(x.to_numpy(dtype=float)).all():
++            raise ValueError("Nonfinite features")
++        return x, t[id_col].copy(), target
++    def align(ids, scores, template, id_col, target_col):
++        frame = template[[id_col]].copy()
++        frame[target_col] = frame[id_col].map(pd.Series(scores, index=ids.to_numpy()))
++        if not np.isfinite(frame[target_col]).all():
++            raise ValueError("Unmatched IDs")
++        return frame
++    return SimpleNamespace(_path=lambda p: (root / p).resolve(), _sha=digest,
++                           _write=write, _test_inputs=inputs, _align=align, _read_csv=read_csv)
++
++
++test_helper.__test__ = False
++
++
++@pytest.fixture
++def sample(tmp_path, monkeypatch):
++    root = tmp_path
++    helper = test_helper(root)
++    run, dest = root / "study", root / "export"
++    run.mkdir()
++    x, y = make_classification(n_samples=40, n_features=8, n_informative=4, random_state=5)
++    x, y = pd.DataFrame(x, columns=[f"f{i}" for i in range(8)]), pd.Series(y)
++    groups, rows, offset = [], [], 0
++    for repeat in range(10):
++        for fold, (tr, va) in enumerate(StratifiedKFold(5, shuffle=True, random_state=repeat).split(x, y)):
++            groups.append(dict(repeat=repeat, fold=fold, split_seed=repeat,
++                               train_indices=tr.tolist(), valid_indices=va.tolist(),
++                               start=offset, stop=offset + len(va)))
++            rows.extend(dict(repeat=repeat, fold=fold, split_seed=repeat, row_index=int(i), id=str(i), target=int(y.iloc[i])) for i in va)
++            offset += len(va)
++    frame = pd.DataFrame(rows)
++    frame["id"] = frame["id"].astype("string")
++    train = root / "train.csv"
++    x.assign(target=y).to_csv(train, index=False)
++    code = root / "frozen_source.py"
++    code.write_text("frozen")
++    config = root / "config.json"
++    cfg = dict(suite_config="suite.json", output_dir=str(run), design={"n_trials": 30})
++    write(config, cfg)
++    hashes = {str(p): digest(p) for p in (train, code, config)}
++    test = root / "test.csv"
++    t = x.iloc[:7].copy() + 15
++    t.insert(0, "id", [f"00{i}" for i in range(7)])
++    t.to_csv(test, index=False)
++    template = root / "sample_submission.csv"
++    pd.DataFrame(dict(id=t.id.iloc[::-1].to_list(), target=0)).to_csv(template, index=False)
++    ctx = dict(x=x, y=y, candidate=dict(default_test_path=str(test), default_template_path=str(template),
++               expected_test_rows=7, estimator_parameters={"seed": 42}, k=20),
++               base=SimpleNamespace(id_column="id", target_column="target"),
++               linear=SimpleNamespace(to_dict=lambda: {"regularization_c": 1.0}))
++    c = dict(context=ctx, groups=groups, frame=frame, baseline=np.full(offset, .5),
++             catboost_control=np.full(offset, .5), elasticnet_hashes=hashes,
++             optuna_config=cfg, lightgbm_parameters={"n_estimators": 50}, versions={})
++    stats = dict(reference="reference", candidate="candidate", mean_difference=.5,
++                 difference_sd=0., wins=10, losses=0, ties=0)
++    catstats = dict(stats, reference="catboost_frozen")
++    params = ElasticnetTrialSnapshot.expected_parameters.copy()
++    best = dict(number=25, state="COMPLETE", parameters=params, objective_auc=1., standalone_auc=1.,
++                repeat_sd=0., reference_comparison=stats, catboost_comparison=catstats, control_reproduced=None)
++    decision = dict(selected_trial=25, selected_mean_auc=1., parameters=params, screening_passed=True,
++                    screening_both_controls=True, reference_comparison=stats,
++                    catboost_control_comparison=catstats, control_reproduced=True, automatic_promotion=False)
++    settings = dict(config=cfg, input_and_code_sha256=hashes, versions={"scikit-learn": "synthetic"},
++                    solver="saga", max_iter=20000, tol=1e-4, model_seed=42)
++    records = [dict(number=i, state="COMPLETE", value=1. if i == 25 else .5,
++                    parameters=params if i == 25 else dict(C=.1, l1_ratio=.75, alpha=.05),
++                    user_attrs={"control_reproduced": True} if i == 0 else {}) for i in range(30)]
++    for name, value in [("settings", settings), ("decision", decision), ("best_trial", best),
++                        ("trials", records), ("split_indices", groups)]:
++        write(run / (name + ".json"), value)
++    pd.DataFrame([dict(number=r["number"], state=r["state"], objective_auc=r["value"], **r["parameters"]) for r in records]).to_csv(run / "trials.csv", index=False)
++    frame.to_csv(run / "cohort.csv", index=False)
++    for number in (0, 25):
++        d = run / "trials" / f"trial_{number:04d}"
++        d.mkdir(parents=True)
++        result = best if number == 25 else dict(number=0, state="COMPLETE", parameters=records[0]["parameters"], objective_auc=.5, control_reproduced=True)
++        write(d / "result.json", result)
++        write(d / "parameters.json", records[number]["parameters"])
++        raw = .1 + .8 * frame.target.to_numpy() if number == 25 else np.full(offset, .5)
++        alpha = records[number]["parameters"]["alpha"]
++        np.savez_compressed(d / "predictions.npz", elasticnet=raw, ensemble=(1-alpha)*c["baseline"] + alpha*raw)
++    manifest = dict(status="completed", planned_trials=30, completed_trials=30, planned_fits=1500,
++                    completed_fits=1500, test_opened=False, kaggle_upload_performed=False)
++    def rehash():
++        manifest["artifact_sha256"] = {str(p.relative_to(run)): digest(p) for p in run.rglob("*") if p.is_file() and p.name != "run_manifest.json"}
++        write(run / "run_manifest.json", manifest)
++    rehash()
++    monkeypatch.setattr(ElasticnetTrialSnapshot, "expected_auc", 1.)
++    monkeypatch.setattr(ElasticnetTrialSnapshot, "control_auc", .5)
++    snapshot = ElasticnetTrialSnapshot(helper=helper, prepare_study=lambda *a, **k: c,
++                                     version_reader=lambda p: "synthetic")
++    # Four actual sklearn procedures; tree branches substituted, not native-tree integration.
++    factory = lambda alias, c, p: ElasticnetTrialModel({k: p[k] for k in ("C", "l1_ratio")})
++    exporter = ElasticnetTrialSubmission(snapshot=snapshot, model_factory=factory)
++    return SimpleNamespace(root=root, run=run, dest=dest, config=config, context=c, helper=helper,
++                           snapshot=snapshot, exporter=exporter, rehash=rehash, test=test, template=template)
++
++
++def invoke(s, **kwargs):
++    return s.exporter.predict(run=str(s.run), config=str(s.config), output=str(s.dest), **kwargs)
++
++
++def test_dry_run_no_fit_or_output(sample, monkeypatch):
++    monkeypatch.setattr(ElasticnetTrialModel, "fit", lambda *a: pytest.fail("dry-run fitted a model"))
++    result = invoke(sample, dry_run=True)
++    assert result["fits_performed"] == 0 and result["planned_estimator_fits"] == 5
++    assert result["test_opened"] is True and not sample.dest.exists()
++
++
++def test_actual_logistic_save_reload_and_submission(sample):
++    result = invoke(sample)
++    assert result["status"] == "ready_for_manual_submission" and result["fits_performed"] == 5
++    manifest = sample.snapshot.read(sample.dest / "prediction_manifest.json")
++    assert manifest["saved_and_reloaded_models_verified"] is True
++    assert manifest["kaggle_upload_performed"] is False and manifest["automatic_promotion"] is False
++    exported = sample.helper._read_csv(sample.dest / "submission.csv", "id")
++    target = sample.helper._read_csv(sample.template, "id")
++    assert exported.id.equals(target.id) and exported.id.iloc[0] == "006"
++    components = pd.read_csv(sample.dest / "component_predictions.csv", dtype={"id": "string"})
++    raw = (1-sample.snapshot.expected_parameters["alpha"]) * components.original_three_model + sample.snapshot.expected_parameters["alpha"] * components.elasticnet
++    expected = pd.Series(raw.to_numpy(), index=components.id)
++    assert np.allclose(exported.target, exported.id.map(expected), rtol=0, atol=1e-12)
++    model = RegisteredModel.load(sample.dest / "models/elasticnet.joblib")
++    assert np.allclose(model.model.named_steps["scaler"].mean_, sample.context["context"]["x"].mean())
++    for path, value in manifest["artifact_sha256"].items():
++        assert digest(sample.dest / path) == value
++
++
++def test_existing_output_rejected(sample):
++    sample.dest.mkdir()
++    with pytest.raises(FileExistsError):
++        invoke(sample, dry_run=True)
++
++
++def test_artifact_tampering_rejected(sample):
++    (sample.run / "best_trial.json").write_text("{}")
++    with pytest.raises(ValueError, match="changed"):
++        invoke(sample, dry_run=True)
++    assert not sample.dest.exists()
++
++
++def test_rehashed_selection_change_rejected(sample):
++    p = sample.run / "decision.json"
++    decision = sample.snapshot.read(p)
++    decision["selected_trial"] = 24
++    write(p, decision)
++    sample.rehash()
++    with pytest.raises(ValueError, match="Trial25"):
++        invoke(sample, dry_run=True)
++
++
++def test_rehashed_prediction_formula_change_rejected(sample):
++    path = sample.run / "trials/trial_0025/predictions.npz"
++    with np.load(path) as z:
++        raw = z["elasticnet"].copy()
++    np.savez_compressed(path, elasticnet=raw, ensemble=raw)
++    sample.rehash()
++    with pytest.raises(ValueError, match="formula"):
++        invoke(sample, dry_run=True)
++
++
++def test_environment_change_rejected(sample):
++    sample.snapshot.version_reader = lambda p: "different"
++    with pytest.raises(ValueError, match="version changed"):
++        invoke(sample, dry_run=True)
++
++
++def test_source_mutation_rejected(sample):
++    (sample.root / "frozen_source.py").write_text("mutated")
++    with pytest.raises(ValueError, match="changed"):
++        invoke(sample, dry_run=True)
++
++
++@pytest.mark.parametrize("problem", ["duplicate_ids", "missing_id", "wrong_schema", "nonfinite"])
++def test_invalid_test_data_rejected(sample, problem):
++    test = pd.read_csv(sample.test, dtype={"id": "string"})
++    if problem == "duplicate_ids":
++        test.loc[0, "id"] = test.loc[1, "id"]
++    elif problem == "missing_id":
++        test.loc[0, "id"] = "unknown"
++    elif problem == "wrong_schema":
++        test = test.drop(columns="f0")
++    else:
++        test.loc[0, "f0"] = np.inf
++    test.to_csv(sample.test, index=False)
++    with pytest.raises(ValueError):
++        invoke(sample, dry_run=True)
++    assert not sample.dest.exists()
++
++
++def test_warning_aborts_without_submission(sample, monkeypatch):
++    import warnings
++    old = ElasticnetTrialModel.fit
++    def warn_fit(self, x, y):
++        model = old(self, x, y)
++        warnings.warn("synthetic convergence issue", ConvergenceWarning)
++        return model
++    monkeypatch.setattr(ElasticnetTrialModel, "fit", warn_fit)
++    with pytest.raises(RuntimeError, match="warnings"):
++        invoke(sample)
++    assert not (sample.dest / "submission.csv").exists()
++    assert sample.snapshot.read(sample.dest / "prediction_manifest.json")["status"] == "failed_or_interrupted"
++
++
++def test_reload_mismatch_aborts_without_submission(sample, monkeypatch):
++    monkeypatch.setattr(RegisteredModel, "load", staticmethod(lambda p: SimpleNamespace(positive_probability=lambda x: np.ones(len(x)))))
++    with pytest.raises(ValueError, match="Reloaded"):
++        invoke(sample)
++    assert not (sample.dest / "submission.csv").exists()
++
++
++def test_test_input_change_during_fit_aborts(sample, monkeypatch):
++    old = ElasticnetTrialModel.fit
++    def mutate(self, x, y):
++        fitted = old(self, x, y)
++        sample.test.write_text(sample.test.read_text() + "\n")
++        return fitted
++    monkeypatch.setattr(ElasticnetTrialModel, "fit", mutate)
++    with pytest.raises(ValueError, match="changed"):
++        invoke(sample)
++    assert not (sample.dest / "submission.csv").exists()
++
++
++def test_model_rejects_feature_order_change(sample):
++    x, y = sample.context["context"]["x"], sample.context["context"]["y"]
++    model = ElasticnetTrialModel(dict(C=.2, l1_ratio=.95)).fit(x, y)
++    with pytest.raises(ValueError):
++        model.positive_probability(x[x.columns[::-1]])
++
++
++def test_failed_study_rejected(sample):
++    p = sample.run / "run_manifest.json"
++    manifest = sample.snapshot.read(p)
++    manifest["status"] = "failed_or_interrupted"
++    write(p, manifest)
++    with pytest.raises(ValueError, match="completed"):
++        invoke(sample, dry_run=True)
++
++
++def test_path_traversal_rejected(sample):
++    p = sample.run / "run_manifest.json"
++    manifest = sample.snapshot.read(p)
++    manifest["artifact_sha256"]["../train.csv"] = digest(sample.root / "train.csv")
++    write(p, manifest)
++    with pytest.raises(ValueError, match="Unsafe"):
++        invoke(sample, dry_run=True)
++
++
++def test_rehashed_score_inconsistency_rejected(sample):
++    path = sample.run / "trials/trial_0025/predictions.npz"
++    raw = np.full(len(sample.context["frame"]), .5)
++    np.savez_compressed(path, elasticnet=raw, ensemble=raw)
++    sample.rehash()
++    with pytest.raises(ValueError, match="recomputed ensemble"):
++        invoke(sample, dry_run=True)
++
++
++def test_rehashed_false_screening_rejected(sample):
++    for name in ("best_trial.json", "trials/trial_0025/result.json"):
++        path = sample.run / name
++        record = sample.snapshot.read(path)
++        record["reference_comparison"]["wins"] = 9
++        write(path, record)
++    sample.rehash()
++    with pytest.raises(ValueError, match="wins"):
++        invoke(sample, dry_run=True)
++
++
++def test_cli_is_thin_and_passes_flags(monkeypatch, capsys):
++    from scripts import predict_elasticnet_trial_25 as cli
++    calls = []
++    monkeypatch.setattr(cli, "ElasticnetTrialSubmission", lambda: SimpleNamespace(predict=lambda **kw: calls.append(kw) or {"status": "checked"}))
++    assert cli.main(["--dry-run", "--output", "fresh_output"]) == 0
++    assert calls[0]["dry_run"] is True and calls[0]["output"] == "fresh_output"
++    assert json.loads(capsys.readouterr().out)["status"] == "checked"
+diff --git a/docs/elasticnet_trial_25_export.md b/docs/elasticnet_trial_25_export.md
+new file mode 100644
+--- /dev/null
++++ b/docs/elasticnet_trial_25_export.md
+@@ -0,0 +1,131 @@
++# Elastic-net Trial25 prediction/export
++
++Continue on the current branch. No new branch, GitHub write, registry mutation, search
++rerun, incumbent promotion or Kaggle upload is performed by this patch.
++
++## Structure
++
++- src/modeling/elasticnet_trial_model.py: ElasticnetTrialModel (RegisteredModel subclass).
++- src/submission/elasticnet_trial_snapshot.py: ElasticnetTrialSnapshot (read-only verifier).
++- src/submission/elasticnet_trial_submission.py: ElasticnetTrialSubmission (full-data exporter).
++- scripts/predict_elasticnet_trial_25.py: thin function-only CLI.
++- tests/test_elasticnet_trial_submission.py: function-only pytest tests.
++
++One newly defined class per source file. New filenames/methods are snake_case; class
++names follow the existing PascalCase convention. Existing registered_models.py is not
++refactored because it is part of historically hashed sources.
++
++## Apply from the project root on the current branch
++
++    git apply --check elasticnet_trial_25_export.patch
++    git apply elasticnet_trial_25_export.patch
++    python -m pytest -q tests/test_elasticnet_trial_submission.py
++    python -m pytest -q
++    python -m scripts.predict_elasticnet_trial_25 --dry-run
++    python -m scripts.predict_elasticnet_trial_25
++    python clil.py results --run outputs/submissions/elasticnet_optuna_trial_25_run_01
++
++Keep the existing frozen environment; do not upgrade packages. The patch relies on the
++already completed study, local historical artifacts and the existing Optuna environment.
++No new requirements file is needed. All six files in this patch are additive.
++clil.py is intentionally unchanged: LGBMOptunaExperiment._prepare includes its digest in
++historical hashes. Adding a route there would invalidate existing study verification.
++Use the standalone thin module entry point above.
++
++Options: --run, --config, --output, --test, --template, --dry-run.
++Defaults:
++
++    --run outputs/results/elasticnet_optuna_v1_run_01
++    --config configs/elasticnet_optuna_v1.json
++    --output outputs/submissions/elasticnet_optuna_trial_25_run_01
++
++The default test/template paths and expected row count come from the existing frozen
++candidate. Fresh output only; no resume/overwrite. --dry-run validates the real test and
++template (test_opened=true) but does zero fits and creates no output directory. Historical
++study test_opened=false describes the earlier search and is not rewritten.
++
++## Integrity checks
++
++Requires completed30-trial/1500-fit study with no test access/upload during search.
++Verifies every artifact checksum with containment checks; reselects the highest objective
++from the saved30 COMPLETE trials (exact ties earliest); requires Trial25; cross-checks
++trials.csv/JSON, selected parameters, best/result/decision and control evidence.
++Reuses historical prepare ONLY as a read-only compatibility adapter. No legacy execute,
++search, CV or refit function is called during preflight. Old scripts stay unchanged.
++Compares current config, original code/input hashes and recorded package versions.
++Checks cohort and ordered splits. Reconstructs Trial0 and Trial25 blends from saved
++NPZ probabilities and recomputes AUC, selected repeat SD, standalone AUC and both paired
++screening comparisons before allowing export. Does not rely on a boolean flag alone.
++Trial25 identity: mean_auc0.9092096430139908; C0.18702703609689042;
++l1_ratio0.9589771634360093; alpha0.06655791394873416.
++
++## Refit and formula
++
++Fit the existing L1Model, XGBTopKModel and LightGBMModel from the verified source context,
++plus the new ElasticnetTrialModel. All fit the full labelled training set. XGBoost keeps
++its full-data ranker -> top20 selector -> fresh classifier procedure; it does not use
++cross-fold feature frequencies. LightGBM keeps original Trial14 parameters. Elastic-net
++uses StandardScaler -> saga logistic regression, max_iter20000, tol1e-4, seed42,
++and the exact selected C/l1_ratio. Scaler never fits test data.
++
++    p_original = (p_l1 + p_xgboost + p_lightgbm) / 3
++    p_final = (1-alpha) * p_original + alpha * p_elasticnet
++
++No CatBoost refit, replacement branch, changed boosting rounds, rank averaging or weight
++retuning. Costs: L1=1, XGBoost=2, LightGBM=1, Elastic-net=1, total5 estimator fits.
++
++All four model procedures are saved via existing RegisteredModel.save/load; test
++probabilities before/after reload must agree within1e-12. Capture Python warnings and
++fail closed on any warning. Native informational log output goes into fit.log.
++
++## Output and manual review
++
++    prediction_manifest.json
++    source_decision.json
++    source_best_trial.json
++    ensemble.json
++    models/l1.joblib
++    models/xgboost.joblib
++    models/lightgbm.joblib
++    models/elasticnet.joblib
++    component_predictions.csv
++    warnings.json
++    fit.log
++    submission.csv
++
++component_predictions.csv is in original test order. submission.csv is aligned by string
++ID to template order (including leading zeros), never by row position. Checks schema,
++ID uniqueness/sets, numeric finite predictors, expected row count, probability bounds,
++and CSV round-trip. Hashes prediction inputs BEFORE reading and verifies again before
++publication. Writes to a pending CSV first; failed validation removes final-named CSV.
++
++Review manifest before manually uploading:
++
++    status: ready_for_manual_submission
++    rows:19750
++    fits_performed:5
++    saved_and_reloaded_models_verified:true
++    kaggle_upload_performed:false
++    automatic_promotion:false
++
++The manifest records source/input/new-code hashes, model artifacts, submission hash,
++versions, fit counts, warnings status and formula. Failed/interrupted output is not a
++valid submission candidate. Never bypass historical hash/version mismatches or regenerate
++old manifests to force a pass. Keep prior submissions untouched.
++
++## Verification limits
++
++Author sandbox:21 tests passed, including actual sklearn fitting, joblib save/reload,
++formula checks, string-ID reordering, scaler training-only mean, and failure paths for
++changed artifacts/sources/environment, incorrect selection, invalid data, warnings,
++reload mismatches and input edits during refit. One-class-per-file AST checks also pass.
++
++These tests use a synthetic completed-study fixture and injected sklearn substitutes
++for the three native base branches. The sandbox uses a source-compatible RegisteredModel
++fixture and a strict CSV-helper contract; on the real repository tests import its actual
++RegisteredModel/CSV helper. This is not a native XGBoost/LightGBM integration run and does
++not establish that all real local historical hashes will pass. Full real-data preflight,
++five-fit export and full repository tests must be run locally. No submission was made.
++
++Full-data refit/export is not a fresh performance evaluation. The selected CV result
++remains adaptive development evidence, not independent/nested confirmation.

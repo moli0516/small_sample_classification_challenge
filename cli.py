@@ -71,7 +71,7 @@ def main(argv=None):
             if (path/name).is_file():print(f"\n=== {name} ===\n{(path/name).read_text()}");shown=True
         return 0 if shown else 1
     if args.command=="plan":
-        print("""python -m pip install -r requirements-lgbm-optuna.txt
+        print("""python -m pip install -r requirements.txt
 python cli.py doctor
 python cli.py test --scope new
 python cli.py test

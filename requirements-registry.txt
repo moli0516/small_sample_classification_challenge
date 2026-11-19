@@ -1,2 +1,0 @@
-# Additional dependency only; keep the existing working environment.
-lightgbm

@@ -13,7 +13,7 @@ environment; do not upgrade frozen sklearn/native libraries or historical source
     python -m pytest -q tests/test_elasticnet_optuna_v1.py
     python -m scripts.run_elasticnet_optuna_v1 --dry-run
     python -m scripts.run_elasticnet_optuna_v1
-    python clil.py results --run outputs/results/elasticnet_optuna_v1_run_01
+    python cli.py results --run outputs/results/elasticnet_optuna_v1_run_01
 
 Use the actual downloaded patch location if needed. No git switch command is necessary.
 Fresh output only, no overwrite/resume. --output can specify another nonexisting folder.

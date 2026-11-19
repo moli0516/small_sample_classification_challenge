@@ -1,0 +1,14 @@
+{
+  "gmm_export": "outputs/submissions/generative_a_k8_tied_v1",
+  "trial25_export": "outputs/submissions/elasticnet_optuna_trial_25_run_01",
+  "blend_study": "outputs/results/generative_followup_v1_run_01/blend",
+  "train_path": "data/raw/train.csv",
+  "test_path": "data/raw/test.csv",
+  "sample_submission_path": "data/raw/sample_submission.csv",
+  "expected_rows": 19750,
+  "output_dir": "outputs/submissions/generative_blend_gmm05_v1",
+  "design": {
+    "gmm_weight": 0.5,
+    "trial25_weight": 0.5
+  }
+}

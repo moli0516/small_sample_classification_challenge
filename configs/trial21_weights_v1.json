@@ -1,0 +1,15 @@
+{
+  "trial21_export_config": "configs/generative_trial21_export_v1.json",
+  "trial21_export": "outputs/submissions/generative_optuna_trial21_v1",
+  "old_hybrid_export": "outputs/submissions/generative_blend_gmm05_v1",
+  "comparison_output": "outputs/results/trial21_weights_v1_run_01",
+  "export_output": "outputs/submissions/trial21_weights_v1_run_01",
+  "design": {
+    "alphas": [
+      0.5,
+      0.75,
+      0.9,
+      0.95
+    ]
+  }
+}

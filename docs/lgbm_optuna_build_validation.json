@@ -36,9 +36,9 @@
     "configs/lgbm_optuna.json": "8303e68c45d5ace40c69d8bc1c2b597829dea419f2216454269601543b0c3458",
     "requirements-lgbm-optuna.txt": "6728f69c48328574320157aa0767860d5019fa57df5089a0e4cc74fb9ac0d34c",
     "scripts/run_lgbm_optuna.py": "5f165f6d3ad985d5ef76c5236b4cb8a2c28a7587dbaf390c420a0c48d01f7828",
-    "clil.py": "d348c98361c50574baeae4464e1e807bd57f379967be51abef217142e06fc10f",
+    "cli.py": "d348c98361c50574baeae4464e1e807bd57f379967be51abef217142e06fc10f",
     "tests/test_lgbm_optuna_experiment.py": "c5ac560eaf094e0be7f2bea87dc39b186a499f1dc6ceb50fca537b49edbd13fc",
-    "tests/test_clil.py": "e83a022b5dbe7662e34964b42179b9fc6774777db2660f3816ade4af83644c11",
+    "tests/test_cli.py": "e83a022b5dbe7662e34964b42179b9fc6774777db2660f3816ade4af83644c11",
     "docs/lgbm_optuna_runbook.md": "d2976d9ada511475b799bc8e83282de3df8b922250849f282ad641b9f35f7477",
     "experiments/lgbm_optuna_v1_plan.md": "de3953215a3e1c621d02663e9a93b2e8ae10fa42b1a4a8bd2a8cc388f190098d"
   }

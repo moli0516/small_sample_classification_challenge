@@ -1,0 +1,26 @@
+{
+  "source_config": "configs/generative_geometry_v1.json",
+  "source_study": "outputs/results/generative_geometry_v1_run_01",
+  "output_root": "outputs/results/generative_followup_v1_run_01",
+  "submission_output": "outputs/submissions/generative_a_k8_tied_v1",
+  "test_path": "data/raw/test.csv",
+  "sample_submission_path": "data/raw/sample_submission.csv",
+  "expected_test_rows": 19750,
+  "design": {
+    "capacity_k": [
+      8,
+      12,
+      16
+    ],
+    "ablation": [
+      "geometry",
+      "plain_pca"
+    ],
+    "blend_gmm_weights": [
+      0.25,
+      0.5,
+      0.75
+    ],
+    "seed_policy": "average_all_fixed_seeds"
+  }
+}

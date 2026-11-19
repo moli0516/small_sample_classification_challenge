@@ -113,7 +113,7 @@ class LGBMOptunaExperiment:
             self.optuna_module = optuna
         versions = dict(c["versions"], optuna=self.optuna_module.__version__)
         extra.extend([path,Path(__file__),Path(inspect.getfile(LGBMTrialRejected)),
-                      helper._path("scripts/run_lgbm_optuna.py"),helper._path("clil.py")])
+                      helper._path("scripts/run_lgbm_optuna.py"),helper._path("cli.py")])
         hashes = dict(c["hashes"])
         hashes.update({str(p.resolve()):helper._sha(p) for p in extra})
         return dict(config=cfg,config_path=path,output=destination,runner=runner,helper=helper,

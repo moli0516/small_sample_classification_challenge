@@ -23,12 +23,12 @@ refactored because it is part of historically hashed sources.
     python -m pytest -q
     python -m scripts.predict_elasticnet_trial_25 --dry-run
     python -m scripts.predict_elasticnet_trial_25
-    python clil.py results --run outputs/submissions/elasticnet_optuna_trial_25_run_01
+    python cli.py results --run outputs/submissions/elasticnet_optuna_trial_25_run_01
 
 Keep the existing frozen environment; do not upgrade packages. The patch relies on the
 already completed study, local historical artifacts and the existing Optuna environment.
 No new requirements file is needed. All six files in this patch are additive.
-clil.py is intentionally unchanged: LGBMOptunaExperiment._prepare includes its digest in
+cli.py is intentionally unchanged: LGBMOptunaExperiment._prepare includes its digest in
 historical hashes. Adding a route there would invalidate existing study verification.
 Use the standalone thin module entry point above.
 

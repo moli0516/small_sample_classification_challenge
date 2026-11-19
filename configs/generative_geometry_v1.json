@@ -1,0 +1,32 @@
+{
+  "train_path": "data/raw/train.csv",
+  "target_column": "target",
+  "id_column": "id",
+  "expected_rows": 250,
+  "expected_features": 150,
+  "reference_study": "outputs/results/elasticnet_optuna_v1_run_01",
+  "output_dir": "outputs/results/generative_geometry_v1_run_01",
+  "design": {
+    "clusters": [
+      2,
+      4,
+      8
+    ],
+    "covariances": [
+      "tied",
+      "diag"
+    ],
+    "initialization_seeds": [
+      42,
+      314,
+      2026
+    ],
+    "selected_features": 20,
+    "latent_dimensions": 8,
+    "unlabelled_weight": 1.0,
+    "reg_covar": 0.001,
+    "label_smoothing": 0.001,
+    "max_iter": 300,
+    "tol": 0.0001
+  }
+}

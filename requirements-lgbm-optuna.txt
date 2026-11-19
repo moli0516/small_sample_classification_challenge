@@ -1,2 +1,0 @@
--r requirements-registry.txt
-optuna>=3.0,<6

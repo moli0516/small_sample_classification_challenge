@@ -2,7 +2,7 @@
 
 Branch: feat/ensemble-research-suite-v1
 
-All six experiments are implemented in a NEW standalone module. No clil.py, existing
+All six experiments are implemented in a NEW standalone module. No cli.py, existing
 project implementation, registry, source config, historical output or submission is edited.
 Earlier PCA patches are not required. No final full-data refit/export is implemented.
 The reference is ALWAYS the original equal-weight L1/XGBoost-top20/Trial14 ensemble,
@@ -164,7 +164,7 @@ comparison.csv, paired_repeat_differences.csv and predictions.npz (no pickle).
 Where component predictions exist, component_summary.csv is also saved for diagnosis.
 Read results, e.g.:
 
-    python clil.py results --run outputs/results/ensemble_research_suite_v1_run_01/catboost
+    python cli.py results --run outputs/results/ensemble_research_suite_v1_run_01/catboost
 
 The incumbent stays frozen even if another study passes. Model/weight selection adapts to
 reused labelled data; comparisons have unequal search budgets and remain DEVELOPMENT

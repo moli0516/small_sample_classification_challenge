@@ -1,10 +1,10 @@
-# LightGBM Optuna + clil.py 操作手冊
+# LightGBM Optuna + cli.py 操作手冊
 
 ## 交付及相容性
 
 本 patch 以 GitHub commit ccad344b6395101f2407919817400ad670bb3bd7 的介面為依據。
 只新增檔案，不修改現有 runner、registry、模型 wrapper、舊設定、frozen artifacts 或結果。
-新增入口確實叫 clil.py，按使用者指定名稱保留，並非 cli.py。
+新增入口確實叫 cli.py，按使用者指定名稱保留，並非 cli.py。
 .patch 及 ZIP 中的同名 patch 完全相同，只套用一次；ZIP 不另附需要手動覆寫的程式檔案。
 
 git apply --check 只驗證檔案套用，不會證明本機資料或模型正確。
@@ -16,9 +16,9 @@ git apply --check 只驗證檔案套用，不會證明本機資料或模型正�
 在 small_sample_classification 專案根目錄、原本 .venv 中執行。
 先保存/備份自己的工作。假設 patch 已放在 Downloads：
 
-    git apply --stat ~/Downloads/lgbm_optuna_clil.patch
-    git apply --check ~/Downloads/lgbm_optuna_clil.patch
-    git apply ~/Downloads/lgbm_optuna_clil.patch
+    git apply --stat ~/Downloads/lgbm_optuna_cli.patch
+    git apply --check ~/Downloads/lgbm_optuna_cli.patch
+    git apply ~/Downloads/lgbm_optuna_cli.patch
     git status --short
 
 若檔案已存在或 patch 已套用，停止，不要再 force apply。
@@ -26,7 +26,7 @@ git apply --check 只驗證檔案套用，不會證明本機資料或模型正�
 ## 1. 安裝與環境檢查
 
     python -m pip install -r requirements-lgbm-optuna.txt
-    python clil.py doctor
+    python cli.py doctor
 
 依賴包含既有 requirements-registry.txt 及 Optuna >=3,<6。
 不要另外任意 upgrade numpy/pandas/scikit-learn/XGBoost/LightGBM；版本變動可能使
@@ -34,8 +34,8 @@ git apply --check 只驗證檔案套用，不會證明本機資料或模型正�
 
 ## 2. 測試
 
-    python clil.py test --scope new
-    python clil.py test
+    python cli.py test --scope new
+    python cli.py test
 
 新測試失敗或既有測試回歸失敗，先停止。
 建置環境 34 個測試：32 passed、2 skipped（沒有原生 Optuna/LightGBM）。
@@ -46,17 +46,17 @@ git apply --check 只驗證檔案套用，不會證明本機資料或模型正�
 
 ## 3. 檢查註冊名稱與所有指令
 
-    python clil.py models
-    python clil.py --help
-    python clil.py lgbm-optuna --help
-    python clil.py plan
+    python cli.py models
+    python cli.py --help
+    python cli.py lgbm-optuna --help
+    python cli.py plan
 
 plan 只列印步驟，不會自動訓練/安裝/上傳。
-子命令 help：例如 python clil.py registry cv --help。
+子命令 help：例如 python cli.py registry cv --help。
 
 ## 4. 搜尋前 preflight
 
-    python clil.py lgbm-optuna search --dry-run
+    python cli.py lgbm-optuna search --dry-run
 
 預期核心欄位：
 - status=preflight_passed
@@ -77,7 +77,7 @@ preflight 不新增 study 目錄、不做任何 fits。
 
 ## 5. 開始正式搜尋
 
-    python clil.py lgbm-optuna search
+    python cli.py lgbm-optuna search
 
 預設設定 configs/lgbm_optuna.json；輸出 outputs/results/lgbm_optuna_v1_run_01。
 20 trials 含控制 trial0，最多 1000 次新增 LightGBM fits。每 trial 50 folds。
@@ -108,7 +108,7 @@ Python-warning-bearing 非控制 trial 會記為 FAIL，佔用 20 次名額，�
 
 ## 6. 查看結果
 
-    python clil.py results --run outputs/results/lgbm_optuna_v1_run_01
+    python cli.py results --run outputs/results/lgbm_optuna_v1_run_01
 
 主要輸出：
 - study.sqlite3：Optuna 持久化儲存；本版本沒有原地續跑功能。
@@ -128,8 +128,8 @@ Python-warning-bearing 非控制 trial 會記為 FAIL，佔用 20 次名額，�
 
 ## 7. 只有 promote=true 才 export
 
-    python clil.py lgbm-optuna predict --dry-run
-    python clil.py lgbm-optuna predict
+    python cli.py lgbm-optuna predict --dry-run
+    python cli.py lgbm-optuna predict
 
 預設選 best trial 的 l1_xgb_lgbm，而非該 trial registry decision 裡可能最高的其他組合。
 會先驗證 study artifacts、原始設定、版本、來源 hash，然後委派現有 registry.predict。
@@ -149,33 +149,33 @@ fits_performed=4、saved_and_reloaded_models_verified=true，並檢查警告/日
 
 既有 output 永不覆寫；也不會偷偷刪掉/恢復半輪 Optuna。
 
-    python clil.py lgbm-optuna search --output outputs/results/lgbm_optuna_v1_run_02 --dry-run
-    python clil.py lgbm-optuna search --output outputs/results/lgbm_optuna_v1_run_02
-    python clil.py results --run outputs/results/lgbm_optuna_v1_run_02
-    python clil.py lgbm-optuna predict --run outputs/results/lgbm_optuna_v1_run_02 --output outputs/submissions/lgbm_optuna_v1_run_02 --dry-run
-    python clil.py lgbm-optuna predict --run outputs/results/lgbm_optuna_v1_run_02 --output outputs/submissions/lgbm_optuna_v1_run_02
+    python cli.py lgbm-optuna search --output outputs/results/lgbm_optuna_v1_run_02 --dry-run
+    python cli.py lgbm-optuna search --output outputs/results/lgbm_optuna_v1_run_02
+    python cli.py results --run outputs/results/lgbm_optuna_v1_run_02
+    python cli.py lgbm-optuna predict --run outputs/results/lgbm_optuna_v1_run_02 --output outputs/submissions/lgbm_optuna_v1_run_02 --dry-run
+    python cli.py lgbm-optuna predict --run outputs/results/lgbm_optuna_v1_run_02 --output outputs/submissions/lgbm_optuna_v1_run_02
 
 改參數/程式/設定會破壞已執行研究的 hash 一致性。完成研究後先封存再規劃新版本。
 
 ## 既有實驗統一入口（不更改舊參數或預設輸出）
 
-clil.py 只用目前 sys.executable 以 subprocess 呼叫原 module，cwd 固定專案根目錄，
+cli.py 只用目前 sys.executable 以 subprocess 呼叫原 module，cwd 固定專案根目錄，
 原 arguments 原樣轉送，不 shell=True，不自動重跑已有研究：
 
-    python clil.py baseline --help
-    python clil.py xgb --help
-    python clil.py xgb-optuna --help
-    python clil.py xgb-features --help
-    python clil.py frozen-xgb --help
-    python clil.py soft-vote --help
-    python clil.py registry --help
-    python clil.py extension --help
-    python clil.py audit --help
+    python cli.py baseline --help
+    python cli.py xgb --help
+    python cli.py xgb-optuna --help
+    python cli.py xgb-features --help
+    python cli.py frozen-xgb --help
+    python cli.py soft-vote --help
+    python cli.py registry --help
+    python cli.py extension --help
+    python cli.py audit --help
 
 其餘已知 scripts：
 
-    python clil.py run make_submission --help
-    python clil.py run create_e4_configs --help
+    python cli.py run make_submission --help
+    python cli.py run create_e4_configs --help
 
 轉送後的實際旗標仍由舊 CLI 決定，不假設所有舊 script 都有 dry-run。
 這是統一入口，不是重寫既有模型生命週期；目前清單涵蓋現有實驗/配置產生入口。

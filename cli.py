@@ -1,4 +1,4 @@
-"""Unified experiment CLI. Name clil.py is intentional, as requested."""
+"""Unified experiment CLI. Name cli.py is intentional, as requested."""
 import argparse
 from importlib import import_module
 from importlib.metadata import version,PackageNotFoundError
@@ -47,7 +47,7 @@ def main(argv=None):
         if remaining:parser.error("models accepts no extra arguments")
         return execute(["-m","scripts.run_registered_ensembles","list"])
     if args.command=="test":
-        paths={"new":["tests/test_lgbm_optuna_experiment.py","tests/test_clil.py"],
+        paths={"new":["tests/test_lgbm_optuna_experiment.py","tests/test_cli.py"],
                "registry":["tests/test_registered_ensembles.py"],"all":[]}[args.scope]
         return execute(["-m","pytest","-q",*paths,*remaining])
     if remaining:parser.error(f"Unknown arguments: {' '.join(remaining)}")
@@ -71,16 +71,16 @@ def main(argv=None):
             if (path/name).is_file():print(f"\n=== {name} ===\n{(path/name).read_text()}");shown=True
         return 0 if shown else 1
     if args.command=="plan":
-        print("""python -m pip install -r requirements-lgbm-optuna.txt
-python clil.py doctor
-python clil.py test --scope new
-python clil.py test
-python clil.py lgbm-optuna search --dry-run
-python clil.py lgbm-optuna search
-python clil.py results --run outputs/results/lgbm_optuna_v1_run_01
+        print("""python -m pip install -r requirements.txt
+python cli.py doctor
+python cli.py test --scope new
+python cli.py test
+python cli.py lgbm-optuna search --dry-run
+python cli.py lgbm-optuna search
+python cli.py results --run outputs/results/lgbm_optuna_v1_run_01
 # ONLY if decision.json has promote=true:
-python clil.py lgbm-optuna predict --dry-run
-python clil.py lgbm-optuna predict
+python cli.py lgbm-optuna predict --dry-run
+python cli.py lgbm-optuna predict
 # Review prediction_manifest.json before manually uploading submission.csv.""")
         return 0
     return 1

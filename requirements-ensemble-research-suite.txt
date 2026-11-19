@@ -1,2 +1,0 @@
-# Optional new dependency only; preserve the existing frozen project environment.
-catboost>=1.2,<2

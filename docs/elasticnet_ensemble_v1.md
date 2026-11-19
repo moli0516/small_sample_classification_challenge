@@ -57,7 +57,7 @@ coefficient_diagnostics.json:per-fold nonzero counts, feature names, solver iter
 candidate_specs.json; predictions.npz; cohort.csv; split_indices.json
 settings.json; warnings.json; decision.json; run_manifest.json with output hashes
 
-    python clil.py results --run outputs/results/ensemble_research_suite_v1_run_01/elasticnet_v1
+    python cli.py results --run outputs/results/ensemble_research_suite_v1_run_01/elasticnet_v1
 
 No competition test data, submission export, or final full-data refit. This is another
 adaptive development study on previously reused labelled observations, not independent

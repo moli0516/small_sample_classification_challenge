@@ -94,7 +94,7 @@ class LGBMOptunaTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.root=Path(self.temp.name).resolve();Helper.root=self.root
         (self.root/"scripts").mkdir();(self.root/"scripts/run_lgbm_optuna.py").write_text("# source fixture\n")
-        (self.root/"clil.py").write_text("# source fixture\n")
+        (self.root/"cli.py").write_text("# source fixture\n")
         self.fixed=dict(objective="binary",learning_rate=.05,n_estimators=100,max_depth=3,num_leaves=7,
             min_child_samples=20,reg_lambda=10.,subsample=1.,colsample_bytree=1.,random_state=42,n_jobs=1,
             verbosity=1,deterministic=True,force_col_wise=True)

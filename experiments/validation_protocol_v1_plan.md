@@ -2,7 +2,7 @@
 
 Status: implementation prepared; real labelled-data results NOT yet produced.
 Use a dedicated branch from the final-model development baseline. No RF dependency.
-This patch only ADDS files and does not change clil.py, historical runners, frozen
+This patch only ADDS files and does not change cli.py, historical runners, frozen
 snapshots, old configurations, submissions or src/extensions/validation_protocol_study.py.
 
 ## Question

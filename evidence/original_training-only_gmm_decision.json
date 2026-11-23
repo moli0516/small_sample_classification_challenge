@@ -1,0 +1,29 @@
+{
+  "action": "ablation",
+  "selected_candidate": "A_k8_tied",
+  "selected_mean_auc": 0.9296401907271473,
+  "selected_spec": {
+    "k": 8,
+    "representation": "geometry",
+    "source": "frozen_original_study"
+  },
+  "eligible_candidates": {
+    "A_k8_tied": true,
+    "A_k8_plain_pca_tied": true
+  },
+  "comparisons": [
+    {
+      "candidate": "A_k8_tied",
+      "reference": "reference_trial25",
+      "mean_difference": 0.02043054771315648,
+      "difference_sd": 0.012181425461847833,
+      "wins": 10,
+      "losses": 0,
+      "ties": 0
+    }
+  ],
+  "screening_against_both_controls": false,
+  "automatic_promotion": false,
+  "selection_rule": "Highest eligible mean; exact ties generation order. Capacity/ablation include frozen K8. Blending selects only its three fixed weights. No seed selection.",
+  "interpretation": "Exploratory reused-split evidence; follow-up cannot change the frozen K8 export recipe"
+}

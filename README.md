@@ -43,7 +43,7 @@ Final prediction file: `TODO: path to the chosen submission CSV`
 6. **Validation-protocol extension.** Hold-out versus 3-, 5- and 10-fold CV, tested on
    earlier discriminative candidate pairs. It does not evaluate Trial 21.
 
-The full write-up is in the final report (`TODO: report location`).
+The full write-up is in the final report.
 
 ## Repository Layout
 
@@ -54,14 +54,11 @@ The full write-up is in the final report (`TODO: report location`).
 | `scripts/`         | Entry points for each experiment and export                         |
 | `configs/`         | Experiment configurations                                           |
 | `docs/`            | Per-experiment runbooks                                             |
-| `data` | Training and test datasets                                             |
+| `data`             | Training and test datasets                                          |
 | `tests/`           | Unit and integration tests                                          |
 | `outputs/`         | Experiment artifacts (results, models, frozen exports, submissions) |
 | `cli.py`           | Command-line entry point                                            |
 | `requirements.txt` | Single dependency file                                              |
-
-
-
 
 ## Setup
 
@@ -93,6 +90,44 @@ Warnings concern scikit-learn (`SVC(probability=True)`) and pandas
 
 ## Reproducing the Trial 21 Results
 
+Run from the project root, in the original environment. Start with dry-runs,
+which perform no fits and write no output:
+
+```bash
+python -m scripts.export_generative_trial21_v1 --dry-run
+python -m scripts.run_trial21_weights_v1 compare --dry-run
+```
+
+Then the full commands:
+
+```bash
+python -m scripts.export_generative_trial21_v1
+python -m scripts.run_trial21_weights_v1 compare
+```
+
+Requirements:
+
+- Artifacts from earlier studies under `outputs/` (the Trial 25 export, the
+  generative Optuna study and the old hybrid and K8 exports).
+- The competition files at the paths in `configs/generative_trial21_export_v1.json`
+  (by default `data/raw/test.csv` and `data/raw/sample_submission.csv`).
+- The recorded package versions. The scripts verify source hashes, versions, row
+  order and identifier alignment, and stop on any mismatch.
+
+Path handling:
+
+- The two new configs use paths relative to the project root and can be edited.
+- Existing output directories are never overwritten. Pass `--output` to write to a
+  new directory.
+- Some stored manifests from earlier studies record absolute paths from the
+  original machine. No override is provided for these, and they must not be edited
+  to bypass a failed check. If a path check fails on another machine, the
+  historical artifacts cannot be re-verified there. The results can still be
+  inspected directly in `outputs/results/` and `outputs/submissions/`.
+
+See `docs/generative_trial21_export_v1.md`, `docs/trial21_weights_v1.md` and
+`docs/generative_blend_export_v1.md` for details.
+
 ```bash
 python -m scripts.export_generative_trial21_v1
 python -m scripts.run_trial21_weights_v1 compare
@@ -104,18 +139,30 @@ hashes, row order and identifier alignment. A fresh clone without those artifact
 not reproduce them. See `docs/generative_trial21_export_v1.md`,
 `docs/trial21_weights_v1.md` and `docs/generative_blend_export_v1.md` for details.
 
-Some stored manifests record absolute paths from the original machine. Keeping the
-directory layout does not resolve these checks elsewhere. `TODO: describe any path override or confirm none is needed.`
+## Archived Experiments
 
-## Experiment Branches
+Negative-result experiments referenced in the report were run on separate
+development branches and are not part of the final pipeline. Their code is
+archived under `archived_experiments/` for traceability only, and their result
+directories are retained under `outputs/results/`.
+
+
+| Folder                                  | Experiment                                                                                      | Report outcome                                      |
+| --------------------------------------- | ----------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| `archived_experiments/rf/`              | Bounded random-forest addition to the Trial 14 ensemble (V1 and the`max_features` follow-up V2) | `TODO: state the V1 and V2 outcomes`                |
+| `archived_experiments/pca_l2/`          | PCA with L2 logistic regression                                                                 | Did not improve the fixed discriminative procedures |
+| `archived_experiments/pca_three_model/` | PCA applied to the three-model ensemble (`pca_three_model_v1`, `pca_ensemble_v1`)               | Did not improve the fixed discriminative procedures |
+
+These archives are not wired into `cli.py` and are not covered by the test
+command above. Their provenance checks expect the original local paths and
+environment, so they may not rerun on another machine. Do not edit the stored
+manifests to bypass those checks.
 
 Some negative-result experiments referenced in the report live on separate branches
 and are not part of `main`:
 
 - `feat/RF`: bounded random-forest ensemble experiments (PR #1, unmerged).
 - `feat/pca-l2-experiment-v1`, `feat/pca-three-model-representation-v1`: PCA follow-ups.
-
-`TODO: update this section if these are merged or archived.`
 
 ## Scope and Limitations
 

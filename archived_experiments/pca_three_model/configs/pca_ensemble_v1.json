@@ -1,0 +1,14 @@
+{
+  "ensemble_run": "outputs/results/validation_protocol_v1_run_01",
+  "pca_run": "outputs/results/pca_l2_v1_run_01",
+  "output_dir": "outputs/results/pca_ensemble_v1_run_01",
+  "pca_candidate": "pca_50_C0.01",
+  "l2_candidate": "no_pca_C0.001",
+  "alphas": [
+    0.05,
+    0.1,
+    0.25
+  ],
+  "expected_rows": 250,
+  "expected_reference_auc": 0.9083364180103309
+}

@@ -1,0 +1,25 @@
+{
+  "train_path": "data/raw/train.csv",
+  "target_column": "target",
+  "id_column": "id",
+  "expected_rows": 250,
+  "expected_features": 150,
+  "source_run": "outputs/results/validation_protocol_v1_run_01",
+  "output_dir": "outputs/results/pca_l2_v1_run_01",
+  "c_values": [
+    0.001,
+    0.01,
+    0.1,
+    1.0,
+    10.0
+  ],
+  "components": [
+    5,
+    10,
+    20,
+    50
+  ],
+  "max_iter": 5000,
+  "tol": 0.0001,
+  "model_seed": 42
+}

@@ -25,7 +25,7 @@ are noise.
 - The same 250 labels were reused across successive tuning and selection steps. All
   development results are adaptive estimates, not independent generalisation evidence.
 
-Final prediction file: `outputs/submissions/trial21_A095_manual_v1/submission.csv`
+Final prediction file: `outputs/submissions/trial21_A095_manual_v1/submission.csv, `
 
 ## Method Overview
 
@@ -157,7 +157,7 @@ directories are kept whole:
 | `l1_c1_summary.json`                          | All-feature L1, C = 1, 0.862112                                    |
 | `rbf_svm_c_10_gamma_0_01_decision.json`       | Best RBF-SVM setting, 0.812385                                     |
 | `xgb_init_decision.json`                      | Initial shallow XGBoost grid, 0.839271                             |
-| `xgb_optuna_trail20_decision.json`            | XGBoost Optuna Trial 20, 0.881937                                  |
+| `xgb_optuna_trail20_decision.json`            | Top-20 XGBoost, 0.890672 (nine wins over Trial 20); full k comparison in feature_selection_k_comparison.csv                                  |
 | `xgb_k5_summary.json`, `xgb_k20_summary.json` | Top-5 (0.862745) and top-20 feature selection                      |
 | `top20_xgb_decision.json`                     | Top-20 XGBoost, 0.890672                                           |
 | `linear_nonlinear_ensemble_comparison.csv`    | L1 + XGBoost (0.902878) and the fixed-LightGBM comparison          |
@@ -181,11 +181,11 @@ archived under `archived_experiments/` for traceability only, and their result
 directories are retained under `outputs/results/`.
 
 
-| Folder                                  | Experiment                                                                                       | Report outcome                                                                                          |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
-| `archived_experiments/rf/` | Bounded random-forest addition to the Trial 14 ensemble (V1, and the `max_features` follow-up V2) | The report covers V1 only: it improved the mean by 0.000031 and was kept as a backup, not adopted. The V2 follow-up is not discussed in the report. It retained the original `sqrt` setting and promoted no new `max_features` value (see `outputs/results/rf_auto_v2_run_01/`). |
-| `archived_experiments/pca_l2/`          | PCA with L2 logistic regression                                                                  | Did not improve the fixed discriminative procedures                                                     |
-| `archived_experiments/pca_three_model/` | PCA applied to the three-model ensemble (`pca_three_model_v1`, `pca_ensemble_v1`)                | Did not improve the fixed discriminative procedures; best common-PCA ensemble 0.771577 against 0.908336 |
+| Folder                                  | Experiment                                                                                       | Report outcome                                                                                                                                                                                                                                                                  |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `archived_experiments/rf/`              | Bounded random-forest addition to the Trial 14 ensemble (V1, and the`max_features` follow-up V2) | The report covers V1 only: it improved the mean by 0.000031 and was kept as a backup, not adopted. The V2 follow-up is not discussed in the report. It retained the original`sqrt` setting and promoted no new `max_features` value (see `outputs/results/rf_auto_v2_run_01/`). |
+| `archived_experiments/pca_l2/`          | PCA with L2 logistic regression                                                                  | Did not improve the fixed discriminative procedures                                                                                                                                                                                                                             |
+| `archived_experiments/pca_three_model/` | PCA applied to the three-model ensemble (`pca_three_model_v1`, `pca_ensemble_v1`)                | Did not improve the fixed discriminative procedures; best common-PCA ensemble 0.771577 against 0.908336                                                                                                                                                                         |
 
 These archives are not wired into `cli.py` and are not covered by the test
 command above. Their provenance checks expect the original local paths and

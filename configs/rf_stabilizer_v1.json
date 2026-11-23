@@ -1,0 +1,6 @@
+{
+  "source_study": "outputs/results/lgbm_optuna_v1_run_01",
+  "expected_trial": 14,
+  "expected_baseline_auc": 0.9083364180103309,
+  "output_dir": "outputs/results/rf_stabilizer_v1_run_01"
+}

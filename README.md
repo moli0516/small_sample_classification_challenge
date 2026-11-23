@@ -15,50 +15,54 @@ are noise.
 | 95% Trial 21 + 5% Trial 25                               | 0.995308           | 0.98846    | Additional comparison         |
 
 - Development AUC is the mean of ten repetitions of shuffled stratified five-fold CV.
-- Trial 21 was selected by a 50/50 GMM–Trial 25 hybrid objective (hybrid CV AUC 0.983730),
+- Trial 21 was selected by a 50/50 GMM-Trial 25 hybrid objective (hybrid CV AUC 0.983730),
   not by standalone AUC. The standalone result is a post-search follow-up.
 - The 95% blends are additional submission comparisons. All eight tested fixed blends
   scored below standalone on mean CV AUC.
 - Public scores cover a small subset of the test set. Their ordering is not evidence of
-  private leaderboard superiority.
+  private leaderboard superiority. They are values reported by the competition
+  platform; no file in this repository reproduces them.
 - The same 250 labels were reused across successive tuning and selection steps. All
   development results are adaptive estimates, not independent generalisation evidence.
 
-Final prediction file: `TODO: path to the chosen submission CSV`
+Final prediction file: `outputs/submissions/trial21_A095_manual_v1/submission.csv`
 
 ## Method Overview
 
 1. **Discriminative baselines.** L1/L2 logistic regression, XGBoost, LightGBM and
    equal-weight ensembles, with training-local feature selection.
-2. **Trial 25 reference.** An Elastic-net addition to the L1–XGBoost–LightGBM average,
+2. **Trial 25 reference.** An Elastic-net addition to the L1-XGBoost-LightGBM average,
    found by a 30-trial Optuna search and frozen as the discriminative reference.
 3. **Geometry-based GMM.** Within each training portion: standardise, rank features
    by squared correlations with other predictors plus a kurtosis term (labels unused),
    keep the top features, apply PCA, then fit a tied-covariance Gaussian mixture on
    the joint distribution of representation and label. Predictions average seeds
    42, 314 and 2026.
-4. **Joint tuning.** A 30-trial Optuna search optimised a 50/50 GMM–Trial 25 hybrid.
+4. **Joint tuning.** A 30-trial Optuna search optimised a 50/50 GMM-Trial 25 hybrid.
    Trial 21 used 20 features, 12 PCA dimensions and 12 components.
 5. **Fixed-weight blending.** Zero-fit comparison of eight blends against standalone.
 6. **Validation-protocol extension.** Hold-out versus 3-, 5- and 10-fold CV, tested on
    earlier discriminative candidate pairs. It does not evaluate Trial 21.
 
-The full write-up is in the final report.
+The full write-up is the final report submitted with this project.
 
 ## Repository Layout
 
 
-| Path               | Contents                                                            |
-| ------------------ | ------------------------------------------------------------------- |
-| `src/`             | Library code, pipelines, validation and experiment modules          |
-| `scripts/`         | Entry points for each experiment and export                         |
-| `configs/`         | Experiment configurations                                           |
-| `docs/`            | Per-experiment runbooks                                             |
-| `data`             | Training and test datasets                                          |
-| `tests/`           | Unit and integration tests                                          |
-| `outputs/`         | Experiment artifacts (results, models, frozen exports, submissions) |
-| `cli.py`           | Command-line entry point                                            |
-| `requirements.txt` | Single dependency file                                              |
+| Path                    | Contents                                                              |
+| ----------------------- | --------------------------------------------------------------------- |
+| `src/`                  | Library code, pipelines, validation and experiment modules            |
+| `scripts/`              | Entry points for each experiment and export                           |
+| `configs/`              | Experiment configurations                                             |
+| `docs/`                 | Per-experiment runbooks                                               |
+| `tests/`                | Unit and integration tests                                            |
+| `experiments/`          | Experiment record and plans                                           |
+| `outputs/`              | Experiment artifacts (results, models, frozen exports, submissions)   |
+| `evidence/`             | Selected result files that support the report (see Evidence below)    |
+| `archived_experiments/` | Code for negative-result experiments (see Archived Experiments below) |
+| `data/`                 | Competition data, not redistributed (see Data below)                  |
+| `cli.py`                | Command-line entry point                                              |
+| `requirements.txt`      | Single dependency file                                                |
 
 ## Setup
 
@@ -68,12 +72,13 @@ source .venv/bin/activate        # Windows: .venv\Scripts\activate
 python -m pip install -r requirements.txt
 ```
 
-Python version: Python 3.13.7.
+Python version: 3.13.7.
 
 ## Data
 
-Competition data is not redistributed here unless explicitly stated.
-Data should be placed in data/raw, which do not included in this repository
+Competition data is not redistributed here unless explicitly stated. Place the
+files in `data/raw/` (by default `data/raw/test.csv` and `data/raw/sample_submission.csv`,
+together with the labelled training file).
 
 ## Tests
 
@@ -108,9 +113,8 @@ python -m scripts.run_trial21_weights_v1 compare
 Requirements:
 
 - Artifacts from earlier studies under `outputs/` (the Trial 25 export, the
-  generative Optuna study and the old hybrid and K8 exports).
-- The competition files at the paths in `configs/generative_trial21_export_v1.json`
-  (by default `data/raw/test.csv` and `data/raw/sample_submission.csv`).
+  generative Optuna study, and the old hybrid and K8 exports).
+- The competition files at the paths in `configs/generative_trial21_export_v1.json`.
 - The recorded package versions. The scripts verify source hashes, versions, row
   order and identifier alignment, and stop on any mismatch.
 
@@ -121,23 +125,53 @@ Path handling:
   new directory.
 - Some stored manifests from earlier studies record absolute paths from the
   original machine. No override is provided for these, and they must not be edited
-  to bypass a failed check. If a path check fails on another machine, the
-  historical artifacts cannot be re-verified there. The results can still be
-  inspected directly in `outputs/results/` and `outputs/submissions/`.
+  to bypass a failed check. If a check fails on another machine or after the
+  source or environment has changed, the historical artifacts cannot be
+  re-verified there. The stored results can still be inspected directly in
+  `outputs/results/`, `outputs/submissions/` and `evidence/`.
+
+The validation-protocol extension is subject to the same check. Its stored results
+are kept in `evidence/validation_protocol_v1_run_01/`. A fresh run of
+`python -m scripts.run_validation_protocol_v1` stopped at the source-provenance
+check in the current environment and was not forced.
 
 See `docs/generative_trial21_export_v1.md`, `docs/trial21_weights_v1.md` and
 `docs/generative_blend_export_v1.md` for details.
 
-```bash
-python -m scripts.export_generative_trial21_v1
-python -m scripts.run_trial21_weights_v1 compare
-```
+## Evidence
 
-These commands need artifacts from earlier studies under `outputs/` (the Trial 25
-exports, the Trial 21 search study and recorded provenance) and strictly verify source
-hashes, row order and identifier alignment. A fresh clone without those artifacts will
-not reproduce them. See `docs/generative_trial21_export_v1.md`,
-`docs/trial21_weights_v1.md` and `docs/generative_blend_export_v1.md` for details.
+`evidence/` holds copies of the result files that support the numbers in the
+report. The complete result directories remain under `outputs/results/`. Two run
+directories are kept whole:
+
+- `gmm_trial21_weights_v1_run_01/`: the eight-blend comparison against Trial 21
+  standalone (Section V.B), including paired comparisons.
+- `validation_protocol_v1_run_01/`: the validation-protocol extension (Table III and
+  Fig. 1).
+
+
+| File                                          | Supports                                                           |
+| --------------------------------------------- | ------------------------------------------------------------------ |
+| `l2_c_0_001_summary.json`                     | All-feature L2 logistic regression, 0.793999                       |
+| `l2_k10_c_0_1_summary.json`                   | Correlation filter, k = 10, C = 0.1, 0.822982                      |
+| `l1_c1_summary.json`                          | All-feature L1, C = 1, 0.862112                                    |
+| `rbf_svm_c_10_gamma_0_01_decision.json`       | Best RBF-SVM setting, 0.812385                                     |
+| `xgb_init_decision.json`                      | Initial shallow XGBoost grid, 0.839271                             |
+| `xgb_optuna_trail20_decision.json`            | XGBoost Optuna Trial 20, 0.881937                                  |
+| `xgb_k5_summary.json`, `xgb_k20_summary.json` | Top-5 (0.862745) and top-20 feature selection                      |
+| `top20_xgb_decision.json`                     | Top-20 XGBoost, 0.890672                                           |
+| `linear_nonlinear_ensemble_comparison.csv`    | L1 + XGBoost (0.902878) and the fixed-LightGBM comparison          |
+| `tuned_three_model_ensemble_decision.json`    | Tuned three-model ensemble mean, 0.908336                          |
+| `trial25_reference_T.json`                    | Trial 25 reference T, 0.909210                                     |
+| `original_training-only_gmm_decision.json`    | Original training-only GMM, 0.929640                               |
+| `original_5050_hybrid_decision.json`          | Original 50/50 hybrid, 0.938275                                    |
+| `trial21_hybrid_objective_decision.json`      | Trial 21 hybrid objective, 0.983730, and its selected parameters   |
+| `trial21_standalone_decision.json`            | Trial 21 standalone retained, 0.995469                             |
+| `0.95gmm_summary.csv`                         | Means and repeat SDs for the eight blends and reference procedures |
+
+Not covered by files in `evidence/`: the capacity follow-up, the transductive
+mode comparison, the Elastic-net grid, the RF and PCA follow-ups (see below), and
+the public scores in Table II.
 
 ## Archived Experiments
 
@@ -147,22 +181,16 @@ archived under `archived_experiments/` for traceability only, and their result
 directories are retained under `outputs/results/`.
 
 
-| Folder                                  | Experiment                                                                                      | Report outcome                                      |
-| --------------------------------------- | ----------------------------------------------------------------------------------------------- | --------------------------------------------------- |
-| `archived_experiments/rf/`              | Bounded random-forest addition to the Trial 14 ensemble (V1 and the`max_features` follow-up V2) | `TODO: state the V1 and V2 outcomes`                |
-| `archived_experiments/pca_l2/`          | PCA with L2 logistic regression                                                                 | Did not improve the fixed discriminative procedures |
-| `archived_experiments/pca_three_model/` | PCA applied to the three-model ensemble (`pca_three_model_v1`, `pca_ensemble_v1`)               | Did not improve the fixed discriminative procedures |
+| Folder                                  | Experiment                                                                                       | Report outcome                                                                                          |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| `archived_experiments/rf/` | Bounded random-forest addition to the Trial 14 ensemble (V1, and the `max_features` follow-up V2) | The report covers V1 only: it improved the mean by 0.000031 and was kept as a backup, not adopted. The V2 follow-up is not discussed in the report. It retained the original `sqrt` setting and promoted no new `max_features` value (see `outputs/results/rf_auto_v2_run_01/`). |
+| `archived_experiments/pca_l2/`          | PCA with L2 logistic regression                                                                  | Did not improve the fixed discriminative procedures                                                     |
+| `archived_experiments/pca_three_model/` | PCA applied to the three-model ensemble (`pca_three_model_v1`, `pca_ensemble_v1`)                | Did not improve the fixed discriminative procedures; best common-PCA ensemble 0.771577 against 0.908336 |
 
 These archives are not wired into `cli.py` and are not covered by the test
 command above. Their provenance checks expect the original local paths and
 environment, so they may not rerun on another machine. Do not edit the stored
 manifests to bypass those checks.
-
-Some negative-result experiments referenced in the report live on separate branches
-and are not part of `main`:
-
-- `feat/RF`: bounded random-forest ensemble experiments (PR #1, unmerged).
-- `feat/pca-l2-experiment-v1`, `feat/pca-three-model-representation-v1`: PCA follow-ups.
 
 ## Scope and Limitations
 

@@ -16,12 +16,12 @@ Preserve/commit preceding work before creating the new branch.
     python -m pytest -q tests/test_pca_three_model_v1.py
     python -m scripts.run_pca_three_model_v1 --dry-run
     python -m scripts.run_pca_three_model_v1
-    python clil.py results --run outputs/results/pca_three_model_v1_run_01
+    python cil.py results --run outputs/results/pca_three_model_v1_run_01
 
 Place the delivered patch at the root or substitute its real location.
 Use the established project environment with xgboost/lightgbm installed. Do not upgrade
 packages casually: historical verification requires the original environment and code.
-No modification to clil.py is needed. The dry-run constructs unfitted classifiers but
+No modification to cil.py is needed. The dry-run constructs unfitted classifiers but
 performs no fit and creates no output. Existing output directories are rejected.
 
 ## Required original artifacts

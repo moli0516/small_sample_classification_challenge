@@ -1,0 +1,23 @@
+{
+  "status": "completed",
+  "action": "compare",
+  "fits_performed": 0,
+  "competition_test_opened": false,
+  "kaggle_upload_performed": false,
+  "started_utc": "2026-11-10T14:28:17.642734+00:00",
+  "finished_utc": "2026-11-10T14:28:18.931888+00:00",
+  "artifact_sha256": {
+    "fold_scores.csv": "1b498ebc58832d88fe94715337f218a435d3124a05f64ed6f9d3568af99a6807",
+    "settings.json": "6625c0bc060257f5f80b4a27c175349bf0a7e8861976540dde0237b84ae4da7f",
+    "split_indices.json": "1f43f338a84b4ed84502b37ba62d18a2561f5d4c25a0d46eb6dbe14778bd0ec7",
+    "candidate_specs.csv": "10070b9c4d6d56d05650a47893554dc9fb6a800dc2890fd9ef48fd1a59db7668",
+    "repeat_scores.csv": "82f584efc0780ffced6a54700a717dd526c87dad284ab08232dfa3b6aaa11945",
+    "candidate_specs.json": "43a70e10bcb8b02dd739c6894875c89252e6e070aed9f916d21a5a9fa36e2407",
+    "paired_repeat_differences.csv": "395749a708070ef71fc33584cf87e468de0ecb6c2efe40f56e2920d4bb73b6df",
+    "cohort.csv": "e1d1d4dbcf8aeb8ad02530b39f67a0ee3d1399556293f79979021407e0d492df",
+    "predictions.npz": "1f5dab9a7a2a7eaa9f3fab8c33d7b3e8d002b8aebbe3cec1b3096d0a3f9fefc4",
+    "paired_comparisons.csv": "d475e451e2a9f251fd7e7639f400ac95f96a06137a11f4d408762e31ba8e4866",
+    "model_summary.csv": "4d87d5b0c55ae8917e18b7f08f938af8fd8511dddc14f57d92d572624b0e3eed",
+    "decision.json": "b00a91df0b2c398b7fb3eb770ddc1391565d2593672ff945ebc3134376c8cf95"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "selected_candidate": "new_gmm",
+  "selected_spec": {
+    "family": "control",
+    "alpha": 1.0,
+    "formula": "G_new",
+    "effective_weights": {
+      "new_gmm": 1.0,
+      "old_gmm": 0.0,
+      "trial25": 0.0
+    }
+  },
+  "selected_mean_auc": 0.9954691845996194,
+  "selected_is_control": true,
+  "screening_passed": null,
+  "screening_status": "not_applicable_control_selected",
+  "old_hybrid_screening_passed": true,
+  "retained_candidate": "new_gmm",
+  "retained_spec": {
+    "family": "control",
+    "alpha": 1.0,
+    "formula": "G_new",
+    "effective_weights": {
+      "new_gmm": 1.0,
+      "old_gmm": 0.0,
+      "trial25": 0.0
+    }
+  },
+  "retained_mean_auc": 0.9954691845996194,
+  "comparisons": [
+    {
+      "candidate": "new_gmm",
+      "reference": "old_hybrid",
+      "mean_difference": 0.057194355563920794,
+      "difference_sd": 0.006822770326240589,
+      "wins": 10,
+      "losses": 0,
+      "ties": 0
+    },
+    {
+      "candidate": "new_gmm",
+      "reference": "B_a0.5",
+      "mean_difference": 0.01173918271744363,
+      "difference_sd": 0.0020834772698695957,
+      "wins": 10,
+      "losses": 0,
+      "ties": 0
+    }
+  ],
+  "automatic_promotion": false,
+  "aliases": {
+    "H_new": "B_a0.5"
+  },
+  "selection_rule": "Highest mean; ties standalone then A alpha order then B alpha order. If winning blend fails, retain standalone, never another blend.",
+  "interpretation": "Post-search fixed-grid development comparison on reused labels/splits; no independent evaluation, significance claim or public-score tuning"
+}

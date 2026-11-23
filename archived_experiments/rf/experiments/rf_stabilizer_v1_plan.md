@@ -2,7 +2,7 @@
 
 Status: implementation prepared; real-data execution NOT performed by this patch.
 Base repository inspected: 7ddb2de9c8352bd7fc40d0bfb06a865bda082623.
-Additive patch: no historical source/config/results changed; no clil.py integration.
+Additive patch: no historical source/config/results changed; no cil.py integration.
 
 ## Question
 Can a fixed 10% RF contribution improve the selected Trial14 three-model procedure?

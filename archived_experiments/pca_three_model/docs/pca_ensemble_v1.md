@@ -5,7 +5,7 @@ Suggested branch: feat/pca-ensemble-experiment-v1
 This additive patch creates an offline ensemble experiment. It does not import a model
 trainer, perform fits, load raw train/test CSVs, export submissions, or alter the incumbent.
 It uses completed LOCAL artifacts produced by the validation-protocol and PCA-L2 patches.
-No existing source files, clil.py, source settings or registries are edited.
+No existing source files, cil.py, source settings or registries are edited.
 
 ## Apply from project root
 
@@ -17,11 +17,11 @@ Commit/preserve your previous PCA changes first, then create the new branch:
     python -m pytest -q tests/test_pca_ensemble_v1.py
     python -m scripts.run_pca_ensemble_v1 --dry-run
     python -m scripts.run_pca_ensemble_v1
-    python clil.py results --run outputs/results/pca_ensemble_v1_run_01
+    python cil.py results --run outputs/results/pca_ensemble_v1_run_01
 
 Place the delivered patch at the project root, or substitute its actual location.
 No additional dependencies beyond numpy, pandas, scikit-learn and pytest are required.
-The module entry point is intentional: the historical clil.py is not modified.
+The module entry point is intentional: the historical cil.py is not modified.
 
 ## Required source runs
 

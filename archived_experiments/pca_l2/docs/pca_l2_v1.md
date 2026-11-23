@@ -1,6 +1,6 @@
 # PCA–L2 development study v1
 
-This additive patch does not modify clil.py, existing source files, frozen registries,
+This additive patch does not modify cil.py, existing source files, frozen registries,
 historical study outputs, ensemble weights, or submissions. Use the module entry point.
 
 ## Apply and check (from the project root)
@@ -10,7 +10,7 @@ historical study outputs, ensemble weights, or submissions. Use the module entry
     python -m pytest -q tests/test_pca_l2_v1.py
     python -m scripts.run_pca_l2_v1 --dry-run
     python -m scripts.run_pca_l2_v1
-    python clil.py results --run outputs/results/pca_l2_v1_run_01
+    python cil.py results --run outputs/results/pca_l2_v1_run_01
 
 The patch file can be stored outside the project; substitute its actual location in git apply.
 Existing numpy, pandas, scikit-learn, scipy, threadpoolctl and pytest are required.

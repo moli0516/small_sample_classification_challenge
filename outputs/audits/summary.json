@@ -1,0 +1,28 @@
+{
+  "target_column": "target",
+  "train_rows": 250,
+  "test_rows": 19750,
+  "feature_count": 150,
+  "class_counts": {
+    "0": 137,
+    "1": 113
+  },
+  "positive_fraction": 0.452,
+  "train_missing_cells": 0,
+  "test_missing_cells": 0,
+  "train_duplicate_predictor_rows": 0,
+  "test_duplicate_predictor_rows": 0,
+  "conflicting_label_feature_groups": 0,
+  "test_rows_matching_train_predictors": 0,
+  "constant_train_features": [],
+  "all_missing_train_features": [],
+  "identifiers": {
+    "id": {
+      "train_missing": 0,
+      "test_missing": 0,
+      "train_duplicate_rows": 0,
+      "test_duplicate_rows": 0
+    }
+  },
+  "warnings": []
+}

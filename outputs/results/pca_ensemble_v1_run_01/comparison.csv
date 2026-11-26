@@ -1,0 +1,10 @@
+reference,candidate,comparison,alpha,mean_difference,difference_sd,wins,losses,ties
+l1_xgb_lgbm,pca_l2_alpha0.05,blend_vs_baseline,0.05,-0.0008404960578873965,0.0005099033096975055,1,9,0
+l1_xgb_lgbm,pca_l2_alpha0.1,blend_vs_baseline,0.1,-0.001877104377104366,0.0007268931328550566,0,10,0
+l1_xgb_lgbm,pca_l2_alpha0.25,blend_vs_baseline,0.25,-0.007079542840412445,0.001853280610200419,0,10,0
+l1_xgb_lgbm,no_pca_l2_alpha0.05,blend_vs_baseline,0.05,-0.00022570424744337015,0.00026525126553922726,0,5,5
+l1_xgb_lgbm,no_pca_l2_alpha0.1,blend_vs_baseline,0.1,-0.00041998661563881213,0.00048139837501289597,0,8,2
+l1_xgb_lgbm,no_pca_l2_alpha0.25,blend_vs_baseline,0.25,-0.0020051446138402485,0.0009000769413164419,0,10,0
+no_pca_l2_alpha0.05,pca_l2_alpha0.05,pca_vs_l2_same_alpha,0.05,-0.0006147918104440264,0.0005164846250341712,2,7,1
+no_pca_l2_alpha0.1,pca_l2_alpha0.1,pca_vs_l2_same_alpha,0.1,-0.001457117761465554,0.0006697786843117094,0,10,0
+no_pca_l2_alpha0.25,pca_l2_alpha0.25,pca_vs_l2_same_alpha,0.25,-0.005074398226572197,0.001961223517212006,0,10,0

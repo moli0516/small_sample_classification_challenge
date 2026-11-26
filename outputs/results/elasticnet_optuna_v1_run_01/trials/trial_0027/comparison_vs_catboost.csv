@@ -1,0 +1,2 @@
+reference,candidate,mean_difference,difference_sd,wins,losses,ties
+catboost_frozen,candidate,-0.0009043854696028864,0.001764626647596244,3,7,0

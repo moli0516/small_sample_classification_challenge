@@ -1,0 +1,131 @@
+{
+  "config": {
+    "frozen_dir": "outputs/frozen/ext03_top20_v1",
+    "l1_config": "configs/e4_l1_c_1.json",
+    "reuse_cv_run": "outputs/results/soft_vote_l1_xgb20_v1_run_01",
+    "output_dir": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/lgbm_optuna_v1_run_01/trials/trial_0014/cv",
+    "models": {
+      "l1": {
+        "type": "l1_pipeline"
+      },
+      "xgboost": {
+        "type": "xgb_topk"
+      },
+      "lightgbm": {
+        "type": "lgbm_classifier",
+        "parameters": {
+          "objective": "binary",
+          "learning_rate": 0.08060078627579852,
+          "n_estimators": 50,
+          "max_depth": 4,
+          "num_leaves": 7,
+          "min_child_samples": 6,
+          "reg_lambda": 0.12763701705576885,
+          "subsample": 1.0,
+          "colsample_bytree": 0.771566198351983,
+          "random_state": 42,
+          "n_jobs": 1,
+          "verbosity": 1,
+          "deterministic": true,
+          "force_col_wise": true
+        }
+      }
+    },
+    "ensembles": {
+      "l1_xgb": {
+        "members": [
+          "l1",
+          "xgboost"
+        ],
+        "weights": [
+          1,
+          1
+        ]
+      },
+      "lgbm_l1": {
+        "members": [
+          "lightgbm",
+          "l1"
+        ],
+        "weights": [
+          1,
+          1
+        ]
+      },
+      "lgbm_xgb": {
+        "members": [
+          "lightgbm",
+          "xgboost"
+        ],
+        "weights": [
+          1,
+          1
+        ]
+      },
+      "l1_xgb_lgbm": {
+        "members": [
+          "l1",
+          "xgboost",
+          "lightgbm"
+        ],
+        "weights": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    "baseline": "l1_xgb"
+  },
+  "config_path": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/lgbm_optuna_v1_run_01/trials/trial_0014/registry_config.json",
+  "no_cache": false,
+  "input_and_code_sha256": {
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/data/raw/train.csv": "7ef80ff93ef49c8c784445f3484f81a9ea6f0e30a6b59703ca5a15daf690b61f",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/configs/e4_l1_c_1.json": "6ea46d509284b237e9d972db3c740d0b5c3f460a9b23a805f1b29281feeb9abd",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/frozen/ext03_top20_v1/snapshot_sha256.json": "64de74ca2cbb79cf2ebd27080b8e7f056a67b3498da2c426b10fe1a0cf180d31",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/frozen/ext03_top20_v1/base_config.json": "08c777ec470fd88a86c2527cd7c802af414fec6e830752fae5316f5cb0fe9012",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/frozen/ext03_top20_v1/evidence/config.json": "f2a6052f18bf2a70fd692c160a42d35670c60807802fddc302e56587dbeac409",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/frozen/ext03_top20_v1/evidence/control_auc_reproduction.csv": "f393fa318a29aeecdb9d738bfd204fd0338816eb6bee0204422649474f36bcd0",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/frozen/ext03_top20_v1/evidence/feature_selection_comparison.csv": "30f234b1c7597729d937349881ac8ee58ab09edba118c32c6fdc9fc196bae6b6",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/frozen/ext03_top20_v1/evidence/feature_selection_paired_repeat_scores.csv": "5ca4c0da74c0c18cd71719f1953f90eada7fd62c66a208b4a0132844e57877f0",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/frozen/ext03_top20_v1/evidence/reference_repeat_scores.csv": "a102b36d44367a0f2029e30eef95315bcc021cc73c2b9e382a581b14250c65f1",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/frozen/ext03_top20_v1/evidence/run_manifest.json": "3c0d34d39696c478acc3b517a739ae3bf9f20dd8a105c9a5c7f0380092d90480",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/frozen/ext03_top20_v1/evidence/selected_candidate/config.json": "2c00eed2a184aa703bcff0ae8d27c55461786d69a530e9ad821e9fe36c9a5a18",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/frozen/ext03_top20_v1/evidence/selected_candidate/fold_scores.csv": "903a074b58119fe1d8263697959e0161a883e017fea1241a8bd97bd8cd46f0a0",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/frozen/ext03_top20_v1/evidence/selected_candidate/repeat_scores.csv": "3100770a3f21019716e122b5f91fdcc93ffd31b88991ea9fd9b5dc01a193979c",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/frozen/ext03_top20_v1/evidence/selected_candidate/summary.json": "9a6416d8d6d463155020dc7a67746bd367e1578cc2bb4d5d65b5947df74bd41e",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/frozen/ext03_top20_v1/evidence/selected_features.json": "a8852c826aa9caa429c9027d436531b81a015ab686240f6fb816e1790a040045",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/frozen/ext03_top20_v1/evidence/selection_frequencies.csv": "57ec9b686232b583dd33711e90c5dd81da996d4e5d87d872c1afeb6450bed64b",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/frozen/ext03_top20_v1/evidence/source_trial_parameters.json": "4b1a993efd34c9e2137f8866629a09ac23eeaf2fec492dd05d194f1fc115bf70",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/frozen/ext03_top20_v1/evidence/verified_split_indices.json": "9981bcf52edabaf385099714a7ea23848486192909e6e354f3a9607b540dd3ae",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/frozen/ext03_top20_v1/frozen_candidate.json": "692613637fab1c93300548c86ff4eb64cc6309ac03127bf90507c2c508431d5a",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/src/experiments/soft_voting_challenge.py": "d65e5858c4131c8266d303907d7ca6bb4b286355b2b95c6a3adc211159ad7110",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/src/submission/frozen_xgboost_submission.py": "77ee532701d7d284263a7fad306c89a71221b0ff33d5eefe3a3135f362921256",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/src/config/experiment_config.py": "b5be01e2a9c3a0cd7662e0ddb9746f4f99b29fb162993f57405efcdfc8fe0a44",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/src/config/xgboost_experiment_config.py": "02cfa641d108bdec551e412f8dd6fa19cba36e74f8b8c3ae30fbd6c36a0a5fa7",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/src/data/labelled_data_loader.py": "97db86ccb8eff6b6156d94ad6cc923ba0a0887c891d14631877b80c88ee04da2",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/src/features/gain_top_k_selector.py": "be09073c3da0f05f9e448b9dba09df9bd67658e1b9cb7e37062d60352581ef69",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/src/modeling/pipeline_factory.py": "963fce18ebb85fc052c63457dfd0f0aadadd8e71d1ba37c98e20b64a48d9dc5d",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/src/validation/saved_split_loader.py": "e9f520befcdadf1294e9e3657e6e280ad944504a1a869031dcfc7f9ad87bbe16",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/soft_vote_l1_xgb20_v1_run_01/run_manifest.json": "4c9b900382b2c9d0a6417acbb100bbb653937e47a597bf29ff0bace56c98ecac",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/soft_vote_l1_xgb20_v1_run_01/summary.json": "3636b639dde000a45541349310f37a40d264be903c299862c5e07bdb10ea21cf",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/soft_vote_l1_xgb20_v1_run_01/l1_config.json": "91ed16ab085a31791942a6af6ba5c5611c42ad23d2d7faa9d556ee14166e2d5e",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/soft_vote_l1_xgb20_v1_run_01/fold_scores.csv": "31ffe474018f7808e9789d4b1f84231a4fc4e5fc27cf4890f5b0cf895f5af485",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/soft_vote_l1_xgb20_v1_run_01/repeat_scores.csv": "24cd56bc64b3ae8a23a3b0ebf5e5f7a6a72b79f21120a3f2cf0e2ed1d0764532",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/soft_vote_l1_xgb20_v1_run_01/config.json": "6c3b29b3d40b61e8c664dda7c8de5f4a515760389b02694cd5efdda6f5ecf940",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/soft_vote_l1_xgb20_v1_run_01/validation_probabilities.csv": "9b3e0a07bf9e074cdb093e52a4b39b40f38402fedd96a909ec3f38c0ceeb955e",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/soft_vote_l1_xgb20_v1_run_01/warnings.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/lgbm_optuna_v1_run_01/trials/trial_0014/registry_config.json": "b4d2e1a957f4a75ae49e91813543843e5e4c78dfb0112ba4a70ed6f66a77442a",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/src/experiments/registered_ensembles.py": "ab41057aa50e5d4dd546ddd9aa4429df846e373939829d3ad56943ec37170918",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/src/modeling/model_registry.py": "6f35421404e82dd95ff211403d5ba4859274991cdc67f6e1f52dfdb50afcb075",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/src/modeling/registered_models.py": "f7b076b23243bfb39a3632344fbb9a2e75c2e47a5bf105b239d02ddb67e4e7bf"
+  },
+  "versions": {
+    "python": "3.13.7",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "sklearn": "1.9.1",
+    "xgboost": "3.4.1",
+    "lightgbm": "4.7.0"
+  }
+}

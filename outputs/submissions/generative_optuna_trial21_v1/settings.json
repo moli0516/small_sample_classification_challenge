@@ -1,0 +1,56 @@
+{
+  "config": {
+    "study": "outputs/results/generative_optuna_v1_run_01",
+    "study_config": "configs/generative_optuna_v1.json",
+    "trial25_export": "outputs/submissions/elasticnet_optuna_trial_25_run_01",
+    "test_path": "data/raw/test.csv",
+    "sample_submission_path": "data/raw/sample_submission.csv",
+    "expected_rows": 19750,
+    "output_dir": "outputs/submissions/generative_optuna_trial21_v1"
+  },
+  "parameters": {
+    "selected_features": 20,
+    "latent_dimensions": 12,
+    "n_components": 12,
+    "reg_covar": 1.4159458366980159e-05,
+    "label_smoothing": 1.3711160213584192e-05
+  },
+  "seeds": [
+    42,
+    314,
+    2026
+  ],
+  "covariance": "tied",
+  "source_design": {
+    "clusters": [
+      2,
+      4,
+      8
+    ],
+    "covariances": [
+      "tied",
+      "diag"
+    ],
+    "initialization_seeds": [
+      42,
+      314,
+      2026
+    ],
+    "selected_features": 20,
+    "latent_dimensions": 8,
+    "unlabelled_weight": 1.0,
+    "reg_covar": 0.001,
+    "label_smoothing": 0.001,
+    "max_iter": 300,
+    "tol": 0.0001
+  },
+  "versions": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pandas": "3.0.6",
+    "scikit-learn": "1.9.1",
+    "joblib": "1.6.0",
+    "threadpoolctl": "3.7.0"
+  },
+  "selection": "Trial21 selected by HYBRID CV objective. Standalone is a separately reported post-search follow-up, not a new standalone winner selection."
+}

@@ -1,0 +1,31 @@
+{
+  "number": 23,
+  "state": "COMPLETE",
+  "parameters": {
+    "C": 0.04382505910786781,
+    "l1_ratio": 0.9924146576333858,
+    "alpha": 0.02341047072935737
+  },
+  "objective_auc": 0.9083358951837213,
+  "standalone_auc": 0.7985675073718552,
+  "repeat_sd": 0.0075466401792700965,
+  "reference_comparison": {
+    "reference": "reference",
+    "candidate": "candidate",
+    "mean_difference": -5.228266098056267e-07,
+    "difference_sd": 0.00045670027448675883,
+    "wins": 4,
+    "losses": 6,
+    "ties": 0
+  },
+  "catboost_comparison": {
+    "reference": "catboost_frozen",
+    "candidate": "candidate",
+    "mean_difference": -0.00035583579061838623,
+    "difference_sd": 0.0011680848281538675,
+    "wins": 5,
+    "losses": 5,
+    "ties": 0
+  },
+  "control_reproduced": null
+}

@@ -1,0 +1,25 @@
+{
+  "status": "ready_for_manual_submission",
+  "action": "export",
+  "started_utc": "2026-11-10T03:37:46.152162+00:00",
+  "competition_test_opened": true,
+  "competition_test_used_for_fitting": false,
+  "kaggle_upload_performed": false,
+  "completed_candidate_fits": 3,
+  "completed_projector_fits": 1,
+  "fit_accounting": "One candidate fit includes one sklearn GMM initialization and one custom EM run",
+  "planned_candidate_fits": 3,
+  "saved_and_reloaded_models_verified": true,
+  "rows": 19750,
+  "export_input_sha256": {
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/data/raw/test.csv": "e40a4f71df157db8f8475dc8585063fcf62a027898fb62eb482a519afe339dc0",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/data/raw/sample_submission.csv": "ce6362dfb3c7386a0dbee598ccdb54ef03e8ceb7a4836d56b9cbec0a0fab08c8"
+  },
+  "finished_utc": "2026-11-10T03:37:47.184109+00:00",
+  "artifact_sha256": {
+    "settings.json": "39bf757b16a3b0b9690007554afc794e9fab2c7d967258330ad845bca02cd05c",
+    "submission.csv": "562bc9e7e0aaaa8f42eabb81d6103a792eba7fe2d30ae761c6f7a2114543f7a2",
+    "model_bundle.joblib": "e626da7fa41d6aab0246fe88fd6a332130f4eb4bc065f2d0ccdc3b4dbf32a014",
+    "fit_diagnostics.json": "2641ea1394832d2c1fc019b2637edd4814ba8f8be85355c4526cf9a288f6e243"
+  }
+}

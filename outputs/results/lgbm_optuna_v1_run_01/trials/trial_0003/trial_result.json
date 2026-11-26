@@ -1,0 +1,39 @@
+{
+  "number": 3,
+  "state": "COMPLETE",
+  "objective_auc": 0.9080133111654851,
+  "difference_vs_baseline": 0.005134889265324,
+  "wins": 9,
+  "losses": 1,
+  "promotable": true,
+  "parameters": {
+    "objective": "binary",
+    "learning_rate": 0.13532030647336643,
+    "n_estimators": 50,
+    "max_depth": 4,
+    "num_leaves": 7,
+    "min_child_samples": 6,
+    "reg_lambda": 0.17456037635797406,
+    "subsample": 1.0,
+    "colsample_bytree": 0.8736932106048627,
+    "random_state": 42,
+    "n_jobs": 1,
+    "verbosity": 1,
+    "deterministic": true,
+    "force_col_wise": true
+  },
+  "cv_run": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/lgbm_optuna_v1_run_01/trials/trial_0003/cv",
+  "reference_reproduced": true,
+  "registry_artifacts": {
+    "fold_scores.csv": "bd4ebb3b66566055deb3142517e3d7ddfb94e263622966bd7eea028631892266",
+    "settings.json": "e277c75559179cb2558e98619f3d68a33c9311479dcccb54c63e92003e8c3de6",
+    "repeat_scores.csv": "ce0e1596045f4dfce506c047c7c9553777cbb19171a636fc6932e85492f438da",
+    "validation_probabilities.csv": "a0d4577bce6aaa5873508f3a84874ba0b148e64be1153be21586f2e59d96778f",
+    "diagnostics.json": "9f080a05e9bb05defc0fd545cdc14a0b8d251d9225def2d9a35188f948027f2a",
+    "fit.log": "4c91d77f1b461cfe00b4f7dbe67a008f54e6e16a6dc6b267b6d4225a7544036d",
+    "comparison.csv": "96968dd1947bd1dbff187585cbe2841a4f9c57d366c5d75def1c80099858f3e4",
+    "decision.json": "0fbeae69d1e9306df0ff5909bec46e7bb03d0ac42ac693bd3dda721014c94b33",
+    "warnings.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "registry_manifest_sha256": "300d5ba48a9a865812d1c0a20517ea12d2e96b25c71431b9c4bfeaf258d1e4f0"
+}

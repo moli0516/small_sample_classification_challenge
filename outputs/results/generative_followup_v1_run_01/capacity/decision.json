@@ -1,0 +1,38 @@
+{
+  "action": "capacity",
+  "selected_candidate": "A_k16_tied",
+  "selected_mean_auc": 0.9304115691072212,
+  "selected_spec": {
+    "k": 16,
+    "representation": "geometry"
+  },
+  "eligible_candidates": {
+    "A_k8_tied": true,
+    "A_k12_tied": true,
+    "A_k16_tied": true
+  },
+  "comparisons": [
+    {
+      "candidate": "A_k16_tied",
+      "reference": "A_k8_tied",
+      "mean_difference": 0.000771378380074017,
+      "difference_sd": 0.004493983536893197,
+      "wins": 4,
+      "losses": 6,
+      "ties": 0
+    },
+    {
+      "candidate": "A_k16_tied",
+      "reference": "reference_trial25",
+      "mean_difference": 0.021201926093230496,
+      "difference_sd": 0.010268192791878416,
+      "wins": 10,
+      "losses": 0,
+      "ties": 0
+    }
+  ],
+  "screening_against_both_controls": false,
+  "automatic_promotion": false,
+  "selection_rule": "Highest eligible mean; exact ties generation order. Capacity/ablation include frozen K8. Blending selects only its three fixed weights. No seed selection.",
+  "interpretation": "Exploratory reused-split evidence; follow-up cannot change the frozen K8 export recipe"
+}

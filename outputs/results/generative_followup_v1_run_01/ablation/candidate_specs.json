@@ -1,0 +1,11 @@
+{
+  "A_k8_tied": {
+    "k": 8,
+    "representation": "geometry",
+    "source": "frozen_original_study"
+  },
+  "A_k8_plain_pca_tied": {
+    "k": 8,
+    "representation": "plain_pca"
+  }
+}

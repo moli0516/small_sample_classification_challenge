@@ -1,0 +1,11 @@
+{
+  "metric": "roc_auc",
+  "aggregation": "mean_fold_auc_per_repeat",
+  "n_repeats": 10,
+  "n_splits": 5,
+  "n_model_fits": 50,
+  "mean_auc": 0.8782937553589727,
+  "std_auc": 0.013940611229413123,
+  "min_auc": 0.8568485057615491,
+  "max_auc": 0.8962236233975365
+}

@@ -1,0 +1,302 @@
+[
+  {
+    "repeat": 0,
+    "fold": 0,
+    "nonzero_coefficients": 23,
+    "n_iter": 68
+  },
+  {
+    "repeat": 0,
+    "fold": 1,
+    "nonzero_coefficients": 16,
+    "n_iter": 59
+  },
+  {
+    "repeat": 0,
+    "fold": 2,
+    "nonzero_coefficients": 25,
+    "n_iter": 63
+  },
+  {
+    "repeat": 0,
+    "fold": 3,
+    "nonzero_coefficients": 18,
+    "n_iter": 57
+  },
+  {
+    "repeat": 0,
+    "fold": 4,
+    "nonzero_coefficients": 19,
+    "n_iter": 59
+  },
+  {
+    "repeat": 1,
+    "fold": 0,
+    "nonzero_coefficients": 17,
+    "n_iter": 61
+  },
+  {
+    "repeat": 1,
+    "fold": 1,
+    "nonzero_coefficients": 18,
+    "n_iter": 61
+  },
+  {
+    "repeat": 1,
+    "fold": 2,
+    "nonzero_coefficients": 24,
+    "n_iter": 65
+  },
+  {
+    "repeat": 1,
+    "fold": 3,
+    "nonzero_coefficients": 21,
+    "n_iter": 58
+  },
+  {
+    "repeat": 1,
+    "fold": 4,
+    "nonzero_coefficients": 18,
+    "n_iter": 58
+  },
+  {
+    "repeat": 2,
+    "fold": 0,
+    "nonzero_coefficients": 20,
+    "n_iter": 70
+  },
+  {
+    "repeat": 2,
+    "fold": 1,
+    "nonzero_coefficients": 23,
+    "n_iter": 60
+  },
+  {
+    "repeat": 2,
+    "fold": 2,
+    "nonzero_coefficients": 26,
+    "n_iter": 71
+  },
+  {
+    "repeat": 2,
+    "fold": 3,
+    "nonzero_coefficients": 20,
+    "n_iter": 56
+  },
+  {
+    "repeat": 2,
+    "fold": 4,
+    "nonzero_coefficients": 20,
+    "n_iter": 67
+  },
+  {
+    "repeat": 3,
+    "fold": 0,
+    "nonzero_coefficients": 20,
+    "n_iter": 64
+  },
+  {
+    "repeat": 3,
+    "fold": 1,
+    "nonzero_coefficients": 21,
+    "n_iter": 59
+  },
+  {
+    "repeat": 3,
+    "fold": 2,
+    "nonzero_coefficients": 19,
+    "n_iter": 51
+  },
+  {
+    "repeat": 3,
+    "fold": 3,
+    "nonzero_coefficients": 20,
+    "n_iter": 62
+  },
+  {
+    "repeat": 3,
+    "fold": 4,
+    "nonzero_coefficients": 20,
+    "n_iter": 74
+  },
+  {
+    "repeat": 4,
+    "fold": 0,
+    "nonzero_coefficients": 24,
+    "n_iter": 65
+  },
+  {
+    "repeat": 4,
+    "fold": 1,
+    "nonzero_coefficients": 19,
+    "n_iter": 59
+  },
+  {
+    "repeat": 4,
+    "fold": 2,
+    "nonzero_coefficients": 22,
+    "n_iter": 72
+  },
+  {
+    "repeat": 4,
+    "fold": 3,
+    "nonzero_coefficients": 23,
+    "n_iter": 59
+  },
+  {
+    "repeat": 4,
+    "fold": 4,
+    "nonzero_coefficients": 20,
+    "n_iter": 67
+  },
+  {
+    "repeat": 5,
+    "fold": 0,
+    "nonzero_coefficients": 23,
+    "n_iter": 60
+  },
+  {
+    "repeat": 5,
+    "fold": 1,
+    "nonzero_coefficients": 22,
+    "n_iter": 56
+  },
+  {
+    "repeat": 5,
+    "fold": 2,
+    "nonzero_coefficients": 17,
+    "n_iter": 60
+  },
+  {
+    "repeat": 5,
+    "fold": 3,
+    "nonzero_coefficients": 21,
+    "n_iter": 64
+  },
+  {
+    "repeat": 5,
+    "fold": 4,
+    "nonzero_coefficients": 21,
+    "n_iter": 61
+  },
+  {
+    "repeat": 6,
+    "fold": 0,
+    "nonzero_coefficients": 22,
+    "n_iter": 70
+  },
+  {
+    "repeat": 6,
+    "fold": 1,
+    "nonzero_coefficients": 20,
+    "n_iter": 63
+  },
+  {
+    "repeat": 6,
+    "fold": 2,
+    "nonzero_coefficients": 18,
+    "n_iter": 67
+  },
+  {
+    "repeat": 6,
+    "fold": 3,
+    "nonzero_coefficients": 17,
+    "n_iter": 56
+  },
+  {
+    "repeat": 6,
+    "fold": 4,
+    "nonzero_coefficients": 18,
+    "n_iter": 61
+  },
+  {
+    "repeat": 7,
+    "fold": 0,
+    "nonzero_coefficients": 19,
+    "n_iter": 63
+  },
+  {
+    "repeat": 7,
+    "fold": 1,
+    "nonzero_coefficients": 20,
+    "n_iter": 56
+  },
+  {
+    "repeat": 7,
+    "fold": 2,
+    "nonzero_coefficients": 22,
+    "n_iter": 68
+  },
+  {
+    "repeat": 7,
+    "fold": 3,
+    "nonzero_coefficients": 21,
+    "n_iter": 61
+  },
+  {
+    "repeat": 7,
+    "fold": 4,
+    "nonzero_coefficients": 22,
+    "n_iter": 69
+  },
+  {
+    "repeat": 8,
+    "fold": 0,
+    "nonzero_coefficients": 20,
+    "n_iter": 62
+  },
+  {
+    "repeat": 8,
+    "fold": 1,
+    "nonzero_coefficients": 21,
+    "n_iter": 71
+  },
+  {
+    "repeat": 8,
+    "fold": 2,
+    "nonzero_coefficients": 24,
+    "n_iter": 61
+  },
+  {
+    "repeat": 8,
+    "fold": 3,
+    "nonzero_coefficients": 23,
+    "n_iter": 58
+  },
+  {
+    "repeat": 8,
+    "fold": 4,
+    "nonzero_coefficients": 21,
+    "n_iter": 61
+  },
+  {
+    "repeat": 9,
+    "fold": 0,
+    "nonzero_coefficients": 23,
+    "n_iter": 58
+  },
+  {
+    "repeat": 9,
+    "fold": 1,
+    "nonzero_coefficients": 23,
+    "n_iter": 57
+  },
+  {
+    "repeat": 9,
+    "fold": 2,
+    "nonzero_coefficients": 19,
+    "n_iter": 68
+  },
+  {
+    "repeat": 9,
+    "fold": 3,
+    "nonzero_coefficients": 28,
+    "n_iter": 67
+  },
+  {
+    "repeat": 9,
+    "fold": 4,
+    "nonzero_coefficients": 20,
+    "n_iter": 58
+  }
+]

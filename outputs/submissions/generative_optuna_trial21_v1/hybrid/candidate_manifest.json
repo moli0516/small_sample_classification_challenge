@@ -1,0 +1,10 @@
+{
+  "candidate": "generative_trial21_hybrid",
+  "role": "original_search_objective_candidate",
+  "formula": "0.5*p_Trial21_GMM+0.5*p_frozen_Trial25",
+  "rows": 19750,
+  "submission_sha256": "51dbab1a246f8c3c4c31e9d01eed763f469a0a4d859a478269843b2f5359e0e8",
+  "model_bundle_sha256": "4ef86a6b5d72177a1f60f954ee2177e3a20a0b1f082120b0ec9c6406b989e212",
+  "source_trial25_submission_sha256": "b06e463f8f49d65fe5191703bf2fdd1fd9331e1259f1bb3ef6d6a1ad98feac17",
+  "automatic_upload": false
+}

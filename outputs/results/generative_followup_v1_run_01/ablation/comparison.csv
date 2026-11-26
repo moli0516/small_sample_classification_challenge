@@ -1,0 +1,4 @@
+candidate,reference,mean_difference,difference_sd,wins,losses,ties
+A_k8_tied,reference_trial25,0.02043054771315648,0.012181425461847833,10,0,0
+A_k8_plain_pca_tied,A_k8_tied,-0.17217004412656586,0.014592560696741612,0,10,0
+A_k8_plain_pca_tied,reference_trial25,-0.1517394964134094,0.01598890366440283,0,10,0

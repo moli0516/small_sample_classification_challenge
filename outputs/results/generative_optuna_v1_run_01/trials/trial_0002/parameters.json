@@ -1,0 +1,7 @@
+{
+  "selected_features": 30,
+  "latent_dimensions": 6,
+  "n_components": 8,
+  "reg_covar": 0.00234238498471129,
+  "label_smoothing": 1.3783237455007187e-05
+}

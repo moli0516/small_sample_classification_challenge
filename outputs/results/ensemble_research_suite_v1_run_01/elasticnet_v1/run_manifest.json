@@ -1,0 +1,27 @@
+{
+  "status": "completed",
+  "planned_fits": 450,
+  "completed_fits": 450,
+  "test_opened": false,
+  "kaggle_upload_performed": false,
+  "started_utc": "2026-11-10T02:04:42.097473+00:00",
+  "artifact_sha256": {
+    "fold_scores.csv": "b6f55c3d60cd26fe5683df480d38a32e74be1fbeb155459013e5b0105bd002c8",
+    "settings.json": "bb9c8a362672deb148f9f0ad8270ca13c9bcdf4324eeb4eb230054b6e3fe8072",
+    "split_indices.json": "1f43f338a84b4ed84502b37ba62d18a2561f5d4c25a0d46eb6dbe14778bd0ec7",
+    "repeat_scores.csv": "a028911b7f43e4dd5e48385aaa339ed77e5c89ef37355e57e9871477b7ae89eb",
+    "standalone_summary.csv": "d8d309f63fee1b6c2d95df415dec24ab343195bfdc8a8f216f1b79a7d9a0542c",
+    "candidate_specs.json": "8189d669148c25cae2f41fc2b5f830c5e0c9ac9355478df7b27c2d5f5c2f3266",
+    "paired_repeat_differences.csv": "fb8521afc94df4f0cb2d4d98703d0d537d3ceb7d9a69b6b813cd301acb5ab600",
+    "cohort.csv": "e1d1d4dbcf8aeb8ad02530b39f67a0ee3d1399556293f79979021407e0d492df",
+    "predictions.npz": "02d79e2bb2907837d2205fdc41de6c4991b6182fb629d100fee5aa20d579ba5b",
+    "model_summary.csv": "a50ad18640f593ad73569c0892981116c05e2f96b6b987eb85ea303d4c14fd56",
+    "comparison.csv": "0da13c39f60af1039887a1d3a70debcee986470b1b3b7e1b1fc4df11ebff2cbd",
+    "paired_vs_catboost.csv": "05139fb4675d73b81cbc9a1aaaada6db65d8b54bf278db24fdc2107f76ded2d7",
+    "decision.json": "9a99f6173d36a2258d0d75cc0ec40eb2456e0a9663adbd4f9110724dacbf587c",
+    "comparison_vs_catboost.csv": "92d5c25f39072605b3c9b89d63e0792a3e1ce69c5787f2945701ebe671242787",
+    "warnings.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "coefficient_diagnostics.json": "a59f4b82bfc76b648579e53ec7f76e18326ce44607cddd1ba6ec80bf46d63ef8"
+  },
+  "finished_utc": "2026-11-10T02:06:43.021245+00:00"
+}

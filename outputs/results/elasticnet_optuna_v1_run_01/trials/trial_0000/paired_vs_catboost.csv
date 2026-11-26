@@ -1,0 +1,11 @@
+reference,candidate,repeat,difference
+catboost_frozen,candidate,0,-0.00291423552293113
+catboost_frozen,candidate,1,7.842399146640311e-06
+catboost_frozen,candidate,2,0.0006493506493505663
+catboost_frozen,candidate,3,0.0019323671497583073
+catboost_frozen,candidate,4,-0.0006441223832528431
+catboost_frozen,candidate,5,0.00032206119162636604
+catboost_frozen,candidate,6,0.00032990359077311737
+catboost_frozen,candidate,7,-0.0009740259740260715
+catboost_frozen,candidate,8,-0.0016155342242297754
+catboost_frozen,candidate,9,0.0006362799841062028

@@ -1,0 +1,658 @@
+diff --git a/src/submission/generative_trial21_snapshot_v1.py b/src/submission/generative_trial21_snapshot_v1.py
+new file mode 100644
+--- /dev/null
++++ b/src/submission/generative_trial21_snapshot_v1.py
+@@ -0,0 +1,158 @@
++"""Frozen Trial21 source verification; dry-run never opens competition inputs."""
++import csv
++from pathlib import Path
++from importlib.metadata import version
++import inspect
++import json
++import numpy as np
++import pandas as pd
++from src.experiments import generative_optuna_v1 as search
++
++ROOT=Path(__file__).resolve().parents[2]
++b=search.b
++TOL=1e-12
++PARAMETERS=dict(selected_features=20,latent_dimensions=12,n_components=12,reg_covar=1.4159458366980159e-05,label_smoothing=1.3711160213584192e-05)
++GMM_AUC=.9954691845996194
++HYBRID_AUC=.9837300018821757
++TRIAL25_PARAMETERS=dict(C=.18702703609689042,l1_ratio=.9589771634360093,alpha=.06655791394873416)
++PINS={"best_trial.json":"49ed6e1e72e7625c78d152638af52aead7adee2fb655f4dd93fbddfb683de977",
++      "decision.json":"5af7fe9b4956d955f584fd1f88d2b0c2c7ddcc8b49e7b1f6b4216adc265d638b",
++      "trials/trial_0021/parameters.json":"787d523e9c5b7926cd38bbb1a00c26686af50721259309e0c6613e51a706ad21",
++      "trials/trial_0021/predictions.npz":"f06c5fe9e34c76c1dfdc7f4a3a4fd5c3f42a3f0e517bc62da35014bcb8ba31ef"}
++
++
++def close(a,z,label):
++    if not np.isfinite(a) or not np.isfinite(z) or not np.isclose(a,z,rtol=0,atol=TOL):raise ValueError("Mismatch: "+label)
++def merge(target,more):
++    for p,h in more.items():
++        p=str(Path(p).resolve())
++        if p in target and target[p]!=h:raise ValueError("Conflicting source hash: "+p)
++        target[p]=h
++
++def artifacts(root,manifest_name,required,status):
++    root=Path(root).resolve();mp=root/manifest_name;m=b.read(mp);hashes={str(mp):b.digest(mp)}
++    if m.get("status")!=status or not required<=m.get("artifact_sha256",{}).keys():raise ValueError("Incomplete/unready source: "+str(root))
++    for name,h in m["artifact_sha256"].items():
++        p=(root/name).resolve()
++        if Path(name).is_absolute() or not p.is_relative_to(root) or p==mp or not p.is_file():raise ValueError("Unsafe artifact: "+name)
++        merge(hashes,{str(p):h})
++    b.check(hashes);return m,hashes
++
++
++def csv_frame(p,columns=None):
++    with Path(p).open(encoding="utf-8-sig",newline="") as stream:header=next(csv.reader(stream),[])
++    if not header or len(set(header))!=len(header) or any(not s.strip() for s in header) or "id" not in header or (columns and header!=columns):raise ValueError("Invalid CSV schema/header: "+str(p))
++    df=pd.read_csv(p,dtype={"id":"string"},float_precision="round_trip")
++    if df.id.isna().any() or not df.id.is_unique or df.id.str.strip().eq("").any():raise ValueError("Missing/duplicate IDs")
++    return df
++
++
++def verify_result(c,root,number,result):
++    directory=root/"trials"/f"trial_{number:04d}"
++    if result["number"]!=number or result["state"]!="COMPLETE" or b.read(directory/"parameters.json")!=result["parameters"]:raise ValueError("Trial result/parameter identity mismatch")
++    with np.load(directory/"predictions.npz",allow_pickle=False) as z:
++        raw=np.asarray(z["gmm"],dtype=float).copy();hybrid=np.asarray(z["hybrid"],dtype=float).copy()
++    b.probability(raw,len(c["frame"]));b.probability(hybrid,len(c["frame"]))
++    if not np.allclose(hybrid,.5*raw+.5*c["reference"],rtol=0,atol=TOL):raise ValueError("Saved hybrid formula differs")
++    preds=dict(candidate_gmm=raw,candidate_hybrid=hybrid,original_gmm=c["control"],original_hybrid=c["hybrid_control"],reference_trial25=c["reference"])
++    _,rr,ss=b.evaluate(c,preds);means=ss.set_index("candidate").mean_auc
++    close(means["candidate_hybrid"],result["objective_auc"],"replayed hybrid");close(means["candidate_gmm"],result["standalone_auc"],"replayed standalone")
++    if number==0:
++        if result["parameters"]!=search.CONTROL or result.get("control_reproduced") is not True:raise ValueError("Control declaration differs")
++        if not np.allclose(raw,c["control"],rtol=0,atol=TOL) or not np.allclose(hybrid,c["hybrid_control"],rtol=0,atol=TOL):raise ValueError("Control row-level reproduction differs")
++    else:
++        if result["parameters"]!=PARAMETERS:raise ValueError("Not frozen Trial21")
++        close(means["candidate_gmm"],GMM_AUC,"Trial21 standalone");close(means["candidate_hybrid"],HYBRID_AUC,"Trial21 hybrid")
++    pairs=[("candidate_hybrid",n) for n in ["original_hybrid","original_gmm","reference_trial25"]]+[("candidate_gmm","original_gmm")]
++    for current,ref in pairs:
++        actual=b.compare(rr,current,ref);recorded=[v for v in result["comparisons"] if v["candidate"]==current and v["reference"]==ref]
++        if len(recorded)!=1:raise ValueError("Missing trial comparison")
++        for k in ["mean_difference","difference_sd","wins","losses","ties"]:close(actual[k],recorded[0][k],"paired "+k)
++    recorded=pd.read_csv(directory/"model_summary.csv",float_precision="round_trip").set_index("candidate")
++    for row in ss.to_dict("records"):
++        for k in ["mean_auc","repeat_sd"]:close(row[k],recorded.loc[row["candidate"],k],"model summary "+k)
++    fits=[json.loads(line) for line in (directory/"fit_diagnostics.jsonl").read_text().splitlines() if line.strip()]
++    wanted={(s["repeat"],s["fold"],seed) for s in c["groups"] for seed in b.DESIGN["initialization_seeds"]}
++    if len(fits)!=len(wanted) or {(v["repeat"],v["fold"],v["seed"]) for v in fits}!=wanted or any(v.get("converged") is not True or v.get("error") is not None for v in fits):raise ValueError("Trial seed coverage/convergence invalid")
++    geometry=[json.loads(line) for line in (directory/"geometry_diagnostics.jsonl").read_text().splitlines() if line.strip()]
++    expected_keys={(v["repeat"],v["fold"]) for v in c["groups"]}
++    if len(geometry)!=len(expected_keys) or {(v["repeat"],v["fold"]) for v in geometry}!=expected_keys:raise ValueError("Geometry fold coverage differs")
++    params=result["parameters"]
++    training_sizes={(v["repeat"],v["fold"]):len(v["train_indices"]) for v in c["groups"]}
++    for v in geometry:
++        if v["requested_features"]!=params["selected_features"] or v["requested_dimensions"]!=params["latent_dimensions"] or not 1<=v["effective_features"]<=params["selected_features"]:raise ValueError("Geometry request differs")
++        expected_dimension=min(params["latent_dimensions"],v["effective_features"],training_sizes[(v["repeat"],v["fold"]) ]-1)
++        if v["effective_dimensions"]!=expected_dimension or len(set(v["selected_indices"]))!=v["effective_features"] or any(type(i) is not int or not 0<=i<c["x"].shape[1] for i in v["selected_indices"]):raise ValueError("Geometry effective dimension/columns differ")
++    return ss
++
++
++def prepare(config_path,output=None):
++    cfgpath=(ROOT/config_path).resolve();cfg=b.read(cfgpath)
++    required={"study","study_config","trial25_export","test_path","sample_submission_path","expected_rows","output_dir"}
++    if set(cfg)!=required or type(cfg["expected_rows"]) is not int or cfg["expected_rows"]<=0:raise ValueError("Exact Trial21 export config required")
++    dest=(ROOT/(output or cfg["output_dir"])).resolve();root=(ROOT/cfg["study"]).resolve();trialroot=(ROOT/cfg["trial25_export"]).resolve()
++    if dest.exists():raise FileExistsError("Fresh export output required")
++    for source in [root,trialroot]:
++        if dest.is_relative_to(source) or source.is_relative_to(dest):raise ValueError("Output overlaps source")
++    # Uses the local frozen source verifier, but does no fitting or competition-test I/O.
++    c=search.snapshot.prepare(str((ROOT/cfg["study_config"]).resolve()),output=str(dest))
++    if c["x"].shape!=(250,150) or len(c["groups"])!=50 or len(c["frame"])!=2500:raise ValueError("Original250x150/50-fold source required")
++    if c["config"].get("id_column")!="id" or c["config"].get("target_column")!="target":raise ValueError("Explicit id,target schema required")
++    hashes=dict(c["hashes"])
++    needed={"settings.json","decision.json","best_trial.json","trials.json","trials.csv","cohort.csv","split_indices.json"}
++    for number in [0,21]:
++        needed.update(f"trials/trial_{number:04d}/{name}" for name in ["parameters.json","result.json","predictions.npz","model_summary.csv","fit_diagnostics.jsonl","geometry_diagnostics.jsonl"])
++    m,h=artifacts(root,"run_manifest.json",needed,"completed");merge(hashes,h)
++    counts=dict(planned_trials=30,attempted_trials=30,completed_trials=30,rejected_trials=0,failed_trials=0,
++        planned_candidate_fits=4500,attempted_candidate_fits=4500,completed_candidate_fits=4500,converged_candidate_fits=4500,attempted_projector_fits=1500,completed_projector_fits=1500)
++    if any(m.get(k)!=v for k,v in counts.items()) or m.get("competition_test_opened") is not False or m.get("kaggle_upload_performed") is not False:raise ValueError("Not the completed30-trial/4500-fit no-test study")
++    for name,h in PINS.items():
++        if b.digest(root/name)!=h:raise ValueError("Frozen study fingerprint differs: "+name)
++    settings=b.read(root/"settings.json")
++    if settings["config"]!=c["optuna_config"] or settings["fixed_source_design"]!=b.DESIGN or settings["hybrid_weights"]!=[.5,.5]:raise ValueError("Source evaluated recipe differs")
++    b.check(settings["input_and_code_sha256"]);merge(hashes,settings["input_and_code_sha256"])
++    for package,expected in dict(settings["versions"],optuna=settings["optuna_version"]).items():
++        if version(package)!=expected:raise ValueError("Source version changed: "+package)
++    frame=pd.read_csv(root/"cohort.csv",dtype={"id":"string"},float_precision="round_trip");expected=c["frame"].copy();expected["id"]=expected.id.astype("string")
++    if not frame.equals(expected) or b.read(root/"split_indices.json")!=c["groups"]:raise ValueError("Source cohort/splits differ")
++    trials=b.read(root/"trials.json")
++    if len(trials)!=30 or [t["number"] for t in trials]!=list(range(30)) or any(t["state"]!="COMPLETE" or not np.isfinite(t["value"]) for t in trials):raise ValueError("Incomplete trial accounting")
++    winner=min(trials,key=lambda t:(-t["value"],t["number"]))
++    if winner["number"]!=21 or winner["parameters"]!=PARAMETERS or trials[0]["parameters"]!=search.CONTROL or trials[0]["user_attrs"].get("control_reproduced") is not True:raise ValueError("Frozen trial selection/control changed")
++    table=pd.read_csv(root/"trials.csv",float_precision="round_trip")
++    if len(table)!=30 or table.number.tolist()!=list(range(30)):raise ValueError("Trial CSV coverage differs")
++    for row,t in zip(table.to_dict("records"),trials):
++        if row["state"]!=t["state"]:raise ValueError("Trial CSV state differs")
++        close(row["objective_auc"],t["value"],"trial CSV objective")
++        for key,val in t["parameters"].items():close(row[key],val,"trial CSV parameter")
++    decision=b.read(root/"decision.json");best=b.read(root/"best_trial.json")
++    if decision.get("selected_trial")!=21 or decision.get("selected_parameters")!=PARAMETERS or decision.get("selected_is_control") is not False or decision.get("screening_passed") is not True or decision.get("automatic_promotion") is not False or best!=b.read(root/"trials/trial_0021/result.json"):raise ValueError("Selected source decision differs")
++    close(decision["selected_mean_auc"],HYBRID_AUC,"selected hybrid");close(winner["value"],HYBRID_AUC,"winning objective")
++    verify_result(c,root,0,b.read(root/"trials/trial_0000/result.json"));summary=verify_result(c,root,21,best)
++    if decision["comparisons"]!=best["comparisons"]:raise ValueError("Decision comparisons differ")
++    primary=next(v for v in best["comparisons"] if v["candidate"]=="candidate_hybrid" and v["reference"]=="original_hybrid")
++    if primary["mean_difference"]<=TOL or primary["wins"]<6:raise ValueError("Selected screening did not pass")
++    tm,th=artifacts(trialroot,"prediction_manifest.json",{"submission.csv","component_predictions.csv","source_decision.json","source_best_trial.json","ensemble.json"},"ready_for_manual_submission");merge(hashes,th)
++    if tm.get("candidate")!="elasticnet_optuna_trial_25" or tm.get("selected_trial")!=25 or tm.get("parameters")!=TRIAL25_PARAMETERS or tm.get("fits_performed")!=5 or tm.get("saved_and_reloaded_models_verified") is not True or tm.get("rows")!=cfg["expected_rows"] or tm.get("kaggle_upload_performed") is not False:raise ValueError("Wrong/unverified Trial25 export")
++    merge(hashes,tm["source_input_and_code_sha256"])
++    trainpath=str((ROOT/c["config"]["train_path"]).resolve())
++    if tm["source_input_and_code_sha256"].get(trainpath)!=c["hashes"].get(trainpath) or trainpath not in c["hashes"]:raise ValueError("Trial25 does not bind the same training file")
++    ts=Path(tm["source_study"]).resolve()
++    if str(ts/"decision.json") not in c["hashes"] or str(ts/"best_trial.json") not in c["hashes"]:raise ValueError("Trial25 export not bound to same development source")
++    if b.read(trialroot/"source_decision.json")!=b.read(ts/"decision.json") or b.read(trialroot/"source_best_trial.json")!=b.read(ts/"best_trial.json"):raise ValueError("Trial25 source snapshots differ")
++    ensemble=b.read(trialroot/"ensemble.json")
++    if ensemble.get("elasticnet_parameters")!=TRIAL25_PARAMETERS or ensemble.get("feature_order")!=list(c["x"].columns):raise ValueError("Trial25 evaluated feature/parameter recipe differs")
++    if tm.get("submission_sha256")!=b.digest(trialroot/"submission.csv"):raise ValueError("Trial25 submission hash differs")
++    inputs={str((ROOT/cfg[k]).resolve()) for k in ["test_path","sample_submission_path"]}
++    if any(Path(p).resolve().is_relative_to(dest) for p in inputs):raise ValueError("Output overlaps prediction inputs")
++    # Do not hash/read competition test or template in dry-run, even through a source map.
++    if inputs.intersection(str(Path(p).resolve()) for p in hashes):raise ValueError("Development source map unexpectedly includes competition prediction inputs")
++    for p in inputs:
++        if not Path(p).is_file():raise FileNotFoundError(p)
++    from src.submission import generative_trial21_export_v1
++    code=[cfgpath,Path(__file__).resolve(),Path(inspect.getfile(generative_trial21_export_v1)),ROOT/"scripts/export_generative_trial21_v1.py"]
++    merge(hashes,{str(p.resolve()):b.digest(p) for p in code});b.check(hashes)
++    if dest.is_relative_to(ts) or ts.is_relative_to(dest):raise ValueError("Output overlaps original Trial25 study")
++    c.update(output=dest,export_config=cfg,hashes=hashes,selected_parameters=best["parameters"],source_best=best,source_decision=decision,
++        source_summary=summary,trial25_root=trialroot,trial25_manifest=tm,study_root=root)
++    return c
+diff --git a/src/submission/generative_trial21_export_v1.py b/src/submission/generative_trial21_export_v1.py
+new file mode 100644
+--- /dev/null
++++ b/src/submission/generative_trial21_export_v1.py
+@@ -0,0 +1,113 @@
++"""One frozen Trial21 refit, two separately identified submission candidates."""
++import argparse
++from datetime import datetime,timezone
++from importlib.metadata import version
++import json
++from pathlib import Path
++import joblib
++import numpy as np
++import pandas as pd
++from threadpoolctl import threadpool_limits
++from src.submission import generative_trial21_snapshot_v1 as s
++from src.features.generative_search_geometry_v1 import SearchGeometryProjector
++
++b=s.b
++
++
++def predict(bundle,x):
++    if list(x.columns)!=bundle["features"]:raise ValueError("Prediction feature order differs")
++    z=bundle["projector"].transform(x)
++    p=np.mean([m.predict_proba(z)[:,1] for m in bundle["models"]],axis=0)
++    b.probability(p,len(x));return p
++
++
++def prediction_inputs(c):
++    cfg=c["export_config"];paths={key:(s.ROOT/cfg[key]).resolve() for key in ["test_path","sample_submission_path"]}
++    declared=c["trial25_manifest"]["prediction_input_sha256"]
++    # Competition files are first opened here, after all train-only fits and train reload verification.
++    hashes={str(p):b.digest(p) for p in paths.values()}
++    for h in hashes.values():
++        if h not in declared.values():raise ValueError("Trial25 used different test/template contents")
++    b.check(declared)
++    test=s.csv_frame(paths["test_path"]);template=s.csv_frame(paths["sample_submission_path"],["id","target"])
++    features=list(c["x"].columns);n=cfg["expected_rows"]
++    if len(test)!=n or len(template)!=n or set(test.id)!=set(template.id):raise ValueError("Test/template row/ID mismatch")
++    if set(test.columns)!={"id",*features}:raise ValueError("Test feature schema differs")
++    if any(not pd.api.types.is_numeric_dtype(test[col]) or pd.api.types.is_bool_dtype(test[col]) for col in features) or not np.isfinite(test[features].to_numpy(dtype=float)).all():raise ValueError("Invalid test feature values")
++    old=s.csv_frame(c["trial25_root"]/"submission.csv",["id","target"]);b.probability(old.target.to_numpy(),n)
++    if set(old.id)!=set(template.id):raise ValueError("Trial25 ID set differs")
++    audit=s.csv_frame(c["trial25_root"]/"component_predictions.csv")
++    if len(audit)!=n or set(audit.id)!=set(template.id) or not {"l1","xgboost","lightgbm","elasticnet","original_three_model","ensemble"}<=set(audit):raise ValueError("Trial25 audit schema/coverage differs")
++    for col in ["l1","xgboost","lightgbm","elasticnet","original_three_model","ensemble"]:b.probability(audit[col].to_numpy(),n)
++    original=(audit.l1.to_numpy()+audit.xgboost.to_numpy()+audit.lightgbm.to_numpy())/3
++    raw=(1-s.TRIAL25_PARAMETERS["alpha"])*original+s.TRIAL25_PARAMETERS["alpha"]*audit.elasticnet.to_numpy()
++    if not np.allclose(original,audit.original_three_model,rtol=0,atol=s.TOL) or not np.allclose(raw,audit.ensemble,rtol=0,atol=s.TOL):raise ValueError("Trial25 audit formula differs")
++    old_ordered=old.set_index("id").loc[template.id,"target"].to_numpy()
++    if not np.allclose(pd.Series(raw,index=audit.id).loc[template.id],old_ordered,rtol=0,atol=s.TOL):raise ValueError("Trial25 audit/submission mismatch")
++    b.check(hashes)
++    return test,template,old_ordered,hashes
++
++
++def execute(c):
++    out=c["output"];out.mkdir(parents=True,exist_ok=False)
++    m=dict(status="running",selected_trial=21,parameters=c["selected_parameters"],started_utc=datetime.now(timezone.utc).isoformat(),planned_candidate_fits=3,
++        attempted_candidate_fits=0,completed_candidate_fits=0,completed_projector_fits=0,competition_test_opened=False,competition_test_used_for_fitting=False,
++        kaggle_upload_performed=False,automatic_promotion=False,source_input_and_code_sha256=c["hashes"],saved_and_reloaded_models_verified=False)
++    finals=[out/"standalone/submission.csv",out/"hybrid/submission.csv"];pending=[p.with_name("submission.pending.csv") for p in finals]
++    b.write(out/"prediction_manifest.json",m)
++    try:
++        b.check(c["hashes"])
++        b.write(out/"settings.json",dict(config=c["export_config"],parameters=c["selected_parameters"],seeds=b.DESIGN["initialization_seeds"],covariance="tied",source_design=b.DESIGN,
++            versions={p:version(p) for p in ["numpy","scipy","pandas","scikit-learn","joblib","threadpoolctl"]},
++            selection="Trial21 selected by HYBRID CV objective. Standalone is a separately reported post-search follow-up, not a new standalone winner selection."))
++        b.write(out/"source_decision.json",c["source_decision"]);b.write(out/"source_best_trial.json",c["source_best"]);c["source_summary"].to_csv(out/"source_model_summary.csv",index=False)
++        with threadpool_limits(limits=1):
++            params=c["selected_parameters"];geometry=SearchGeometryProjector(params["selected_features"],params["latent_dimensions"]).fit(c["x"])
++            m["completed_projector_fits"]=1;z=geometry.transform(c["x"]);models=[];traces=[]
++            b.write(out/"geometry_diagnostics.json",geometry.search_diagnostics_)
++            for seed in b.DESIGN["initialization_seeds"]:
++                m["attempted_candidate_fits"]+=1;b.write(out/"prediction_manifest.json",m)
++                fitted=s.search.model(params,seed).fit(z,c["y"].to_numpy());m["completed_candidate_fits"]+=1
++                traces.append(dict(seed=seed,converged=bool(fitted.converged_),n_iter=int(fitted.n_iter_),initialization_warnings=fitted.initialization_warnings_,objective_trace=fitted.objective_trace_,objective_decreases=int(fitted.objective_decreases_),effective_masses=fitted.effective_masses_,class_probabilities=fitted.class_probabilities_.tolist()))
++                b.write(out/"fit_diagnostics.json",traces)
++                if not fitted.converged_:raise RuntimeError("Full-data Trial21 EM did not converge; no submissions")
++                models.append(fitted);b.write(out/"prediction_manifest.json",m)
++            bundle=dict(projector=geometry,models=models,features=list(c["x"].columns),parameters=params,seeds=b.DESIGN["initialization_seeds"],selected_trial=21,mode="training_only")
++            joblib.dump(bundle,out/"model_bundle.joblib")
++            # Only deserialize this run's freshly written model, never source/untrusted pickle files.
++            loaded=joblib.load(out/"model_bundle.joblib")
++            np.testing.assert_allclose(predict(bundle,c["x"]),predict(loaded,c["x"]),rtol=0,atol=s.TOL)
++            m["competition_test_opened"]=True;b.write(out/"prediction_manifest.json",m)
++            test,template,old,inputs=prediction_inputs(c)
++            pg=predict(bundle,test[bundle["features"]]);reloaded=predict(loaded,test[bundle["features"]]);np.testing.assert_allclose(pg,reloaded,rtol=0,atol=s.TOL)
++            ordered=pd.Series(reloaded,index=test.id).loc[template.id].to_numpy();hybrid=.5*ordered+.5*old
++        b.probability(ordered,len(template));b.probability(hybrid,len(template));b.check(c["hashes"]);b.check(inputs)
++        audit=pd.DataFrame({"id":template.id.to_numpy(),"trial21_gmm":ordered,"trial25":old,"trial21_hybrid":hybrid})
++        audit.to_csv(out/"aligned_predictions.csv",index=False,float_format="%.17g")
++        for directory,p,path in [("standalone",ordered,pending[0]),("hybrid",hybrid,pending[1])]:
++            path.parent.mkdir(parents=True,exist_ok=False)
++            pd.DataFrame({"id":template.id.to_numpy(),"target":p}).to_csv(path,index=False,float_format="%.17g")
++            reread=s.csv_frame(path,["id","target"]);b.probability(reread.target.to_numpy(),len(template))
++            if not np.array_equal(reread.id.astype(str),template.id.astype(str)) or not np.allclose(reread.target,p,rtol=0,atol=s.TOL):raise ValueError("Submission round-trip failed: "+directory)
++        b.check(c["hashes"]);b.check(inputs)
++        if m["completed_candidate_fits"]!=3:raise ValueError("Fit accounting differs")
++        for p,q in zip(pending,finals):p.replace(q)
++        for name,p,role,formula in [("standalone",finals[0],"post_search_standalone_followup","mean_of_three_Trial21_GMM_seeds"),("hybrid",finals[1],"original_search_objective_candidate","0.5*p_Trial21_GMM+0.5*p_frozen_Trial25")]:
++            b.write(p.parent/"candidate_manifest.json",dict(candidate="generative_trial21_"+name,role=role,formula=formula,rows=len(template),submission_sha256=b.digest(p),model_bundle_sha256=b.digest(out/"model_bundle.joblib"),source_trial25_submission_sha256=b.digest(c["trial25_root"]/"submission.csv"),automatic_upload=False))
++        m.update(status="ready_for_manual_submission",rows=len(template),prediction_input_sha256=inputs,saved_and_reloaded_models_verified=True,csv_roundtrip_verified=True,
++            submission_sha256={str(p.relative_to(out)):b.digest(p) for p in finals})
++        m["artifact_sha256"]={str(p.relative_to(out)):b.digest(p) for p in out.rglob("*") if p.is_file() and p.name!="prediction_manifest.json"}
++        return dict(status=m["status"],output=str(out),fits_performed=3,rows=len(template),candidates=["standalone","hybrid"],automatic_upload=False)
++    except BaseException as exc:
++        for p in finals+pending:p.unlink(missing_ok=True)
++        for p in [out/"standalone/candidate_manifest.json",out/"hybrid/candidate_manifest.json"]:p.unlink(missing_ok=True)
++        m.update(status="failed_or_interrupted",error=f"{type(exc).__name__}: {exc}");raise
++    finally:
++        m["finished_utc"]=datetime.now(timezone.utc).isoformat();b.write(out/"prediction_manifest.json",m)
++
++
++def main():
++    p=argparse.ArgumentParser(description=__doc__);p.add_argument("--config",default="configs/generative_trial21_export_v1.json");p.add_argument("--output");p.add_argument("--dry-run",action="store_true")
++    args=p.parse_args();c=s.prepare(args.config,args.output)
++    if args.dry_run:print(json.dumps(dict(status="preflight_passed",selected_trial=21,planned_candidate_fits=3,fits_performed=0,competition_test_opened=False,prediction_input_validation="deferred_until_after_fitting",output_created=False,output=str(c["output"])),indent=2))
++    else:print(json.dumps(execute(c),indent=2))
+diff --git a/scripts/export_generative_trial21_v1.py b/scripts/export_generative_trial21_v1.py
+new file mode 100644
+--- /dev/null
++++ b/scripts/export_generative_trial21_v1.py
+@@ -0,0 +1,5 @@
++"""Thin frozen Trial21 two-candidate export CLI."""
++from src.submission.generative_trial21_export_v1 import main
++
++if __name__ == "__main__":
++    main()
+diff --git a/configs/generative_trial21_export_v1.json b/configs/generative_trial21_export_v1.json
+new file mode 100644
+--- /dev/null
++++ b/configs/generative_trial21_export_v1.json
+@@ -0,0 +1,9 @@
++{
++  "study": "outputs/results/generative_optuna_v1_run_01",
++  "study_config": "configs/generative_optuna_v1.json",
++  "trial25_export": "outputs/submissions/elasticnet_optuna_trial_25_run_01",
++  "test_path": "data/raw/test.csv",
++  "sample_submission_path": "data/raw/sample_submission.csv",
++  "expected_rows": 19750,
++  "output_dir": "outputs/submissions/generative_optuna_trial21_v1"
++}
+diff --git a/tests/test_generative_trial21_export_v1.py b/tests/test_generative_trial21_export_v1.py
+new file mode 100644
+--- /dev/null
++++ b/tests/test_generative_trial21_export_v1.py
+@@ -0,0 +1,190 @@
++import json
++from pathlib import Path
++import numpy as np
++import pandas as pd
++import pytest
++from scipy.special import expit
++from sklearn.datasets import make_classification
++from sklearn.model_selection import StratifiedKFold
++from threadpoolctl import threadpool_limits
++from src.submission import generative_trial21_snapshot_v1 as s
++from src.submission import generative_trial21_export_v1 as e
++
++
++@pytest.fixture(autouse=True)
++def one_thread():
++    with threadpool_limits(limits=1):yield
++
++
++def write(p,data):p.parent.mkdir(parents=True,exist_ok=True);s.b.write(p,data)
++def manifest(root,name,fields):
++    hashes={str(p.relative_to(root)):s.b.digest(p) for p in root.rglob("*") if p.is_file() and p.name!=name}
++    write(root/name,dict(fields,artifact_sha256=hashes))
++
++
++def export_context(tmp_path):
++    x,y=make_classification(n_samples=64,n_features=24,n_informative=8,n_redundant=0,random_state=4)
++    x=pd.DataFrame(x,columns=[f"f{i}" for i in range(24)]);y=pd.Series(y)
++    test=tmp_path/"test.csv";template=tmp_path/"sample.csv";trial=tmp_path/"trial25";trial.mkdir()
++    xt=x.iloc[:8].copy();xt.insert(0,"id",[f"{i:05d}" for i in range(8)]);xt.to_csv(test,index=False)
++    pd.DataFrame({"id":xt.id.iloc[::-1].to_numpy(),"target":0.}).to_csv(template,index=False)
++    l1=np.linspace(.1,.7,8);xgb=l1+.03;lgb=l1+.06;en=np.linspace(.9,.2,8);base=(l1+xgb+lgb)/3
++    old=(1-s.TRIAL25_PARAMETERS["alpha"])*base+s.TRIAL25_PARAMETERS["alpha"]*en
++    pd.DataFrame(dict(id=xt.id,l1=l1,xgboost=xgb,lightgbm=lgb,elasticnet=en,original_three_model=base,ensemble=old)).to_csv(trial/"component_predictions.csv",index=False,float_format="%.17g")
++    pd.DataFrame({"id":xt.id,"target":old}).iloc[[2,0,7,1,6,3,5,4]].to_csv(trial/"submission.csv",index=False,float_format="%.17g")
++    return dict(output=tmp_path/"export",x=x,y=y,hashes={},selected_parameters=s.PARAMETERS,source_best={"parameters":s.PARAMETERS},source_decision={"selected_trial":21},source_summary=pd.DataFrame([dict(candidate="synthetic",mean_auc=.9)]),
++        export_config=dict(test_path=str(test),sample_submission_path=str(template),expected_rows=8),trial25_root=trial,
++        trial25_manifest=dict(prediction_input_sha256={str(test):s.b.digest(test),str(template):s.b.digest(template)}))
++
++
++def test_three_native_fits_two_outputs_persistence_and_alignment(tmp_path,monkeypatch):
++    c=export_context(tmp_path);build=s.search.model;klass=type(build(s.PARAMETERS,42));fit=klass.fit;calls=[]
++    def recorded(self,x,y,*args,**kwargs):
++        assert len(x)==64 and not args and not kwargs
++        value=fit(self,x,y);calls.append(self.random_state);return value
++    monkeypatch.setattr(klass,"fit",recorded)
++    get=e.prediction_inputs
++    def guarded(c):assert calls==[42,314,2026];return get(c)
++    monkeypatch.setattr(e,"prediction_inputs",guarded)
++    result=e.execute(c);assert result["fits_performed"]==3
++    m=s.b.read(c["output"]/"prediction_manifest.json")
++    assert m["status"]=="ready_for_manual_submission" and m["saved_and_reloaded_models_verified"] is True
++    assert m["competition_test_used_for_fitting"] is False
++    a=s.csv_frame(c["output"]/"standalone/submission.csv");h=s.csv_frame(c["output"]/"hybrid/submission.csv")
++    old=s.csv_frame(c["trial25_root"]/"submission.csv").set_index("id").loc[a.id,"target"].to_numpy()
++    np.testing.assert_allclose(h.target,.5*a.target+.5*old,rtol=0,atol=1e-12)
++    assert a.id.tolist()==[f"{i:05d}" for i in reversed(range(8))]
++    for name,hash in m["artifact_sha256"].items():assert s.b.digest(c["output"]/name)==hash
++    for path in ["standalone","hybrid"]:assert s.b.read(c["output"]/path/"candidate_manifest.json")["rows"]==8
++    with pytest.raises(FileExistsError):e.execute(c)
++
++
++def test_nonconvergence_before_test_access(tmp_path,monkeypatch):
++    c=export_context(tmp_path);cls=type(s.search.model(s.PARAMETERS,42));fit=cls.fit
++    def bad(self,*a,**kw):value=fit(self,*a,**kw);self.converged_=False;return value
++    monkeypatch.setattr(cls,"fit",bad);monkeypatch.setattr(e,"prediction_inputs",lambda *a:pytest.fail("Test opened"))
++    with pytest.raises(RuntimeError,match="did not converge"):e.execute(c)
++    assert s.b.read(c["output"]/"prediction_manifest.json")["competition_test_opened"] is False
++    assert not list(c["output"].glob("*/submission.csv"))
++
++
++def test_different_test_inputs_fail_without_submission(tmp_path):
++    c=export_context(tmp_path);p=Path(c["export_config"]["test_path"]);df=s.csv_frame(p);df["f0"]+=100;df.to_csv(p,index=False)
++    with pytest.raises(ValueError,match="different test/template"):e.execute(c)
++    assert not list(c["output"].glob("*/submission.csv"))
++
++
++def test_two_candidate_publication_rolls_back_on_second_rename(tmp_path,monkeypatch):
++    c=export_context(tmp_path);replace=Path.replace
++    def fail_second(self,target):
++        if self.name=="submission.pending.csv" and self.parent.name=="hybrid":raise OSError("Injected second publication failure")
++        return replace(self,target)
++    monkeypatch.setattr(Path,"replace",fail_second)
++    with pytest.raises(OSError,match="second publication"):e.execute(c)
++    assert not list(c["output"].glob("*/submission.csv"))
++    assert s.b.read(c["output"]/"prediction_manifest.json")["status"]=="failed_or_interrupted"
++
++
++def source_context(tmp_path,monkeypatch):
++    root=tmp_path/"study";root.mkdir();trialroot=tmp_path/"trial25";trialroot.mkdir();original=tmp_path/"original_trial25"
++    y=np.tile([0,1],125);rows=[];groups=[];offset=0
++    for repeat in range(10):
++        for fold,(tr,va) in enumerate(StratifiedKFold(5,shuffle=True,random_state=repeat).split(np.zeros((250,1)),y)):
++            groups.append(dict(repeat=repeat,fold=fold,train_indices=tr.tolist(),valid_indices=va.tolist(),start=offset,stop=offset+len(va)))
++            rows.extend(dict(repeat=repeat,fold=fold,row_index=int(i),id=f"L{i:04d}",target=int(y[i])) for i in va);offset+=len(va)
++    frame=pd.DataFrame(rows);frame["id"]=frame.id.astype("string");rng=np.random.RandomState(25);signal=2*frame.target.to_numpy()-1
++    old=expit(signal+rng.normal(size=2500));ref=expit(.95*signal+rng.normal(size=2500));new=expit(3*signal+rng.normal(size=2500))
++    train=tmp_path/"train.csv";x=pd.DataFrame(np.zeros((250,150)),columns=[f"f{i}" for i in range(150)]);x.assign(id=[f"L{i:04d}" for i in range(250)],target=y).to_csv(train,index=False)
++    od=dict(selected_trial=25,parameters=s.TRIAL25_PARAMETERS,screening_both_controls=True);ob=dict(number=25,state="COMPLETE",parameters=s.TRIAL25_PARAMETERS)
++    write(original/"decision.json",od);write(original/"best_trial.json",ob)
++    hashes={str(train):s.b.digest(train),str(original/"decision.json"):s.b.digest(original/"decision.json"),str(original/"best_trial.json"):s.b.digest(original/"best_trial.json")}
++    c=dict(x=x,y=pd.Series(y),frame=frame,groups=groups,control=old,reference=ref,hybrid_control=.5*old+.5*ref,hashes=hashes,
++        optuna_config={"synthetic":True},config=dict(id_column="id",target_column="target",train_path=str(train)))
++    results={};summaries={}
++    for number,raw in [(0,old),(21,new)]:
++        directory=root/"trials"/f"trial_{number:04d}";directory.mkdir(parents=True)
++        params=s.search.CONTROL if number==0 else s.PARAMETERS;hybrid=.5*raw+.5*ref
++        preds=dict(candidate_gmm=raw,candidate_hybrid=hybrid,original_gmm=old,original_hybrid=c["hybrid_control"],reference_trial25=ref)
++        _,rr,ss=s.b.evaluate(c,preds);means=ss.set_index("candidate").mean_auc;summaries[number]=ss
++        pairs=[("candidate_hybrid",name) for name in ["original_hybrid","original_gmm","reference_trial25"]]+[("candidate_gmm","original_gmm")]
++        result=dict(number=number,state="COMPLETE",parameters=params,objective_auc=float(means["candidate_hybrid"]),standalone_auc=float(means["candidate_gmm"]),comparisons=[s.b.compare(rr,a,z) for a,z in pairs],control_reproduced=True if number==0 else None)
++        results[number]=result;write(directory/"parameters.json",params);write(directory/"result.json",result);ss.to_csv(directory/"model_summary.csv",index=False);np.savez_compressed(directory/"predictions.npz",gmm=raw,hybrid=hybrid)
++        fits=[dict(repeat=g["repeat"],fold=g["fold"],seed=seed,converged=True,error=None) for g in groups for seed in s.b.DESIGN["initialization_seeds"]]
++        (directory/"fit_diagnostics.jsonl").write_text("".join(json.dumps(v)+"\n" for v in fits))
++        geometry=[dict(repeat=g["repeat"],fold=g["fold"],requested_features=params["selected_features"],requested_dimensions=params["latent_dimensions"],effective_features=20,effective_dimensions=params["latent_dimensions"],selected_indices=list(range(20))) for g in groups]
++        (directory/"geometry_diagnostics.jsonl").write_text("".join(json.dumps(v)+"\n" for v in geometry))
++    best=results[21];monkeypatch.setattr(s,"GMM_AUC",best["standalone_auc"]);monkeypatch.setattr(s,"HYBRID_AUC",best["objective_auc"]);monkeypatch.setattr(s,"PINS",{})
++    trials=[dict(number=i,state="COMPLETE",value=best["objective_auc"] if i in (21,24) else results[0]["objective_auc"],parameters=s.PARAMETERS if i in (21,24) else s.search.CONTROL,user_attrs={"control_reproduced":True} if i==0 else {}) for i in range(30)]
++    write(root/"trials.json",trials);pd.DataFrame([dict(number=t["number"],state=t["state"],objective_auc=t["value"],**t["parameters"]) for t in trials]).to_csv(root/"trials.csv",index=False)
++    write(root/"best_trial.json",best);write(root/"decision.json",dict(selected_trial=21,selected_parameters=s.PARAMETERS,selected_mean_auc=best["objective_auc"],selected_is_control=False,screening_passed=True,automatic_promotion=False,comparisons=best["comparisons"]))
++    write(root/"settings.json",dict(config=c["optuna_config"],fixed_source_design=s.b.DESIGN,hybrid_weights=[.5,.5],input_and_code_sha256=hashes,versions={},optuna_version="fixture"))
++    frame.to_csv(root/"cohort.csv",index=False);write(root/"split_indices.json",groups)
++    fields=dict(status="completed",planned_trials=30,attempted_trials=30,completed_trials=30,rejected_trials=0,failed_trials=0,planned_candidate_fits=4500,attempted_candidate_fits=4500,completed_candidate_fits=4500,converged_candidate_fits=4500,attempted_projector_fits=1500,completed_projector_fits=1500,competition_test_opened=False,kaggle_upload_performed=False)
++    def rehash():manifest(root,"run_manifest.json",fields)
++    rehash();write(trialroot/"source_decision.json",od);write(trialroot/"source_best_trial.json",ob)
++    write(trialroot/"ensemble.json",dict(elasticnet_parameters=s.TRIAL25_PARAMETERS,feature_order=list(x.columns)))
++    pd.DataFrame({"id":[str(i) for i in range(8)],"target":.5}).to_csv(trialroot/"submission.csv",index=False)
++    (trialroot/"component_predictions.csv").write_text("id,l1\n0,0.5\n")
++    test=tmp_path/"test.csv";test.write_text("id,f0\n0,0\n");template=tmp_path/"sample.csv";template.write_text("id,target\n0,0\n")
++    tfields=dict(status="ready_for_manual_submission",candidate="elasticnet_optuna_trial_25",selected_trial=25,parameters=s.TRIAL25_PARAMETERS,fits_performed=5,saved_and_reloaded_models_verified=True,rows=8,kaggle_upload_performed=False,source_study=str(original),source_input_and_code_sha256=hashes,prediction_input_sha256={str(test):s.b.digest(test),str(template):s.b.digest(template)},submission_sha256=s.b.digest(trialroot/"submission.csv"))
++    manifest(trialroot,"prediction_manifest.json",tfields)
++    config=tmp_path/"cfg.json";write(config,dict(study=str(root),study_config="synthetic",trial25_export=str(trialroot),test_path=str(test),sample_submission_path=str(template),expected_rows=8,output_dir=str(tmp_path/"new")))
++    monkeypatch.setattr(s.search.snapshot,"prepare",lambda config,output:dict(c,output=Path(output)))
++    v=s.version;monkeypatch.setattr(s,"version",lambda p:"fixture" if p=="optuna" else v(p))
++    return config,root,rehash,test
++
++
++def test_complete_source_verification_and_no_test_reads(tmp_path,monkeypatch):
++    config,root,rehash,test=source_context(tmp_path,monkeypatch)
++    digest=s.b.digest
++    def guard(p):
++        if Path(p).name in ("test.csv","sample.csv"):pytest.fail("Prediction input opened during dry source verification")
++        return digest(p)
++    monkeypatch.setattr(s.b,"digest",guard)
++    c=s.prepare(str(config));assert c["source_best"]["number"]==21 and not c["output"].exists()
++
++
++def test_pinned_fingerprint_mismatch_is_fatal(tmp_path,monkeypatch):
++    config,root,rehash,test=source_context(tmp_path,monkeypatch);monkeypatch.setattr(s,"PINS",{"best_trial.json":"0"*64})
++    with pytest.raises(ValueError,match="fingerprint"):s.prepare(str(config))
++
++
++def test_source_tamper_is_fatal(tmp_path,monkeypatch):
++    config,root,rehash,test=source_context(tmp_path,monkeypatch);(root/"trials.csv").write_text("corrupt")
++    with pytest.raises(ValueError,match="Changed source"):s.prepare(str(config))
++
++
++def test_rehashed_wrong_winner_is_fatal(tmp_path,monkeypatch):
++    config,root,rehash,test=source_context(tmp_path,monkeypatch);d=s.b.read(root/"decision.json");d["selected_trial"]=24;write(root/"decision.json",d);rehash()
++    with pytest.raises(ValueError,match="decision differs"):s.prepare(str(config))
++
++
++def test_rehashed_row_prediction_mismatch_is_fatal(tmp_path,monkeypatch):
++    config,root,rehash,test=source_context(tmp_path,monkeypatch);p=root/"trials/trial_0021/predictions.npz"
++    with np.load(p) as z:g=z["gmm"].copy();h=z["hybrid"].copy()
++    g[0]=1-g[0];np.savez_compressed(p,gmm=g,hybrid=h);rehash()
++    with pytest.raises(ValueError,match="formula differs"):s.prepare(str(config))
++
++
++def test_no_output_overlap(tmp_path,monkeypatch):
++    config,root,rehash,test=source_context(tmp_path,monkeypatch)
++    with pytest.raises(ValueError,match="overlaps source"):s.prepare(str(config),str(root/"new"))
++
++
++def test_cli_dry_run_zero_fit_no_output(tmp_path,monkeypatch,capsys):
++    import sys
++    monkeypatch.setattr(s,"prepare",lambda *a:dict(output=tmp_path/"none"))
++    monkeypatch.setattr(sys,"argv",["export-trial21","--dry-run"]);e.main();r=json.loads(capsys.readouterr().out)
++    assert r["fits_performed"]==0 and r["competition_test_opened"] is False and not Path(r["output"]).exists()
++
++
++def test_incomplete_fit_accounting_is_fatal(tmp_path,monkeypatch):
++    config,root,rehash,test=source_context(tmp_path,monkeypatch)
++    m=s.b.read(root/"run_manifest.json");m["converged_candidate_fits"]=4499;write(root/"run_manifest.json",m)
++    with pytest.raises(ValueError,match="4500-fit"):s.prepare(str(config))
++
++
++def test_rehashed_bad_geometry_dimension_is_fatal(tmp_path,monkeypatch):
++    config,root,rehash,test=source_context(tmp_path,monkeypatch);p=root/"trials/trial_0021/geometry_diagnostics.jsonl"
++    rows=[json.loads(v) for v in p.read_text().splitlines()];rows[0]["effective_dimensions"]=8;p.write_text("".join(json.dumps(v)+"\n" for v in rows));rehash()
++    with pytest.raises(ValueError,match="effective dimension"):s.prepare(str(config))
+diff --git a/docs/generative_trial21_export_v1.md b/docs/generative_trial21_export_v1.md
+new file mode 100644
+--- /dev/null
++++ b/docs/generative_trial21_export_v1.md
+@@ -0,0 +1,153 @@
++# Frozen Trial21 final export patch
++
++## Deliverables / current branch
++
++The companion build_trial21_export_patch.py is a self-contained STANDARD-LIBRARY patch
++generator. It writes an additive unified diff only; no source files, git branch, commit,
++model fits, network calls, submissions or uploads are performed by the generator.
++The attached generated patch is equivalent; choose either route, not both.
++
++    python build_trial21_export_patch.py --output trial21_export.patch
++    git apply --check trial21_export.patch
++    git apply trial21_export.patch
++    python -m pytest -q tests/test_generative_trial21_export_v1.py
++    python -m scripts.export_generative_trial21_v1 --dry-run
++    python -m scripts.export_generative_trial21_v1
++
++Continue CURRENT branch. Patch adds6 files, no historical changes. Requires the earlier
++local generative geometry, follow-up and generative Optuna patches. Their modules were
++previously absent on remote default branch; no claim is made that a remote checkout
++contains your local sources. Existing current environment is required, no upgrades.
++
++## Local paths
++
++New config: configs/generative_trial21_export_v1.json
++study=outputs/results/generative_optuna_v1_run_01
++study_config=configs/generative_optuna_v1.json
++trial25_export=outputs/submissions/elasticnet_optuna_trial_25_run_01
++test_path=data/raw/test.csv
++sample_submission_path=data/raw/sample_submission.csv
++expected_rows=19750
++output_dir=outputs/submissions/generative_optuna_trial21_v1
++
++Correct paths in this NEW config to match actual local files. --output can select a new
++fresh destination. Existing outputs are refused, never resumed or overwritten. Do not
++edit old source manifests/settings/code to bypass hash/version failures.
++
++## Source verification before refit
++
++Delegate to the existing generative_optuna snapshot.prepare, preserving its exact250x150
++labelled data,50 ordered fold partitions, Trial25/K8/original-hybrid source reproduction,
++source-code/input/hash/environment checks. No fits or competition-input reads occur.
++
++Then verify every generative Optuna artifact against manifest; require EXACT completed
++30/30 trials, zero failures,4500 attempted/completed/converged composite fits and1500
++projector fits, no test access/upload. Pin selected best/decision/parameters/predictions
++SHA256 to the manifest supplied by the user. This is a dedicated Trial21 snapshot, NOT
++an any-winner or future-study exporter. Pins are not optional CLI switches.
++
++Validate all30 trial records and CSV agreement, exact tie-breaking (21 before24), frozen
++parameters, selected result=best_trial, decision screening and original Trial0 control
++reproduction. Recompute Trial0 and21 row-level hybrid formulas, CV mean/std and paired
++comparisons from cached predictions; verify saved model_summary. Validate50 geometry
++records and150 converged seed records for each checked trial, effective dimensions and
++selected-feature indices. No individual old models are refitted during verification.
++Overall4500 counts are manifest evidence; fit diagnostics are individually inspected for
++Trial0 and21, not independent re-execution of all4500 fits.
++
++Trial21 frozen values:
++features20, PCA12, K12, tied covariance,
++reg_covar=1.4159458366980159e-05,
++label_smoothing=1.3711160213584192e-05.
++Standalone development AUC0.9954691845996194;
++hybrid development AUC0.9837300018821757.
++No standalone-winner reselection across30 trials is performed.
++
++Verify prior Trial25 export ready/reload/5-fit accounting, all export artifact hashes,
++source input/code hashes, exact same underlying Trial25 study and training file, source
++snapshot identity, parameters and full150-column feature order. This uses the actual
++schema read from src/submission/elasticnet_trial_submission.py on GitHub. Trial25 model
++files are hashed but NEVER loaded or refitted. Their prediction-input hashes are deferred
++until actual export, to preserve dry-run no-test access. Same official test/template
++content must match those frozen hashes. All recorded original paths must remain valid.
++
++Dry-run checks prediction file EXISTENCE only (filesystem metadata), not test/template
++contents. If a purported development-only watched map contains these paths, fail before
++hashing them. Full competition input checks are deliberately deferred. Source CSV/NPZ
++predictions may be read during dry-run; these are labelled development/export artifacts,
++not fitting on competition features. Dry-run writes no output and performs zero fits.
++
++## One refit, two candidates
++
++Fit the exact search projector on all250 labelled rows, then three native mixture models
++at seeds42/314/2026. Reuse original source model factory and numerical settings. All3
++custom EM fits must converge. This is3 composite fits (each includes density initialization
++plus custom EM) and1 projector fit, not6 fits for two submissions. No parameter changes,
++seed selection, extra iterations after failure, Optuna search, B mode or test fitting.
++
++Save model_bundle.joblib, freshly reload it, verify TRAIN predictions. Only then open
++competition test/template. Hash inputs before reads, require same source Trial25 inputs,
++validate numeric finite test features, schema, row count, nonempty unique string IDs and
++matching ID sets. Transform by TRAIN-fitted projector, verify original/reloaded TEST
++predictions. Never deserialize external/source pickle files: only this run's fresh bundle.
++
++Reconstruct frozen Trial25 test predictions from component_predictions.csv and exact
++Elastic-net formula; align by official template IDs, not source row positions. Compute:
++
++    standalone = mean_three_Trial21_GMM_seeds
++    hybrid = 0.5*standalone + 0.5*frozen_Trial25
++
++No Trial25 refit. No weight tuning, five-model equal vote or K8 substitution.
++Write both17-significant-digit CSVs to pending names, reload/verify IDs/probabilities,
++recheck source/input hashes, then publish both. Catchable failure removes both final and
++pending CSV names, even if first rename succeeded before second failed. A SIGKILL cannot
++execute cleanup: only use candidates when parent manifest is ready_for_manual_submission.
++
++## Outputs
++
++outputs/submissions/generative_optuna_trial21_v1/
++    model_bundle.joblib
++    standalone/submission.csv
++    standalone/candidate_manifest.json
++    hybrid/submission.csv
++    hybrid/candidate_manifest.json
++    aligned_predictions.csv
++    geometry_diagnostics.json
++    fit_diagnostics.json
++    source_decision.json
++    source_best_trial.json
++    source_model_summary.csv
++    settings.json
++    prediction_manifest.json
++
++Each candidate manifest has its own CSV SHA256, formula/role, shared model bundle hash and
++source Trial25 CSV hash. Parent manifest stores source/input/code hashes and all output
++hashes, counters, row count, persistence and roundtrip checks. Its own bytes are not self-
++hashed. standalone is explicitly post_search_standalone_followup; hybrid is the candidate
++corresponding to the original search objective. Neither is called an independently
++validated final winner. Old public0.95267 candidate remains untouched. No upload occurs.
++
++Success: status=ready_for_manual_submission, completed_candidate_fits=3,
++completed_projector_fits=1, saved_and_reloaded_models_verified=true,
++csv_roundtrip_verified=true, rows=19750, competition_test_used_for_fitting=false,
++kaggle_upload_performed=false. No new public/private score is implied by this export.
++
++## Validation limitations
++
++13 tests pass, no skipped tests. Synthetic native tests use real sklearn density-GMM
++initialization and custom tied-covariance labelled EM, model save/reload and actual CSV
++alignment/blending; source tests exercise full2500-row/50-fold artifacts, selection/ties,
++parameter/score/comparison checks, diagnostics, pinned fingerprints, input corruption,
++geometry corruption, accounting failures and no-test/no-write dry-run. Publication tests
++cover rollback when the second candidate rename fails.
++
++The temporary test checkout reconstructs the prior numerical kernels from earlier supplied
++patches. Historical search.snapshot.prepare is explicitly injected in source fixtures,
++and frozen production fingerprint/score constants are patched ONLY INSIDE synthetic
++fixtures. These temporary legacy modules are NOT included in the patch. Tests do NOT
++prove the real local source fingerprint or real0.995469/0.983730 replay; local dry-run
++must do that. No Optuna optimizer is run by this exporter or its tests.
++
++Generator was executed and its patch checked/applied in a clean temporary git repository,
++then retested. Actual local git-state compatibility, full repository tests, real-data
++preflight, real250-row refit, real19750-row outputs and Kaggle upload have NOT run here.

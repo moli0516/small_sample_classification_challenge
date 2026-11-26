@@ -1,0 +1,23 @@
+{
+  "experiment_id": "e5b_optuna_ext02_trial_0028_depth_4_trees_100",
+  "estimator_parameters": {
+    "booster": "gbtree",
+    "objective": "binary:logistic",
+    "eval_metric": "auc",
+    "tree_method": "hist",
+    "learning_rate": 0.06519566519993493,
+    "min_child_weight": 1.4904468240995794,
+    "reg_lambda": 0.6165145646261946,
+    "reg_alpha": 0.0,
+    "gamma": 0.0,
+    "subsample": 0.9083524917188446,
+    "colsample_bytree": 0.6374912999826831,
+    "n_jobs": 1,
+    "verbosity": 1,
+    "max_depth": 4,
+    "n_estimators": 100,
+    "random_state": 42
+  },
+  "scaling": "none",
+  "early_stopping": false
+}

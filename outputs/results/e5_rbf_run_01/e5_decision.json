@@ -1,0 +1,8 @@
+{
+  "status": "completed",
+  "e5_leader": "e5_rbf_svm_c_10_gamma_0_01",
+  "mean_auc": 0.8123854486897966,
+  "mean_difference_vs_e4_leader": -0.049726247987117445,
+  "promote_over_e4": false,
+  "interpretation": "Development selection only; no independent final evaluation."
+}

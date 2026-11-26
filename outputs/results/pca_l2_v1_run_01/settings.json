@@ -1,0 +1,208 @@
+{
+  "config": {
+    "train_path": "data/raw/train.csv",
+    "target_column": "target",
+    "id_column": "id",
+    "expected_rows": 250,
+    "expected_features": 150,
+    "source_run": "outputs/results/validation_protocol_v1_run_01",
+    "output_dir": "outputs/results/pca_l2_v1_run_01",
+    "c_values": [
+      0.001,
+      0.01,
+      0.1,
+      1.0,
+      10.0
+    ],
+    "components": [
+      5,
+      10,
+      20,
+      50
+    ],
+    "max_iter": 5000,
+    "tol": 0.0001,
+    "model_seed": 42
+  },
+  "candidates": [
+    {
+      "candidate": "no_pca_C0.001",
+      "branch": "control",
+      "components": null,
+      "C": 0.001
+    },
+    {
+      "candidate": "no_pca_C0.01",
+      "branch": "control",
+      "components": null,
+      "C": 0.01
+    },
+    {
+      "candidate": "no_pca_C0.1",
+      "branch": "control",
+      "components": null,
+      "C": 0.1
+    },
+    {
+      "candidate": "no_pca_C1",
+      "branch": "control",
+      "components": null,
+      "C": 1.0
+    },
+    {
+      "candidate": "no_pca_C10",
+      "branch": "control",
+      "components": null,
+      "C": 10.0
+    },
+    {
+      "candidate": "pca_5_C0.001",
+      "branch": "pca",
+      "components": 5,
+      "C": 0.001
+    },
+    {
+      "candidate": "pca_5_C0.01",
+      "branch": "pca",
+      "components": 5,
+      "C": 0.01
+    },
+    {
+      "candidate": "pca_5_C0.1",
+      "branch": "pca",
+      "components": 5,
+      "C": 0.1
+    },
+    {
+      "candidate": "pca_5_C1",
+      "branch": "pca",
+      "components": 5,
+      "C": 1.0
+    },
+    {
+      "candidate": "pca_5_C10",
+      "branch": "pca",
+      "components": 5,
+      "C": 10.0
+    },
+    {
+      "candidate": "pca_10_C0.001",
+      "branch": "pca",
+      "components": 10,
+      "C": 0.001
+    },
+    {
+      "candidate": "pca_10_C0.01",
+      "branch": "pca",
+      "components": 10,
+      "C": 0.01
+    },
+    {
+      "candidate": "pca_10_C0.1",
+      "branch": "pca",
+      "components": 10,
+      "C": 0.1
+    },
+    {
+      "candidate": "pca_10_C1",
+      "branch": "pca",
+      "components": 10,
+      "C": 1.0
+    },
+    {
+      "candidate": "pca_10_C10",
+      "branch": "pca",
+      "components": 10,
+      "C": 10.0
+    },
+    {
+      "candidate": "pca_20_C0.001",
+      "branch": "pca",
+      "components": 20,
+      "C": 0.001
+    },
+    {
+      "candidate": "pca_20_C0.01",
+      "branch": "pca",
+      "components": 20,
+      "C": 0.01
+    },
+    {
+      "candidate": "pca_20_C0.1",
+      "branch": "pca",
+      "components": 20,
+      "C": 0.1
+    },
+    {
+      "candidate": "pca_20_C1",
+      "branch": "pca",
+      "components": 20,
+      "C": 1.0
+    },
+    {
+      "candidate": "pca_20_C10",
+      "branch": "pca",
+      "components": 20,
+      "C": 10.0
+    },
+    {
+      "candidate": "pca_50_C0.001",
+      "branch": "pca",
+      "components": 50,
+      "C": 0.001
+    },
+    {
+      "candidate": "pca_50_C0.01",
+      "branch": "pca",
+      "components": 50,
+      "C": 0.01
+    },
+    {
+      "candidate": "pca_50_C0.1",
+      "branch": "pca",
+      "components": 50,
+      "C": 0.1
+    },
+    {
+      "candidate": "pca_50_C1",
+      "branch": "pca",
+      "components": 50,
+      "C": 1.0
+    },
+    {
+      "candidate": "pca_50_C10",
+      "branch": "pca",
+      "components": 50,
+      "C": 10.0
+    }
+  ],
+  "input_and_code_sha256": {
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/configs/pca_l2_v1.json": "904b993afd54e0b29d6061318b0a23d9053815617b66a9f58b670eb2fe0f50bc",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/data/raw/train.csv": "7ef80ff93ef49c8c784445f3484f81a9ea6f0e30a6b59703ca5a15daf690b61f",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/validation_protocol_v1_run_01/run_manifest.json": "bb0ecd30e02773871a1fad9946575ed77d9ff22c308175bddd2277e4c8a231d3",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/scripts/run_pca_l2_v1.py": "aed113fadf9128fcd3b655b0045153ecbbc624bb7f2cce0441c61883c70f3a31",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/validation_protocol_v1_run_01/fold_scores.csv": "ab2211faf1d2e01a8d9a2482fe80c8997d1e5e73743c1f85294d1401a00fd822",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/validation_protocol_v1_run_01/auc_spread.png": "e132593f54c306e75353e0d3bc66a6d1aaa3b425444619b8aaeeb6eac02138ee",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/validation_protocol_v1_run_01/settings.json": "076512f6af6b7454a91ced0e67e7a4f3755bf455af7a17b7eb8f59ebb971c723",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/validation_protocol_v1_run_01/split_indices.json": "dd476b27590302e6a537efb0b33428d9ccbc2c35018b40e7f3f5c64c9881526e",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/validation_protocol_v1_run_01/repeat_scores.csv": "e492dee3c7cdd9e331e9d03d429758fafd56ea2fbe8c00f28c5cdc8774d55488",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/validation_protocol_v1_run_01/validation_probabilities.csv": "a0661b2e7af2b9c943d351d375b6a07c373be99a77dff2ae9f60d49888e7b502",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/validation_protocol_v1_run_01/paired_summary.csv": "54dcd5f25826510d01e46e37c83ed49a07ae237810ec34fd6c4eeb37c5093c34",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/validation_protocol_v1_run_01/diagnostics.json": "b35421fcf7d2fe39555a7610ca6f87751f83bab31676f7ac161bc5afb05c6c67",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/validation_protocol_v1_run_01/interpretation.json": "77b85f43be5f58639eccbf861b9a67b430e15bd80524c6273bc692298e223e57",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/validation_protocol_v1_run_01/paired_repeat_differences.csv": "ac4af3a06a7568013d9bc308bf071dcfe1348be53cdd78e1eeefc8599436b688",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/validation_protocol_v1_run_01/paired_differences.png": "d0e0951a8b4f93f8c8aa5d9e1f563ed765c95b6a9685b9e5032c3730b82d0c42",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/validation_protocol_v1_run_01/model_summary.csv": "bd56fd899ce62d040431b1971895a560ab27fd7e0902c57ad67447daeb08fdcb",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/validation_protocol_v1_run_01/fit.log": "ae530093578dd3a161abb10120f0aafdc3bec4cbd3c2bc4bec1e4d13e1712bae",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/validation_protocol_v1_run_01/cv5_reproduction.csv": "f3f1d8a9e0926b448dd28679c505bec7077af5ea8ba42da796e33b3cc7b199f4",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/validation_protocol_v1_run_01/warnings.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "versions": {
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1",
+    "threadpoolctl": "3.7.0"
+  },
+  "preprocessing": "Training-fitted StandardScaler then optional full-SVD PCA, whiten=False; L2 lbfgs for both branches"
+}

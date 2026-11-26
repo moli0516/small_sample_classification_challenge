@@ -1,0 +1,453 @@
+[
+  {
+    "number": 0,
+    "state": "COMPLETE",
+    "value": 0.9382748290356986,
+    "parameters": {
+      "selected_features": 20,
+      "latent_dimensions": 8,
+      "n_components": 8,
+      "reg_covar": 0.001,
+      "label_smoothing": 0.001
+    },
+    "user_attrs": {
+      "standalone_auc": 0.9296401907271473,
+      "control_reproduced": true
+    }
+  },
+  {
+    "number": 1,
+    "state": "COMPLETE",
+    "value": 0.9836972729364033,
+    "parameters": {
+      "selected_features": 20,
+      "latent_dimensions": 12,
+      "n_components": 12,
+      "reg_covar": 7.068974950624602e-05,
+      "label_smoothing": 3.511356313970405e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.9953728276554363
+    }
+  },
+  {
+    "number": 2,
+    "state": "COMPLETE",
+    "value": 0.9182364535625405,
+    "parameters": {
+      "selected_features": 30,
+      "latent_dimensions": 6,
+      "n_components": 8,
+      "reg_covar": 0.00234238498471129,
+      "label_smoothing": 1.3783237455007187e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.8676474371039589
+    }
+  },
+  {
+    "number": 3,
+    "state": "COMPLETE",
+    "value": 0.8812297404688708,
+    "parameters": {
+      "selected_features": 50,
+      "latent_dimensions": 4,
+      "n_components": 12,
+      "reg_covar": 0.043379206974909386,
+      "label_smoothing": 5.9750279999602906e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.7639770897379593
+    }
+  },
+  {
+    "number": 4,
+    "state": "COMPLETE",
+    "value": 0.9317744735136039,
+    "parameters": {
+      "selected_features": 10,
+      "latent_dimensions": 6,
+      "n_components": 8,
+      "reg_covar": 1.5167330688076188e-05,
+      "label_smoothing": 9.46217535646148e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.9120861304556958
+    }
+  },
+  {
+    "number": 5,
+    "state": "COMPLETE",
+    "value": 0.9121809712027102,
+    "parameters": {
+      "selected_features": 30,
+      "latent_dimensions": 12,
+      "n_components": 4,
+      "reg_covar": 0.018274508859816022,
+      "label_smoothing": 0.001319994226153501
+    },
+    "user_attrs": {
+      "standalone_auc": 0.8619085262563523
+    }
+  },
+  {
+    "number": 6,
+    "state": "COMPLETE",
+    "value": 0.92854157517201,
+    "parameters": {
+      "selected_features": 20,
+      "latent_dimensions": 6,
+      "n_components": 12,
+      "reg_covar": 0.0353875886477924,
+      "label_smoothing": 0.00026100256506134736
+    },
+    "user_attrs": {
+      "standalone_auc": 0.8958192692975301
+    }
+  },
+  {
+    "number": 7,
+    "state": "COMPLETE",
+    "value": 0.8911771963945878,
+    "parameters": {
+      "selected_features": 30,
+      "latent_dimensions": 4,
+      "n_components": 12,
+      "reg_covar": 0.0010821382910613986,
+      "label_smoothing": 0.005280796376895365
+    },
+    "user_attrs": {
+      "standalone_auc": 0.7840227847836544
+    }
+  },
+  {
+    "number": 8,
+    "state": "COMPLETE",
+    "value": 0.9155036911558649,
+    "parameters": {
+      "selected_features": 30,
+      "latent_dimensions": 12,
+      "n_components": 8,
+      "reg_covar": 0.03717371747825051,
+      "label_smoothing": 0.0004149795789891589
+    },
+    "user_attrs": {
+      "standalone_auc": 0.8627037455298325
+    }
+  },
+  {
+    "number": 9,
+    "state": "COMPLETE",
+    "value": 0.9650924357446098,
+    "parameters": {
+      "selected_features": 20,
+      "latent_dimensions": 12,
+      "n_components": 4,
+      "reg_covar": 0.00022410971619109496,
+      "label_smoothing": 0.0067410742656406975
+    },
+    "user_attrs": {
+      "standalone_auc": 0.983035322165757
+    }
+  },
+  {
+    "number": 10,
+    "state": "COMPLETE",
+    "value": 0.9837297404688709,
+    "parameters": {
+      "selected_features": 20,
+      "latent_dimensions": 12,
+      "n_components": 12,
+      "reg_covar": 0.0001422826711265487,
+      "label_smoothing": 2.6929437293542878e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.9954377627203714
+    }
+  },
+  {
+    "number": 11,
+    "state": "COMPLETE",
+    "value": 0.9836972729364033,
+    "parameters": {
+      "selected_features": 20,
+      "latent_dimensions": 12,
+      "n_components": 12,
+      "reg_covar": 6.517028869067618e-05,
+      "label_smoothing": 1.0680756201962058e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.9953728276554363
+    }
+  },
+  {
+    "number": 12,
+    "state": "COMPLETE",
+    "value": 0.9836650668172406,
+    "parameters": {
+      "selected_features": 20,
+      "latent_dimensions": 12,
+      "n_components": 12,
+      "reg_covar": 0.0001970526852979787,
+      "label_smoothing": 0.00013418168331115276
+    },
+    "user_attrs": {
+      "standalone_auc": 0.9954377627203714
+    }
+  },
+  {
+    "number": 13,
+    "state": "COMPLETE",
+    "value": 0.9687138988225945,
+    "parameters": {
+      "selected_features": 20,
+      "latent_dimensions": 16,
+      "n_components": 4,
+      "reg_covar": 6.186654253095376e-05,
+      "label_smoothing": 3.632805404129144e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.9860687098730578
+    }
+  },
+  {
+    "number": 14,
+    "state": "COMPLETE",
+    "value": 0.9826664157098939,
+    "parameters": {
+      "selected_features": 20,
+      "latent_dimensions": 12,
+      "n_components": 12,
+      "reg_covar": 0.004754983295665315,
+      "label_smoothing": 3.953397132635202e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.9946310412614761
+    }
+  },
+  {
+    "number": 15,
+    "state": "COMPLETE",
+    "value": 0.9139104293452119,
+    "parameters": {
+      "selected_features": 30,
+      "latent_dimensions": 12,
+      "n_components": 12,
+      "reg_covar": 1.7565888595781384e-05,
+      "label_smoothing": 3.872499284943783e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.8554016354016355
+    }
+  },
+  {
+    "number": 16,
+    "state": "COMPLETE",
+    "value": 0.886790890269151,
+    "parameters": {
+      "selected_features": 10,
+      "latent_dimensions": 4,
+      "n_components": 12,
+      "reg_covar": 0.0007256796526382275,
+      "label_smoothing": 1.3361841691873877e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.7813279273061882
+    }
+  },
+  {
+    "number": 17,
+    "state": "COMPLETE",
+    "value": 0.9690888700671308,
+    "parameters": {
+      "selected_features": 10,
+      "latent_dimensions": 16,
+      "n_components": 12,
+      "reg_covar": 0.0010509893147097997,
+      "label_smoothing": 0.00010408749933822559
+    },
+    "user_attrs": {
+      "standalone_auc": 0.9749778321517452
+    }
+  },
+  {
+    "number": 18,
+    "state": "COMPLETE",
+    "value": 0.9088218625175146,
+    "parameters": {
+      "selected_features": 50,
+      "latent_dimensions": 12,
+      "n_components": 12,
+      "reg_covar": 3.974557671677837e-05,
+      "label_smoothing": 0.0010894364867526205
+    },
+    "user_attrs": {
+      "standalone_auc": 0.830241127632432
+    }
+  },
+  {
+    "number": 19,
+    "state": "COMPLETE",
+    "value": 0.9088008971704624,
+    "parameters": {
+      "selected_features": 50,
+      "latent_dimensions": 8,
+      "n_components": 12,
+      "reg_covar": 7.630980346497346e-05,
+      "label_smoothing": 2.431338734256146e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.8365168245603029
+    }
+  },
+  {
+    "number": 20,
+    "state": "COMPLETE",
+    "value": 0.8868872472133342,
+    "parameters": {
+      "selected_features": 10,
+      "latent_dimensions": 4,
+      "n_components": 12,
+      "reg_covar": 3.66373132789128e-05,
+      "label_smoothing": 0.00011580662637945898
+    },
+    "user_attrs": {
+      "standalone_auc": 0.7810681870464479
+    }
+  },
+  {
+    "number": 21,
+    "state": "COMPLETE",
+    "value": 0.9837300018821757,
+    "parameters": {
+      "selected_features": 20,
+      "latent_dimensions": 12,
+      "n_components": 12,
+      "reg_covar": 1.4159458366980159e-05,
+      "label_smoothing": 1.3711160213584192e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.9954691845996194
+    }
+  },
+  {
+    "number": 22,
+    "state": "COMPLETE",
+    "value": 0.9671941987159378,
+    "parameters": {
+      "selected_features": 20,
+      "latent_dimensions": 12,
+      "n_components": 4,
+      "reg_covar": 1.319818998274319e-05,
+      "label_smoothing": 4.051206756245398e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.984197356588661
+    }
+  },
+  {
+    "number": 23,
+    "state": "COMPLETE",
+    "value": 0.9707054499445803,
+    "parameters": {
+      "selected_features": 10,
+      "latent_dimensions": 16,
+      "n_components": 12,
+      "reg_covar": 1.1916197395945719e-05,
+      "label_smoothing": 1.317330141250481e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.9765917978961458
+    }
+  },
+  {
+    "number": 24,
+    "state": "COMPLETE",
+    "value": 0.9837300018821757,
+    "parameters": {
+      "selected_features": 20,
+      "latent_dimensions": 12,
+      "n_components": 12,
+      "reg_covar": 1.589419682709191e-05,
+      "label_smoothing": 1.4077694347301e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.9954691845996194
+    }
+  },
+  {
+    "number": 25,
+    "state": "COMPLETE",
+    "value": 0.9672591337808729,
+    "parameters": {
+      "selected_features": 20,
+      "latent_dimensions": 12,
+      "n_components": 4,
+      "reg_covar": 2.1927923251008917e-05,
+      "label_smoothing": 1.1587290252383164e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.9841651504694984
+    }
+  },
+  {
+    "number": 26,
+    "state": "COMPLETE",
+    "value": 0.9105693581780538,
+    "parameters": {
+      "selected_features": 30,
+      "latent_dimensions": 12,
+      "n_components": 4,
+      "reg_covar": 0.00023317758495175716,
+      "label_smoothing": 3.7584137914744015e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.8604605579605579
+    }
+  },
+  {
+    "number": 27,
+    "state": "COMPLETE",
+    "value": 0.928312472551603,
+    "parameters": {
+      "selected_features": 20,
+      "latent_dimensions": 6,
+      "n_components": 12,
+      "reg_covar": 2.072836356108455e-05,
+      "label_smoothing": 2.076334899661853e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.8914575883054144
+    }
+  },
+  {
+    "number": 28,
+    "state": "COMPLETE",
+    "value": 0.8813143338143339,
+    "parameters": {
+      "selected_features": 20,
+      "latent_dimensions": 4,
+      "n_components": 12,
+      "reg_covar": 2.2155846711573058e-05,
+      "label_smoothing": 6.365045098557315e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.7764235000104566
+    }
+  },
+  {
+    "number": 29,
+    "state": "COMPLETE",
+    "value": 0.9791400025095678,
+    "parameters": {
+      "selected_features": 20,
+      "latent_dimensions": 12,
+      "n_components": 8,
+      "reg_covar": 0.0009417188436147009,
+      "label_smoothing": 1.6880437095053092e-05
+    },
+    "user_attrs": {
+      "standalone_auc": 0.9926287721939897
+    }
+  }
+]

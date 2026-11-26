@@ -1,0 +1,25 @@
+{
+  "status": "completed",
+  "started_utc": "2026-11-09T05:19:25.823118+00:00",
+  "planned_forest_fits": 100,
+  "attempted_forest_fits": 100,
+  "completed_forest_fits": 100,
+  "reused_control_folds": 50,
+  "test_opened": false,
+  "kaggle_upload_performed": false,
+  "elapsed_seconds": 103.982,
+  "source_oof_verified": true,
+  "promote_new_configuration": false,
+  "artifact_sha256": {
+    "fold_scores.csv": "ed5ca253819d36a7bce6ce953952111659839f8579f2e74a083c79889934d2cf",
+    "settings.json": "d0cbd6268c76c37246f0df88e76511b353d3ae4b6b7bd8ebce922af8d28c1f8c",
+    "repeat_scores.csv": "a268b2947ba0e70219f437fc4813434f9ad77e838fe2f8c4bb31e941dccdd4ca",
+    "validation_probabilities.csv": "a04dd1dd3569a92be465f47b605c5055897135852dc00022d60c151facae7e8e",
+    "diagnostics.json": "81690e12a6f8e5fb8ba8b56f4d0b2ff4e562afee98ffe6368f2ed9c90b52f8a1",
+    "fit.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "comparison.csv": "bfe45dcf109b6e2868404aa2c4c9570ec76de6b5b99549524dece643a14b591d",
+    "decision.json": "5c609c466920bafdf26164ffb007c695c50a11b74b2470a24096ad56c75959e4",
+    "warnings.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "finished_utc": "2026-11-09T05:21:09.973182+00:00"
+}

@@ -1,0 +1,31 @@
+{
+  "selected_candidate": "en_C0.1_r0.75_add_alpha0.05",
+  "selected_mean_auc": 0.9084647196603719,
+  "selected_spec": {
+    "C": 0.1,
+    "l1_ratio": 0.75,
+    "mode": "add_to_original",
+    "alpha": 0.05
+  },
+  "screening_passed": false,
+  "catboost_control_comparison": {
+    "reference": "catboost_frozen",
+    "candidate": "en_C0.1_r0.75_add_alpha0.05",
+    "mean_difference": -0.00022701131396786202,
+    "difference_sd": 0.0013631732166690413,
+    "wins": 6,
+    "losses": 4,
+    "ties": 0
+  },
+  "screening_both_controls": false,
+  "automatic_promotion": false,
+  "selection_rule": "Highest mean of all36 ensembles; exact ties use C ascending, ratio ascending, replacement before alpha ascending; no fallback.",
+  "interpretation": "Adaptive development comparison on reused splits; no independent evaluation or significance test.",
+  "reference": "reference",
+  "candidate": "en_C0.1_r0.75_add_alpha0.05",
+  "mean_difference": 0.0001283016500407186,
+  "difference_sd": 0.0005520760843033601,
+  "wins": 5,
+  "losses": 5,
+  "ties": 0
+}

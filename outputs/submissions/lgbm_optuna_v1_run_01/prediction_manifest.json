@@ -1,0 +1,31 @@
+{
+  "status": "ready_for_manual_submission",
+  "candidate": "l1_xgb_lgbm",
+  "source_cv_run": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/lgbm_optuna_v1_run_01/trials/trial_0014/cv",
+  "versions": {
+    "python": "3.13.7",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "sklearn": "1.9.1",
+    "xgboost": "3.4.1",
+    "lightgbm": "4.7.0"
+  },
+  "kaggle_upload_performed": false,
+  "input_sha256": {
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/data/raw/test.csv": "e40a4f71df157db8f8475dc8585063fcf62a027898fb62eb482a519afe339dc0",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/data/raw/sample_submission.csv": "ce6362dfb3c7386a0dbee598ccdb54ef03e8ceb7a4836d56b9cbec0a0fab08c8"
+  },
+  "rows": 19750,
+  "fits_performed": 4,
+  "saved_and_reloaded_models_verified": true,
+  "submission_sha256": "f3cd467644d6aca565db9b9f738c5b8c6aeeb16c4ed822eb7a85de29d2d83865",
+  "artifact_sha256": {
+    "submission.csv": "f3cd467644d6aca565db9b9f738c5b8c6aeeb16c4ed822eb7a85de29d2d83865",
+    "fit.log": "ee7382b014825905a4817d7982778d074c912966d27e7f965d0617b75f6794b7",
+    "ensemble.json": "406faf496eb8cdf40d4c95c7ddcc1b433be20368275937eb8cf0894a1de1d16f",
+    "models/lightgbm.joblib": "df67165f7441935c09dad7b5a63e65083035e143a251f7b2becb37feab43b50c",
+    "models/l1.joblib": "a3a1c7856dea1bfd254c7543391101216c4e23b0798d44b0dd26d7dcc3803107",
+    "models/xgboost.joblib": "fcd0c6071041d05300f6aefd838823e0bbcaa31853a3fbcefe41ee84b1e56648"
+  },
+  "finished_utc": "2026-10-23T19:48:03.160077+00:00"
+}

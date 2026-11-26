@@ -1,0 +1,24 @@
+{
+  "status": "completed",
+  "started_utc": "2026-11-09T05:09:01.464194+00:00",
+  "planned_forest_fits": 200,
+  "attempted_forest_fits": 200,
+  "completed_forest_fits": 200,
+  "test_opened": false,
+  "kaggle_upload_performed": false,
+  "source_trial": 14,
+  "baseline_oof_verified": true,
+  "promote": true,
+  "artifact_sha256": {
+    "fold_scores.csv": "0e76dd9f93b747e998cc6f975ff4b8a2461c585fc5584a03083e099e250ab522",
+    "settings.json": "5bbd3ad2c9419369767366eb6eedf5bb7310c5066d75ded7aaf958899b8b778c",
+    "repeat_scores.csv": "98314d3b0f283d3bd53129ea3f426a3c2822a5e33d63d2945b990015a3bd202c",
+    "validation_probabilities.csv": "35a74e79eece511dbeb81a4568ac819c18d6f8315c9f3dbbd3a9b46e5c0e7e69",
+    "diagnostics.json": "b0fd959e34dbb769f279e47b987694c146df88601328c54528409b382393aadf",
+    "fit.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "comparison.csv": "0d32164899d9b0c93cd6b46ffb16d75aa732e6de74c48547fa1621e19dbed1de",
+    "decision.json": "726db3504545ad0e11c25a3eaeccce68e766be96bb3a727498f1cbc0cdeb335f",
+    "warnings.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "finished_utc": "2026-11-09T05:11:06.050250+00:00"
+}

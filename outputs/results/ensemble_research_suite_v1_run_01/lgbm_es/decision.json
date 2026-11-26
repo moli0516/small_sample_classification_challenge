@@ -1,0 +1,20 @@
+{
+  "selected_candidate": "lgbm_es",
+  "selected_mean_auc": 0.9047814584771107,
+  "selected_spec": {
+    "replaced_component": "lightgbm",
+    "other_parameters_fixed": true,
+    "final_full_data_round_policy": "No deployment/refit implemented; research-only round selections saved per fold"
+  },
+  "screening_passed": false,
+  "automatic_promotion": false,
+  "selection_rule": "Highest ensemble mean; exact ties use preregistered generation order. No fallback.",
+  "reference": "reference",
+  "candidate": "lgbm_es",
+  "mean_difference": -0.0035549595332204365,
+  "difference_sd": 0.002986843188401737,
+  "wins": 1,
+  "losses": 9,
+  "ties": 0,
+  "interpretation": "Adaptive development research, not nested/independent evaluation or a significance test. Inner validation only prevents direct stopping/meta-training leakage; prior adaptivity remains."
+}

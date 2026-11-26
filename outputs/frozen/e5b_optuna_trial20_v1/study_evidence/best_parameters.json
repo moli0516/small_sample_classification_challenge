@@ -1,0 +1,14 @@
+{
+  "trial_number": 20,
+  "mean_auc": 0.8819374908505344,
+  "parameters": {
+    "max_depth": 4,
+    "n_estimators": 50,
+    "learning_rate": 0.08316404045417083,
+    "min_child_weight": 1.229594255114693,
+    "reg_lambda": 0.1877052106059947,
+    "subsample": 0.9920641940615834,
+    "colsample_bytree": 0.7550128116345981
+  },
+  "artifact_directory": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/e5b_optuna_ext02_run_01/trials/trial_0020"
+}

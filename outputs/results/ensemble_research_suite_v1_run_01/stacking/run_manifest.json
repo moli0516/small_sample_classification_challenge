@@ -1,0 +1,26 @@
+{
+  "status": "completed",
+  "task": "stacking",
+  "test_opened": false,
+  "kaggle_upload_performed": false,
+  "started_utc": "2026-11-09T18:05:50.354833+00:00",
+  "attempted_estimator_fits": 650,
+  "completed_estimator_fits": 650,
+  "artifact_sha256": {
+    "inner_traces.json": "5accf465a38485d9ad56c6d2c173e32cf54bbf11077f8803e81491b44cbc28d8",
+    "fold_scores.csv": "d391d775700d2cacdc960aa3d49a5446171c08bf1ea8d29d992af7aa6199b75e",
+    "settings.json": "74ac9fccd4057f55cd5cd8869edc77446dd9dd5813c5dde7b336da9ac88c8d43",
+    "split_indices.json": "1f43f338a84b4ed84502b37ba62d18a2561f5d4c25a0d46eb6dbe14778bd0ec7",
+    "repeat_scores.csv": "8a4b49084228ca707c179a84dfd6feaca42f1a51ba4c7d3a088a3f42bc873c3d",
+    "source_reproduction.csv": "898a87ef796cf978768b3ed0ecee9246bfcd55798c2fe27d670b730546cc6721",
+    "paired_repeat_differences.csv": "749691996a926eb1e99d13541d7f21b42df2e5d40d662debdad9245fca3bd54b",
+    "cohort.csv": "e1d1d4dbcf8aeb8ad02530b39f67a0ee3d1399556293f79979021407e0d492df",
+    "predictions.npz": "c3ae0130d904f05c6bfad9b0a4913df58f5213f7eec15d476b5811bd470a72de",
+    "model_summary.csv": "da05e0e49c63450302d4656d58a42f07c2b24f59b4634250d9218e9dd1f9eabf",
+    "fit.log": "23ed88db6b8abdd5daf70e7c542fe1fd375a7785979f121b2a7d2f94fb809eef",
+    "comparison.csv": "47dd33c7c95a03257dd30ee96df8766e3060304bafb8fbae0e3cd81898e60c2b",
+    "decision.json": "30f142aa75d254669aed3a6a77ad645f7ad2cf22457c3ca7de08a802b1c97d50",
+    "warnings.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "finished_utc": "2026-11-09T18:06:48.247862+00:00"
+}

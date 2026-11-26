@@ -1,0 +1,62 @@
+{
+  "A_k2_tied": {
+    "mode": "A",
+    "n_components": 2,
+    "covariance_type": "tied"
+  },
+  "A_k2_diag": {
+    "mode": "A",
+    "n_components": 2,
+    "covariance_type": "diag"
+  },
+  "A_k4_tied": {
+    "mode": "A",
+    "n_components": 4,
+    "covariance_type": "tied"
+  },
+  "A_k4_diag": {
+    "mode": "A",
+    "n_components": 4,
+    "covariance_type": "diag"
+  },
+  "A_k8_tied": {
+    "mode": "A",
+    "n_components": 8,
+    "covariance_type": "tied"
+  },
+  "A_k8_diag": {
+    "mode": "A",
+    "n_components": 8,
+    "covariance_type": "diag"
+  },
+  "B_k2_tied": {
+    "mode": "B",
+    "n_components": 2,
+    "covariance_type": "tied"
+  },
+  "B_k2_diag": {
+    "mode": "B",
+    "n_components": 2,
+    "covariance_type": "diag"
+  },
+  "B_k4_tied": {
+    "mode": "B",
+    "n_components": 4,
+    "covariance_type": "tied"
+  },
+  "B_k4_diag": {
+    "mode": "B",
+    "n_components": 4,
+    "covariance_type": "diag"
+  },
+  "B_k8_tied": {
+    "mode": "B",
+    "n_components": 8,
+    "covariance_type": "tied"
+  },
+  "B_k8_diag": {
+    "mode": "B",
+    "n_components": 8,
+    "covariance_type": "diag"
+  }
+}

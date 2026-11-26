@@ -1,0 +1,5 @@
+[LightGBM] [Info] Number of positive: 113, number of negative: 137
+[LightGBM] [Info] Total Bins 12750
+[LightGBM] [Info] Number of data points in the train set: 250, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.452000 -> initscore=-0.192593
+[LightGBM] [Info] Start training from score -0.192593

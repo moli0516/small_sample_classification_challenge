@@ -1,0 +1,9 @@
+{
+  "objective": "l1_xgb_lgbm",
+  "best_trial": 14,
+  "best_objective_auc": 0.9083364180103309,
+  "selected_trial": 14,
+  "promote": true,
+  "rule": "Choose the highest objective-AUC trial (ties: earliest). Promote only if it beats existing L1+XGBoost on mean AUC and >=6/10 repeats. No fallback trial selection.",
+  "interpretation": "Adaptive development tuning; not nested CV, independent evaluation or a guaranteed leaderboard improvement."
+}

@@ -1,0 +1,35 @@
+{
+  "selected_candidate": "A_k8_tied",
+  "selected_mean_auc": 0.9296401907271473,
+  "selected_spec": {
+    "mode": "A",
+    "n_components": 8,
+    "covariance_type": "tied"
+  },
+  "eligible_candidates": {
+    "A_k2_tied": true,
+    "A_k2_diag": true,
+    "A_k4_tied": true,
+    "A_k4_diag": true,
+    "A_k8_tied": true,
+    "A_k8_diag": true,
+    "B_k2_tied": true,
+    "B_k2_diag": true,
+    "B_k4_tied": true,
+    "B_k4_diag": true,
+    "B_k8_tied": true,
+    "B_k8_diag": true
+  },
+  "screening_passed": true,
+  "reference_comparison": {
+    "candidate": "A_k8_tied",
+    "reference": "reference_trial25",
+    "mean_difference": 0.02043054771315648,
+    "difference_sd": 0.012181425461847833,
+    "wins": 10,
+    "losses": 0,
+    "ties": 0
+  },
+  "automatic_promotion": false,
+  "interpretation": "Exploratory reused-label development evidence. B is transductive, not untouched inductive CV. No claim of competition permission, independent evaluation, or statistical significance."
+}

@@ -1,0 +1,34 @@
+{
+  "status": "ready_for_manual_submission",
+  "cv_run": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/soft_vote_l1_xgb20_v1_run_01",
+  "weights": [
+    0.5,
+    0.5
+  ],
+  "versions": {
+    "python": "3.13.7",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "sklearn": "1.9.1",
+    "xgboost": "3.4.1"
+  },
+  "started_utc": "2026-10-23T18:54:16.829639+00:00",
+  "kaggle_upload_performed": false,
+  "input_sha256": {
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/data/raw/test.csv": "e40a4f71df157db8f8475dc8585063fcf62a027898fb62eb482a519afe339dc0",
+    "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/data/raw/sample_submission.csv": "ce6362dfb3c7386a0dbee598ccdb54ef03e8ceb7a4836d56b9cbec0a0fab08c8"
+  },
+  "interpretation": "Full-data refit/export; not new validation.",
+  "rows": 19750,
+  "fits_performed": 3,
+  "saved_and_reloaded_models_verified": true,
+  "submission_sha256": "f1c03770ebb37899af30a1f3043b5ae983ccc8c9015c27df38e2ac728ae792e8",
+  "artifact_sha256": {
+    "ranking_model.ubj": "6094aba01eb6a59e4ca3276028f56e7290c76f05e2beae4205d701c9a7d57b90",
+    "submission.csv": "f1c03770ebb37899af30a1f3043b5ae983ccc8c9015c27df38e2ac728ae792e8",
+    "xgb_classifier.ubj": "ae140651523532e73880105d9a734c169b8e0ab96a936813e7c2e2265102439e",
+    "ensemble_metadata.json": "895854540eca1e1c2f04b457214f558a3c4f1641a8bcbdc04513747bd1b9a25e",
+    "l1_pipeline.joblib": "2b0003037111e00af63fdf3257c45ed2b07107b847f1417d2063eb51280d05ea"
+  },
+  "finished_utc": "2026-10-23T18:54:17.574977+00:00"
+}

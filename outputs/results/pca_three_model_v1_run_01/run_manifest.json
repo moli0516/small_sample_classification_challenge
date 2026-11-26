@@ -1,0 +1,26 @@
+{
+  "status": "completed",
+  "planned_classifier_fits": 600,
+  "planned_pca_fits": 200,
+  "completed_classifier_fits": 600,
+  "completed_pca_fits": 200,
+  "test_opened": false,
+  "kaggle_upload_performed": false,
+  "started_utc": "2026-11-09T17:41:20.134825+00:00",
+  "artifact_sha256": {
+    "fold_scores.csv": "7c5c36c128e367f2dbbbc3732b9f2a19f558960b165a860a6c6c3f0f1ef5a3cb",
+    "settings.json": "5d91295bc3b1b2d953ace9c8d7c233c27f959819ce1dab78f8d82293b0007b67",
+    "split_indices.json": "6775abde7489363a871c73d4a16d254c190ae6bbf7b91d2d65d22abb207b010f",
+    "repeat_scores.csv": "ddd6647704fe32280675e2730c70fdbfa97a0464f8a62d33a4613ef7bff488b1",
+    "validation_probabilities.csv": "6987b3f06f10ac0f66f2ca9a7e4bdc26e1079067bbfdf530c3a749d1301d7763",
+    "source_reproduction.csv": "84415532e53e3c29a68cf4d3cf28b307bd0b2e3ef9499f9dc9f5b81aa06d3c2f",
+    "paired_repeat_differences.csv": "016ca4f82e141666f9087833b9ea20065e01696eb631e8f2b573fc7ef2c55f99",
+    "model_summary.csv": "90795ac445503a424bf0c81b70e10e0a6c79032ddf4b167b1285941bc0fd42b6",
+    "fit.log": "39e53fc2f3da91304920a0feb7e0ff382eb7607111679d99d81bf04d745df090",
+    "comparison.csv": "6333498d47f7ba4196c7e24d0c575c249ceb9b4154df4c6da8a1767f110bc14f",
+    "pca_diagnostics.json": "7aab55680d19d8d6be15a49ab86f431fd7c74ea75108e6cc1e3e69d31c209ef3",
+    "decision.json": "9a5108b94c446967452673f6063a50e0812ea51cea3ae7955d6290f011d762f2",
+    "warnings.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "finished_utc": "2026-11-09T17:41:31.928969+00:00"
+}

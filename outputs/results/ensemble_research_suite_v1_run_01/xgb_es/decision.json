@@ -1,0 +1,20 @@
+{
+  "selected_candidate": "xgb_es",
+  "selected_mean_auc": 0.9043290043290042,
+  "selected_spec": {
+    "replaced_component": "xgboost",
+    "other_parameters_fixed": true,
+    "final_full_data_round_policy": "No deployment/refit implemented; research-only round selections saved per fold"
+  },
+  "screening_passed": false,
+  "automatic_promotion": false,
+  "selection_rule": "Highest ensemble mean; exact ties use preregistered generation order. No fallback.",
+  "reference": "reference",
+  "candidate": "xgb_es",
+  "mean_difference": -0.004007413681326744,
+  "difference_sd": 0.0045211545909233175,
+  "wins": 3,
+  "losses": 7,
+  "ties": 0,
+  "interpretation": "Adaptive development research, not nested/independent evaluation or a significance test. Inner validation only prevents direct stopping/meta-training leakage; prior adaptivity remains."
+}

@@ -1,0 +1,11 @@
+reference,candidate,repeat,difference
+reference,candidate,0,0.00032990359077311737
+reference,candidate,1,0.0012960871656524375
+reference,candidate,2,0.0012908588995544923
+reference,candidate,3,-5.2282660979452444e-06
+reference,candidate,4,-0.0003246753246755052
+reference,candidate,5,0.0025843319321580127
+reference,candidate,6,0.0009609553087813749
+reference,candidate,7,-0.0012960871656524375
+reference,candidate,8,0.0006519647823995944
+reference,candidate,9,0.0016207624903274986

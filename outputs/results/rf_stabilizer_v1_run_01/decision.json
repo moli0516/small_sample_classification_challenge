@@ -1,0 +1,11 @@
+{
+  "baseline": "trial14_three_model",
+  "best_candidate": "blend_d3_leaf5",
+  "selected": "blend_d3_leaf5",
+  "promote": true,
+  "stability_observed": true,
+  "rule": "Highest blend mean AUC; exact ties use GRID order. Winner must improve mean by >1e-12 and win >=6/10 repeats. No fallback.",
+  "stability_definition": "Descriptive only: repeat SD no higher AND minimum repeat AUC no lower than baseline (tolerance 1e-12). Not an inferential guarantee.",
+  "interpretation": "Adaptive development on reused splits; neither independent evaluation nor proof of private-score improvement.",
+  "next_action": "Manual review only. No prediction, refit or upload implemented."
+}

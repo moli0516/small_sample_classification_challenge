@@ -1,0 +1,19 @@
+{
+  "selected_candidate": "stacking",
+  "selected_mean_auc": 0.9076593052680009,
+  "selected_spec": {
+    "meta_C": 0.1,
+    "inner_folds": 3
+  },
+  "screening_passed": false,
+  "automatic_promotion": false,
+  "selection_rule": "Highest ensemble mean; exact ties use preregistered generation order. No fallback.",
+  "reference": "reference",
+  "candidate": "stacking",
+  "mean_difference": -0.000677112742330166,
+  "difference_sd": 0.0012138106700596584,
+  "wins": 2,
+  "losses": 8,
+  "ties": 0,
+  "interpretation": "Adaptive development research, not nested/independent evaluation or a significance test. Inner validation only prevents direct stopping/meta-training leakage; prior adaptivity remains."
+}

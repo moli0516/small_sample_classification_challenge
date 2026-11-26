@@ -1,0 +1,22 @@
+{
+  "selected_candidate": "weights_0",
+  "selected_mean_auc": 0.9083364180103312,
+  "selected_spec": {
+    "weights": [
+      0.3333333333333333,
+      0.3333333333333333,
+      0.3333333333333333
+    ]
+  },
+  "screening_passed": false,
+  "automatic_promotion": false,
+  "selection_rule": "Highest ensemble mean; exact ties use preregistered generation order. No fallback.",
+  "reference": "reference",
+  "candidate": "weights_0",
+  "mean_difference": 0.0,
+  "difference_sd": 0.0,
+  "wins": 0,
+  "losses": 0,
+  "ties": 10,
+  "interpretation": "Adaptive development research, not nested/independent evaluation or a significance test. Inner validation only prevents direct stopping/meta-training leakage; prior adaptivity remains."
+}

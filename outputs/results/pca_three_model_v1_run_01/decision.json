@@ -1,0 +1,18 @@
+{
+  "selected_components": 50,
+  "selected_candidate": "pca50_ensemble",
+  "selected_mean_auc": 0.7715774201643767,
+  "selection_rule": "Highest ensemble mean across common k; exact ties use smaller k; no fallback.",
+  "screening_passed": false,
+  "automatic_promotion": false,
+  "reference": "original_ensemble",
+  "candidate": "pca50_ensemble",
+  "comparison": "ensemble_vs_original",
+  "mean_difference": -0.1367589978459544,
+  "difference_sd": 0.018799653887763657,
+  "wins": 0,
+  "losses": 10,
+  "ties": 0,
+  "components": 50,
+  "interpretation": "Fixed-parameter representation comparison on reused development data. Not nested CV or independent evaluation. XGBoost PCA branch replaces original top-20 procedure; not an isolated PCA-only ablation. No retuning/weight search/submission."
+}

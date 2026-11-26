@@ -1,0 +1,34 @@
+{
+  "selected_candidate": "cat_10_alpha0.1",
+  "selected_mean_auc": 0.9086917309743396,
+  "selected_spec": {
+    "cat_parameters": {
+      "depth": 4,
+      "iterations": 100,
+      "learning_rate": 0.1,
+      "l2_leaf_reg": 3,
+      "boosting_type": "Ordered",
+      "loss_function": "Logloss",
+      "eval_metric": "AUC",
+      "random_seed": 42,
+      "task_type": "CPU",
+      "thread_count": 1,
+      "allow_writing_files": false,
+      "use_best_model": false,
+      "verbose": false
+    },
+    "alpha": 0.1,
+    "component_key": "cat_10"
+  },
+  "screening_passed": true,
+  "automatic_promotion": false,
+  "selection_rule": "Highest ensemble mean; exact ties use preregistered generation order. No fallback.",
+  "reference": "reference",
+  "candidate": "cat_10_alpha0.1",
+  "mean_difference": 0.0003553129640085806,
+  "difference_sd": 0.0010628546538101742,
+  "wins": 6,
+  "losses": 4,
+  "ties": 0,
+  "interpretation": "Adaptive development research, not nested/independent evaluation or a significance test. Inner validation only prevents direct stopping/meta-training leakage; prior adaptivity remains."
+}

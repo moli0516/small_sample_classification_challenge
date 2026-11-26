@@ -1,0 +1,8 @@
+{
+  "status": "development_selection_only",
+  "e5b_leader": "e5b_optuna_ext02_trial_0009_depth_1_trees_200",
+  "mean_auc": 0.8185313016291277,
+  "mean_difference_vs_e4_leader": -0.043580395047786324,
+  "promote_over_e4": false,
+  "note": "A provisional mean ordering, not statistical proof or independent final evaluation."
+}

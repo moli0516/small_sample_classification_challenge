@@ -1,0 +1,19 @@
+{
+  "candidate": "A_a0.95",
+  "specification": {
+    "family": "A",
+    "alpha": 0.95,
+    "formula": "alpha*G_new+(1-alpha)*H_old",
+    "effective_weights": {
+      "new_gmm": 0.95,
+      "old_gmm": 0.025000000000000022,
+      "trial25": 0.025000000000000022
+    }
+  },
+  "sources": {
+    "new_gmm": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/submissions/generative_optuna_trial21_v1",
+    "trial25": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/submissions/elasticnet_optuna_trial_25_run_01",
+    "old_gmm": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/submissions/generative_a_k8_tied_v1",
+    "old_hybrid": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/submissions/generative_blend_gmm05_v1"
+  }
+}

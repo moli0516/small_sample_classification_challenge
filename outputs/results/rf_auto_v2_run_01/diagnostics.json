@@ -1,0 +1,802 @@
+[
+  {
+    "repeat": 0,
+    "split_seed": 0,
+    "fold": 0,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9320048019207683
+  },
+  {
+    "repeat": 0,
+    "split_seed": 0,
+    "fold": 1,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9223049219687874
+  },
+  {
+    "repeat": 0,
+    "split_seed": 0,
+    "fold": 2,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8376950780312125
+  },
+  {
+    "repeat": 0,
+    "split_seed": 0,
+    "fold": 3,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9081872749099639
+  },
+  {
+    "repeat": 0,
+    "split_seed": 0,
+    "fold": 4,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8574789915966387
+  },
+  {
+    "repeat": 1,
+    "split_seed": 1,
+    "fold": 0,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8903241296518607
+  },
+  {
+    "repeat": 1,
+    "split_seed": 1,
+    "fold": 1,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8534453781512604
+  },
+  {
+    "repeat": 1,
+    "split_seed": 1,
+    "fold": 2,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9229771908763506
+  },
+  {
+    "repeat": 1,
+    "split_seed": 1,
+    "fold": 3,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8011044417767106
+  },
+  {
+    "repeat": 1,
+    "split_seed": 1,
+    "fold": 4,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8789915966386556
+  },
+  {
+    "repeat": 2,
+    "split_seed": 2,
+    "fold": 0,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.849891956782713
+  },
+  {
+    "repeat": 2,
+    "split_seed": 2,
+    "fold": 1,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.897719087635054
+  },
+  {
+    "repeat": 2,
+    "split_seed": 2,
+    "fold": 2,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8929171668667466
+  },
+  {
+    "repeat": 2,
+    "split_seed": 2,
+    "fold": 3,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9411284513805521
+  },
+  {
+    "repeat": 2,
+    "split_seed": 2,
+    "fold": 4,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9129891956782713
+  },
+  {
+    "repeat": 3,
+    "split_seed": 3,
+    "fold": 0,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8925330132052821
+  },
+  {
+    "repeat": 3,
+    "split_seed": 3,
+    "fold": 1,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9332533013205282
+  },
+  {
+    "repeat": 3,
+    "split_seed": 3,
+    "fold": 2,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9216326530612244
+  },
+  {
+    "repeat": 3,
+    "split_seed": 3,
+    "fold": 3,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9137575030012004
+  },
+  {
+    "repeat": 3,
+    "split_seed": 3,
+    "fold": 4,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8543097238895558
+  },
+  {
+    "repeat": 4,
+    "split_seed": 4,
+    "fold": 0,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9081872749099639
+  },
+  {
+    "repeat": 4,
+    "split_seed": 4,
+    "fold": 1,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8853301320528212
+  },
+  {
+    "repeat": 4,
+    "split_seed": 4,
+    "fold": 2,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8207923169267707
+  },
+  {
+    "repeat": 4,
+    "split_seed": 4,
+    "fold": 3,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9394957983193277
+  },
+  {
+    "repeat": 4,
+    "split_seed": 4,
+    "fold": 4,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9527490996398559
+  },
+  {
+    "repeat": 5,
+    "split_seed": 5,
+    "fold": 0,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8843697478991596
+  },
+  {
+    "repeat": 5,
+    "split_seed": 5,
+    "fold": 1,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8952220888355341
+  },
+  {
+    "repeat": 5,
+    "split_seed": 5,
+    "fold": 2,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9388235294117646
+  },
+  {
+    "repeat": 5,
+    "split_seed": 5,
+    "fold": 3,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.917406962785114
+  },
+  {
+    "repeat": 5,
+    "split_seed": 5,
+    "fold": 4,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8664105642256902
+  },
+  {
+    "repeat": 6,
+    "split_seed": 6,
+    "fold": 0,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8467226890756302
+  },
+  {
+    "repeat": 6,
+    "split_seed": 6,
+    "fold": 1,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9328691476590636
+  },
+  {
+    "repeat": 6,
+    "split_seed": 6,
+    "fold": 2,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9164465786314525
+  },
+  {
+    "repeat": 6,
+    "split_seed": 6,
+    "fold": 3,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9075150060024009
+  },
+  {
+    "repeat": 6,
+    "split_seed": 6,
+    "fold": 4,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.828859543817527
+  },
+  {
+    "repeat": 7,
+    "split_seed": 7,
+    "fold": 0,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8658343337334934
+  },
+  {
+    "repeat": 7,
+    "split_seed": 7,
+    "fold": 1,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9257623049219688
+  },
+  {
+    "repeat": 7,
+    "split_seed": 7,
+    "fold": 2,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8814885954381753
+  },
+  {
+    "repeat": 7,
+    "split_seed": 7,
+    "fold": 3,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9196158463385354
+  },
+  {
+    "repeat": 7,
+    "split_seed": 7,
+    "fold": 4,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9277791116446579
+  },
+  {
+    "repeat": 8,
+    "split_seed": 8,
+    "fold": 0,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9422809123649459
+  },
+  {
+    "repeat": 8,
+    "split_seed": 8,
+    "fold": 1,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8840816326530612
+  },
+  {
+    "repeat": 8,
+    "split_seed": 8,
+    "fold": 2,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8597839135654262
+  },
+  {
+    "repeat": 8,
+    "split_seed": 8,
+    "fold": 3,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9277791116446579
+  },
+  {
+    "repeat": 8,
+    "split_seed": 8,
+    "fold": 4,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8478751500600239
+  },
+  {
+    "repeat": 9,
+    "split_seed": 9,
+    "fold": 0,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8467226890756302
+  },
+  {
+    "repeat": 9,
+    "split_seed": 9,
+    "fold": 1,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9299879951980792
+  },
+  {
+    "repeat": 9,
+    "split_seed": 9,
+    "fold": 2,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8631452581032413
+  },
+  {
+    "repeat": 9,
+    "split_seed": 9,
+    "fold": 3,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9044417767106842
+  },
+  {
+    "repeat": 9,
+    "split_seed": 9,
+    "fold": 4,
+    "configuration": "fraction020",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8732292917166866
+  },
+  {
+    "repeat": 0,
+    "split_seed": 0,
+    "fold": 0,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9330612244897959
+  },
+  {
+    "repeat": 0,
+    "split_seed": 0,
+    "fold": 1,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9321008403361344
+  },
+  {
+    "repeat": 0,
+    "split_seed": 0,
+    "fold": 2,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8150300120048019
+  },
+  {
+    "repeat": 0,
+    "split_seed": 0,
+    "fold": 3,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8954141656662665
+  },
+  {
+    "repeat": 0,
+    "split_seed": 0,
+    "fold": 4,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8573829531812724
+  },
+  {
+    "repeat": 1,
+    "split_seed": 1,
+    "fold": 0,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.885906362545018
+  },
+  {
+    "repeat": 1,
+    "split_seed": 1,
+    "fold": 1,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8597839135654262
+  },
+  {
+    "repeat": 1,
+    "split_seed": 1,
+    "fold": 2,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9047298919567828
+  },
+  {
+    "repeat": 1,
+    "split_seed": 1,
+    "fold": 3,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8013925570228091
+  },
+  {
+    "repeat": 1,
+    "split_seed": 1,
+    "fold": 4,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8955102040816326
+  },
+  {
+    "repeat": 2,
+    "split_seed": 2,
+    "fold": 0,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8588235294117647
+  },
+  {
+    "repeat": 2,
+    "split_seed": 2,
+    "fold": 1,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9057863145258103
+  },
+  {
+    "repeat": 2,
+    "split_seed": 2,
+    "fold": 2,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9051140456182473
+  },
+  {
+    "repeat": 2,
+    "split_seed": 2,
+    "fold": 3,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.944873949579832
+  },
+  {
+    "repeat": 2,
+    "split_seed": 2,
+    "fold": 4,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9340216086434573
+  },
+  {
+    "repeat": 3,
+    "split_seed": 3,
+    "fold": 0,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8973349339735894
+  },
+  {
+    "repeat": 3,
+    "split_seed": 3,
+    "fold": 1,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9266266506602642
+  },
+  {
+    "repeat": 3,
+    "split_seed": 3,
+    "fold": 2,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9211524609843937
+  },
+  {
+    "repeat": 3,
+    "split_seed": 3,
+    "fold": 3,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.903577430972389
+  },
+  {
+    "repeat": 3,
+    "split_seed": 3,
+    "fold": 4,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.861032412965186
+  },
+  {
+    "repeat": 4,
+    "split_seed": 4,
+    "fold": 0,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9097238895558223
+  },
+  {
+    "repeat": 4,
+    "split_seed": 4,
+    "fold": 1,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8987755102040815
+  },
+  {
+    "repeat": 4,
+    "split_seed": 4,
+    "fold": 2,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8077310924369748
+  },
+  {
+    "repeat": 4,
+    "split_seed": 4,
+    "fold": 3,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9424729891956782
+  },
+  {
+    "repeat": 4,
+    "split_seed": 4,
+    "fold": 4,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9454501800720289
+  },
+  {
+    "repeat": 5,
+    "split_seed": 5,
+    "fold": 0,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8670828331332533
+  },
+  {
+    "repeat": 5,
+    "split_seed": 5,
+    "fold": 1,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8991596638655461
+  },
+  {
+    "repeat": 5,
+    "split_seed": 5,
+    "fold": 2,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9199039615846337
+  },
+  {
+    "repeat": 5,
+    "split_seed": 5,
+    "fold": 3,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9092436974789915
+  },
+  {
+    "repeat": 5,
+    "split_seed": 5,
+    "fold": 4,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8670828331332533
+  },
+  {
+    "repeat": 6,
+    "split_seed": 6,
+    "fold": 0,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8433613445378151
+  },
+  {
+    "repeat": 6,
+    "split_seed": 6,
+    "fold": 1,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.941704681872749
+  },
+  {
+    "repeat": 6,
+    "split_seed": 6,
+    "fold": 2,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9091476590636254
+  },
+  {
+    "repeat": 6,
+    "split_seed": 6,
+    "fold": 3,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9045378151260504
+  },
+  {
+    "repeat": 6,
+    "split_seed": 6,
+    "fold": 4,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8201200480192077
+  },
+  {
+    "repeat": 7,
+    "split_seed": 7,
+    "fold": 0,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8751500600240096
+  },
+  {
+    "repeat": 7,
+    "split_seed": 7,
+    "fold": 1,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9209603841536613
+  },
+  {
+    "repeat": 7,
+    "split_seed": 7,
+    "fold": 2,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8836974789915967
+  },
+  {
+    "repeat": 7,
+    "split_seed": 7,
+    "fold": 3,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.907611044417767
+  },
+  {
+    "repeat": 7,
+    "split_seed": 7,
+    "fold": 4,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9287394957983192
+  },
+  {
+    "repeat": 8,
+    "split_seed": 8,
+    "fold": 0,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9325810324129651
+  },
+  {
+    "repeat": 8,
+    "split_seed": 8,
+    "fold": 1,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8776470588235293
+  },
+  {
+    "repeat": 8,
+    "split_seed": 8,
+    "fold": 2,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8321248499399759
+  },
+  {
+    "repeat": 8,
+    "split_seed": 8,
+    "fold": 3,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9168307322929171
+  },
+  {
+    "repeat": 8,
+    "split_seed": 8,
+    "fold": 4,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8629531812725091
+  },
+  {
+    "repeat": 9,
+    "split_seed": 9,
+    "fold": 0,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8371188475390157
+  },
+  {
+    "repeat": 9,
+    "split_seed": 9,
+    "fold": 1,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9329651860744297
+  },
+  {
+    "repeat": 9,
+    "split_seed": 9,
+    "fold": 2,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8614165666266507
+  },
+  {
+    "repeat": 9,
+    "split_seed": 9,
+    "fold": 3,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.9155822328931573
+  },
+  {
+    "repeat": 9,
+    "split_seed": 9,
+    "fold": 4,
+    "configuration": "fraction050",
+    "unique_rf_probabilities": 50,
+    "baseline_rf_rank_correlation": 0.8523889555822328
+  }
+]

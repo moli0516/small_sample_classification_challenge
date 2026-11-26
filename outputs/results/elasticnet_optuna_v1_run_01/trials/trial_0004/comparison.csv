@@ -1,0 +1,2 @@
+reference,candidate,mean_difference,difference_sd,wins,losses,ties
+reference,candidate,-0.004880638684986538,0.002302694935183511,0,10,0

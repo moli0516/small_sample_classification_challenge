@@ -1,0 +1,12 @@
+{
+  "status": "ready_for_analysis",
+  "automatic_protocol_selection": false,
+  "question": "Which split scheme provides stable evidence for a ~0.01 AUC difference and the actual ensemble decision?",
+  "cautions": [
+    "Different k changes training size.",
+    "Repeats overlap; SD is not a confidence interval.",
+    "Win fractions are not probabilities of being truly best.",
+    "Previously tuned fixed candidates; no independent/nested evaluation.",
+    "Public leaderboard is not ground truth; no test data read."
+  ]
+}

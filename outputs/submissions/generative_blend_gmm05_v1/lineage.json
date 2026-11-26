@@ -1,0 +1,37 @@
+{
+  "candidate": "blend_gmm0.5",
+  "formula": "0.5*p_A_k8_tied+0.5*p_elasticnet_optuna_trial_25",
+  "weights": {
+    "gmm_weight": 0.5,
+    "trial25_weight": 0.5
+  },
+  "alignment": {
+    "gmm_export": {
+      "original_order_sha256": "a40d5c4e54d295a9222c1aa783c0afd24f070de7813928965d2bf034df9e6a05",
+      "template_order_sha256": "a40d5c4e54d295a9222c1aa783c0afd24f070de7813928965d2bf034df9e6a05",
+      "reordered_to_template": false
+    },
+    "trial25_export": {
+      "original_order_sha256": "a40d5c4e54d295a9222c1aa783c0afd24f070de7813928965d2bf034df9e6a05",
+      "template_order_sha256": "a40d5c4e54d295a9222c1aa783c0afd24f070de7813928965d2bf034df9e6a05",
+      "reordered_to_template": false
+    },
+    "trial25_component_audit": {
+      "matches_official_test_order": true,
+      "original_order_sha256": "a40d5c4e54d295a9222c1aa783c0afd24f070de7813928965d2bf034df9e6a05"
+    }
+  },
+  "sources": {
+    "gmm_export": {
+      "directory": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/submissions/generative_a_k8_tied_v1",
+      "manifest_sha256": "244639d0f0d14b581f561b0ee1e26ac03e5b2be325819bceb544d46b9699f7d7",
+      "submission_sha256": "562bc9e7e0aaaa8f42eabb81d6103a792eba7fe2d30ae761c6f7a2114543f7a2"
+    },
+    "trial25_export": {
+      "directory": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/submissions/elasticnet_optuna_trial_25_run_01",
+      "manifest_sha256": "3df05181b02ff3da3b7aecca19e337ba0e65a6fdab868c57106404621dc919ea",
+      "submission_sha256": "b06e463f8f49d65fe5191703bf2fdd1fd9331e1259f1bb3ef6d6a1ad98feac17"
+    }
+  },
+  "verification_scope": "Recorded export lineage/artifact integrity and Trial25 formula verified. GMM model bytes hashed, NOT deserialized or rerun. No model fitting or automatic upload."
+}

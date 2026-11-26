@@ -1,0 +1,33 @@
+{
+  "selected_trial": 25,
+  "selected_mean_auc": 0.9092096430139908,
+  "parameters": {
+    "C": 0.18702703609689042,
+    "l1_ratio": 0.9589771634360093,
+    "alpha": 0.06655791394873416
+  },
+  "screening_passed": true,
+  "screening_both_controls": true,
+  "reference_comparison": {
+    "reference": "reference",
+    "candidate": "candidate",
+    "mean_difference": 0.0008732250036597056,
+    "difference_sd": 0.0011008180396370859,
+    "wins": 7,
+    "losses": 3,
+    "ties": 0
+  },
+  "catboost_control_comparison": {
+    "reference": "catboost_frozen",
+    "candidate": "candidate",
+    "mean_difference": 0.000517912039651125,
+    "difference_sd": 0.0016787519680720707,
+    "wins": 6,
+    "losses": 4,
+    "ties": 0
+  },
+  "control_reproduced": true,
+  "automatic_promotion": false,
+  "selection_rule": "Highest ensemble mean; exact ties earliest trial; no fallback",
+  "interpretation": "Adaptive TPE development tuning, not nested CV or independent confirmation. No pruning, no test data, no submission."
+}

@@ -1,0 +1,52 @@
+{
+  "number": 1,
+  "state": "COMPLETE",
+  "parameters": {
+    "selected_features": 20,
+    "latent_dimensions": 12,
+    "n_components": 12,
+    "reg_covar": 7.068974950624602e-05,
+    "label_smoothing": 3.511356313970405e-05
+  },
+  "objective_auc": 0.9836972729364033,
+  "standalone_auc": 0.9953728276554363,
+  "comparisons": [
+    {
+      "candidate": "candidate_hybrid",
+      "reference": "original_hybrid",
+      "mean_difference": 0.04542244390070477,
+      "difference_sd": 0.006338009482231211,
+      "wins": 10,
+      "losses": 0,
+      "ties": 0
+    },
+    {
+      "candidate": "candidate_hybrid",
+      "reference": "original_gmm",
+      "mean_difference": 0.05405708220925611,
+      "difference_sd": 0.009286315626809332,
+      "wins": 10,
+      "losses": 0,
+      "ties": 0
+    },
+    {
+      "candidate": "candidate_hybrid",
+      "reference": "reference_trial25",
+      "mean_difference": 0.07448762992241259,
+      "difference_sd": 0.007821178131264818,
+      "wins": 10,
+      "losses": 0,
+      "ties": 0
+    },
+    {
+      "candidate": "candidate_gmm",
+      "reference": "original_gmm",
+      "mean_difference": 0.06573263692828911,
+      "difference_sd": 0.009528770547255849,
+      "wins": 10,
+      "losses": 0,
+      "ties": 0
+    }
+  ],
+  "control_reproduced": null
+}

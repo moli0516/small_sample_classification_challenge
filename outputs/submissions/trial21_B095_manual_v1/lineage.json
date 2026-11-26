@@ -1,0 +1,17 @@
+{
+  "candidate": "B_a0.95",
+  "specification": {
+    "family": "B",
+    "alpha": 0.95,
+    "formula": "alpha*G_new+(1-alpha)*T",
+    "effective_weights": {
+      "new_gmm": 0.95,
+      "old_gmm": 0.0,
+      "trial25": 0.050000000000000044
+    }
+  },
+  "sources": {
+    "new_gmm": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/submissions/generative_optuna_trial21_v1",
+    "trial25": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/submissions/elasticnet_optuna_trial_25_run_01"
+  }
+}

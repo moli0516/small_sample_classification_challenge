@@ -1,0 +1,17 @@
+reference,candidate,comparison,mean_difference,difference_sd,wins,losses,ties,components
+original_l1,pca5_l1,component_vs_original,-0.11439101156492457,0.014027703985186959,0,10,0,5
+original_xgboost,pca5_xgboost,component_vs_original,-0.1832889976368237,0.03757518174515719,0,10,0,5
+original_lightgbm,pca5_lightgbm,component_vs_original,-0.16462019260932306,0.025131350120514945,0,10,0,5
+original_ensemble,pca5_ensemble,ensemble_vs_original,-0.16997249932032546,0.022057876846329857,0,10,0,5
+original_l1,pca10_l1,component_vs_original,-0.10257643725035029,0.01831475715666419,0,10,0,10
+original_xgboost,pca10_xgboost,component_vs_original,-0.15628782650521775,0.02688498931218173,0,10,0,10
+original_lightgbm,pca10_lightgbm,component_vs_original,-0.15674702511659033,0.015933576870402845,0,10,0,10
+original_ensemble,pca10_ensemble,ensemble_vs_original,-0.15355297279210323,0.017037698737788234,0,10,0,10
+original_l1,pca20_l1,component_vs_original,-0.09818966058096493,0.015155504904972588,0,10,0,20
+original_xgboost,pca20_xgboost,component_vs_original,-0.150783507957421,0.01893392251641703,0,10,0,20
+original_lightgbm,pca20_lightgbm,component_vs_original,-0.15280595813204506,0.020183529728366754,0,10,0,20
+original_ensemble,pca20_ensemble,ensemble_vs_original,-0.14886217244912903,0.013529263156471858,0,10,0,20
+original_l1,pca50_l1,component_vs_original,-0.08908714473931864,0.014918214705641787,0,10,0,50
+original_xgboost,pca50_xgboost,component_vs_original,-0.15576259489302965,0.022674069950212875,0,10,0,50
+original_lightgbm,pca50_lightgbm,component_vs_original,-0.15615821778865258,0.023643660520521515,0,10,0,50
+original_ensemble,pca50_ensemble,ensemble_vs_original,-0.1367589978459544,0.018799653887763657,0,10,0,50

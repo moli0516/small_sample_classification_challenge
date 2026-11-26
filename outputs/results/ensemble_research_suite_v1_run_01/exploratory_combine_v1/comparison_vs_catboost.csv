@@ -1,0 +1,5 @@
+reference,candidate,mean_difference,difference_sd,wins,losses,ties
+catboost_frozen,cat_plus_lgbm_es,-0.0026806888763410306,0.002609372118962033,2,8,0
+catboost_frozen,cat_plus_xgb_es,-0.003003534307882105,0.0031438076975778043,2,8,0
+catboost_frozen,cat_plus_both_es,-0.008136070853462163,0.005434236878681976,0,10,0
+catboost_frozen,cat_plus_stacking,-0.0009015099232489998,0.0015234164035772331,3,7,0

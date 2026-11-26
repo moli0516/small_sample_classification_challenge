@@ -1,0 +1,9 @@
+{
+  "status": "development_selection_only",
+  "selected_experiment_id": "e5b_feature_selection_ext03_k_20",
+  "k": 20,
+  "mean_auc": 0.8906718321935714,
+  "mean_difference_vs_trial20_control": 0.008734341343037,
+  "promote_over_trial20": true,
+  "note": "Fold-local selection, but parameters/k decisions remain adaptive development choices. Not independent evaluation."
+}

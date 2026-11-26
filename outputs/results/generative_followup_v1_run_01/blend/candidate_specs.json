@@ -1,0 +1,19 @@
+{
+  "A_k8_tied": {
+    "k": 8,
+    "representation": "geometry",
+    "source": "frozen_original_study"
+  },
+  "blend_gmm0.25": {
+    "gmm_weight": 0.25,
+    "trial25_weight": 0.75
+  },
+  "blend_gmm0.5": {
+    "gmm_weight": 0.5,
+    "trial25_weight": 0.5
+  },
+  "blend_gmm0.75": {
+    "gmm_weight": 0.75,
+    "trial25_weight": 0.25
+  }
+}

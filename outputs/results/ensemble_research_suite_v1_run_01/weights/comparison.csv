@@ -1,0 +1,5 @@
+reference,candidate,mean_difference,difference_sd,wins,losses,ties
+reference,weights_0,0.0,0.0,0,0,10
+reference,weights_1,-0.005785285567894283,0.003428083691717716,1,9,0
+reference,weights_2,-3.19447058577671e-05,0.002728221706686015,4,6,0
+reference,weights_3,-0.0002911621389882879,0.002297944509420588,4,6,0

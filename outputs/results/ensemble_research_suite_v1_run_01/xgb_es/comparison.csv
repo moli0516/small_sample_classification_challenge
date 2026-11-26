@@ -1,0 +1,2 @@
+reference,candidate,mean_difference,difference_sd,wins,losses,ties
+reference,xgb_es,-0.004007413681326744,0.0045211545909233175,3,7,0

@@ -1,0 +1,16 @@
+{
+  "candidate": "new_gmm",
+  "spec": {
+    "family": "control",
+    "alpha": 1.0,
+    "formula": "G_new",
+    "effective_weights": {
+      "new_gmm": 1.0,
+      "old_gmm": 0.0,
+      "trial25": 0.0
+    }
+  },
+  "sources": {
+    "new_gmm": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/submissions/generative_optuna_trial21_v1"
+  }
+}

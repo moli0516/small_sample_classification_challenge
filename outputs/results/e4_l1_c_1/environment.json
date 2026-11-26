@@ -1,0 +1,22 @@
+{
+  "python": "3.13.7",
+  "scikit_learn": "1.9.1",
+  "numpy": "2.5.4",
+  "pandas": "3.0.6",
+  "estimator_parameters": {
+    "C": 1.0,
+    "class_weight": null,
+    "dual": false,
+    "fit_intercept": true,
+    "intercept_scaling": 1,
+    "l1_ratio": 1.0,
+    "max_iter": 10000,
+    "n_jobs": null,
+    "penalty": "deprecated",
+    "random_state": 42,
+    "solver": "saga",
+    "tol": 0.0001,
+    "verbose": 0,
+    "warm_start": false
+  }
+}

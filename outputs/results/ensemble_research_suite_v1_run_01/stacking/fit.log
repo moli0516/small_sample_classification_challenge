@@ -1,0 +1,1006 @@
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6936
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=0 fold=0
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6938
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=0 fold=1
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6943
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+stacking repeat=0 fold=2
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6944
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=0 fold=3
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6941
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=0 fold=4
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6930
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=1 fold=0
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6948
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=1 fold=1
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6942
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+stacking repeat=1 fold=2
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6933
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+stacking repeat=1 fold=3
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6934
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=1 fold=4
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6952
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+stacking repeat=2 fold=0
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6949
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+stacking repeat=2 fold=1
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6936
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=2 fold=2
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6899
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6941
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=2 fold=3
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6943
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=2 fold=4
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6943
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=3 fold=0
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6936
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+stacking repeat=3 fold=1
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6947
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+stacking repeat=3 fold=2
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6932
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+stacking repeat=3 fold=3
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6938
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=3 fold=4
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6930
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+stacking repeat=4 fold=0
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6939
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+stacking repeat=4 fold=1
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6943
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+stacking repeat=4 fold=2
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6899
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6939
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=4 fold=3
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6937
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+stacking repeat=4 fold=4
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6938
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+stacking repeat=5 fold=0
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6944
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=5 fold=1
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6899
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6946
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+stacking repeat=5 fold=2
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6942
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=5 fold=3
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6946
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+stacking repeat=5 fold=4
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6942
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=6 fold=0
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6943
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=6 fold=1
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6946
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+stacking repeat=6 fold=2
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6941
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+stacking repeat=6 fold=3
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6937
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=6 fold=4
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6935
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+stacking repeat=7 fold=0
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6941
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+stacking repeat=7 fold=1
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6899
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6899
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6931
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+stacking repeat=7 fold=2
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6942
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+stacking repeat=7 fold=3
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6941
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=7 fold=4
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6940
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=8 fold=0
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6939
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+stacking repeat=8 fold=1
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6941
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=8 fold=2
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6944
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=8 fold=3
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6942
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+stacking repeat=8 fold=4
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6938
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+stacking repeat=9 fold=0
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6940
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=9 fold=1
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 60, number of negative: 74
+[LightGBM] [Info] Total Bins 6942
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.447761 -> initscore=-0.209721
+[LightGBM] [Info] Start training from score -0.209721
+stacking repeat=9 fold=2
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6899
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6943
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=9 fold=3
+[LightGBM] [Info] Number of positive: 60, number of negative: 73
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.451128 -> initscore=-0.196115
+[LightGBM] [Info] Start training from score -0.196115
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Info] Number of positive: 61, number of negative: 72
+[LightGBM] [Info] Total Bins 6900
+[LightGBM] [Info] Number of data points in the train set: 133, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.458647 -> initscore=-0.165792
+[LightGBM] [Info] Start training from score -0.165792
+[LightGBM] [Info] Number of positive: 61, number of negative: 73
+[LightGBM] [Info] Total Bins 6929
+[LightGBM] [Info] Number of data points in the train set: 134, number of used features: 150
+[LightGBM] [Info] [binary:BoostFromScore]: pavg=0.455224 -> initscore=-0.179586
+[LightGBM] [Info] Start training from score -0.179586
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+[LightGBM] [Warning] No further splits with positive gain, best gain: -inf
+stacking repeat=9 fold=4

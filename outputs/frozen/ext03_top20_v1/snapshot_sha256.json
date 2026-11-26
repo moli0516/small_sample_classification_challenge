@@ -1,0 +1,18 @@
+{
+  "base_config.json": "08c777ec470fd88a86c2527cd7c802af414fec6e830752fae5316f5cb0fe9012",
+  "evidence/config.json": "f2a6052f18bf2a70fd692c160a42d35670c60807802fddc302e56587dbeac409",
+  "evidence/control_auc_reproduction.csv": "f393fa318a29aeecdb9d738bfd204fd0338816eb6bee0204422649474f36bcd0",
+  "evidence/feature_selection_comparison.csv": "30f234b1c7597729d937349881ac8ee58ab09edba118c32c6fdc9fc196bae6b6",
+  "evidence/feature_selection_paired_repeat_scores.csv": "5ca4c0da74c0c18cd71719f1953f90eada7fd62c66a208b4a0132844e57877f0",
+  "evidence/reference_repeat_scores.csv": "a102b36d44367a0f2029e30eef95315bcc021cc73c2b9e382a581b14250c65f1",
+  "evidence/run_manifest.json": "3c0d34d39696c478acc3b517a739ae3bf9f20dd8a105c9a5c7f0380092d90480",
+  "evidence/selected_candidate/config.json": "2c00eed2a184aa703bcff0ae8d27c55461786d69a530e9ad821e9fe36c9a5a18",
+  "evidence/selected_candidate/fold_scores.csv": "903a074b58119fe1d8263697959e0161a883e017fea1241a8bd97bd8cd46f0a0",
+  "evidence/selected_candidate/repeat_scores.csv": "3100770a3f21019716e122b5f91fdcc93ffd31b88991ea9fd9b5dc01a193979c",
+  "evidence/selected_candidate/summary.json": "9a6416d8d6d463155020dc7a67746bd367e1578cc2bb4d5d65b5947df74bd41e",
+  "evidence/selected_features.json": "a8852c826aa9caa429c9027d436531b81a015ab686240f6fb816e1790a040045",
+  "evidence/selection_frequencies.csv": "57ec9b686232b583dd33711e90c5dd81da996d4e5d87d872c1afeb6450bed64b",
+  "evidence/source_trial_parameters.json": "4b1a993efd34c9e2137f8866629a09ac23eeaf2fec492dd05d194f1fc115bf70",
+  "evidence/verified_split_indices.json": "9981bcf52edabaf385099714a7ea23848486192909e6e354f3a9607b540dd3ae",
+  "frozen_candidate.json": "692613637fab1c93300548c86ff4eb64cc6309ac03127bf90507c2c508431d5a"
+}

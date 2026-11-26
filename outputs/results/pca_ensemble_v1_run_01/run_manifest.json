@@ -1,0 +1,24 @@
+{
+  "status": "completed",
+  "output": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/pca_ensemble_v1_run_01",
+  "blends": 6,
+  "folds": 50,
+  "fits_performed": 0,
+  "test_opened": false,
+  "baseline_and_components_reproduced": true,
+  "kaggle_upload_performed": false,
+  "started_utc": "2026-11-09T17:22:12.424089+00:00",
+  "artifact_sha256": {
+    "fold_scores.csv": "a4477b32b59c327bd34f15df155f35be36a97c8340b065e35efbcdf0d27b3f28",
+    "settings.json": "3b8df200c4ec759a443e21eba9966336676d2c045ed2d16dad5fb2d84b2ba386",
+    "split_indices.json": "6775abde7489363a871c73d4a16d254c190ae6bbf7b91d2d65d22abb207b010f",
+    "repeat_scores.csv": "f204e1ae8b806ae29fa818e0b376559cf3e7f7e8293eb18876bcb5d0f5267547",
+    "validation_probabilities.csv": "9379839bc22b14368412caac3a9bd01fff1e2d4aaef937da6731c4282d39eadf",
+    "source_reproduction.csv": "b7a73ebf3276542b3aa63e5feef9a24322906169a6a86c55a7336be96f96c383",
+    "paired_repeat_differences.csv": "fc2feec046deafea68bbfdf40adcddfbb0752b772b03aef88d18c44e3f58532e",
+    "model_summary.csv": "7915c58a19a4e9a245a1ea40427cf81d16d9170bb71e9cf4332a28140ba6de87",
+    "comparison.csv": "491eb25325308de7d2d7e4b8923790edb4acfd98dcd676125299123f9d284f4e",
+    "decision.json": "afc5dbf135797b5dd5cedc73698b1ca5e44747f223ac86b2f5aaa92ad987775f"
+  },
+  "finished_utc": "2026-11-09T17:22:13.084489+00:00"
+}

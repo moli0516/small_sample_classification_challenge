@@ -1,0 +1,7 @@
+{
+  "n_model_fits": 50,
+  "fits_with_convergence_warning": 0,
+  "all_fits_without_convergence_warning": true,
+  "max_reported_iterations": 127,
+  "note": "Absence of warnings is not proof of an exact optimum. Review diagnostics before acceptance."
+}

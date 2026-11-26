@@ -1,0 +1,15 @@
+{
+  "A_k8_tied": {
+    "k": 8,
+    "representation": "geometry",
+    "source": "frozen_original_study"
+  },
+  "A_k12_tied": {
+    "k": 12,
+    "representation": "geometry"
+  },
+  "A_k16_tied": {
+    "k": 16,
+    "representation": "geometry"
+  }
+}

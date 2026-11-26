@@ -1,0 +1,37 @@
+{
+  "candidate_id": "e5b_optuna_trial20_v1",
+  "frozen_at_utc": "2026-10-23T06:07:23.090253+00:00",
+  "source_trial": 20,
+  "source_experiment_id": "e5b_optuna_ext02_trial_0020_depth_4_trees_50",
+  "model": "XGBClassifier",
+  "estimator_parameters": {
+    "booster": "gbtree",
+    "objective": "binary:logistic",
+    "eval_metric": "auc",
+    "tree_method": "hist",
+    "learning_rate": 0.08316404045417083,
+    "min_child_weight": 1.229594255114693,
+    "reg_lambda": 0.1877052106059947,
+    "reg_alpha": 0.0,
+    "gamma": 0.0,
+    "subsample": 0.9920641940615834,
+    "colsample_bytree": 0.7550128116345981,
+    "n_jobs": 1,
+    "verbosity": 1,
+    "max_depth": 4,
+    "n_estimators": 50,
+    "random_state": 42
+  },
+  "scaling": "none",
+  "feature_selection": null,
+  "score_method": "predict_proba_target_1",
+  "early_stopping": false,
+  "development_mean_auc": 0.8819374908505344,
+  "status": "frozen_development_candidate_not_final_evaluation",
+  "policy": [
+    "Do not overwrite this snapshot.",
+    "No additional tuning under this candidate version.",
+    "Any changed parameters or training procedure require a new version.",
+    "Define the next evaluation protocol before running it."
+  ]
+}

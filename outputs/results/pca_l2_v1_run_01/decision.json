@@ -1,0 +1,16 @@
+{
+  "selected_control": "no_pca_C0.001",
+  "selected_pca": "pca_50_C0.01",
+  "selection_rule": "Highest mean per branch; exact ties use config order (control: smaller C; PCA: smaller k then C). No fallback.",
+  "screening_passed": false,
+  "automatic_promotion": false,
+  "reference": "no_pca_C0.001",
+  "candidate": "pca_50_C0.01",
+  "mean_difference": -0.00632233306146347,
+  "difference_sd": 0.008560594929477186,
+  "wins": 2,
+  "losses": 8,
+  "ties": 0,
+  "comparison": "selected_branches",
+  "interpretation": "Adaptive development comparison, not nested CV or an independent generalisation estimate. Screening is descriptive, not a significance test. No incumbent ensemble changed."
+}

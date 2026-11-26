@@ -1,0 +1,19 @@
+{
+  "experiment_id": "e5b_optuna_ext02_trial_0012",
+  "train_path": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/data/raw/train.csv",
+  "split_indices_path": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/e4_l1_c_1/split_indices.json",
+  "sparse_split_indices_path": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/e4_l1_c_0_1/split_indices.json",
+  "reference_scores_path": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/figures/e4_l1_regularization/e4_paired_repeat_scores.csv",
+  "output_dir": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/e5b_optuna_ext02_run_01/trials/trial_0012",
+  "max_depth_values": [
+    3
+  ],
+  "n_estimators_values": [
+    50
+  ],
+  "model_seed": 42,
+  "expected_rows": 250,
+  "expected_features": 150,
+  "id_column": "id",
+  "target_column": "target"
+}

@@ -1,0 +1,19 @@
+{
+  "mean_auc": {
+    "l1": 0.862111696676914,
+    "xgboost": 0.8906718321935714,
+    "ensemble": 0.9028784219001611
+  },
+  "repeat_sd": {
+    "l1": 0.012203784380591066,
+    "xgboost": 0.009546924598731034,
+    "ensemble": 0.00883941169930424
+  },
+  "mean_difference_vs_xgboost": 0.01220658970658971,
+  "wins_vs_xgboost": 9,
+  "losses_vs_xgboost": 1,
+  "ties_vs_xgboost": 0,
+  "promote_ensemble": true,
+  "promotion_rule": "Positive mean paired difference vs XGBoost and wins in at least 6/10 repeats; pragmatic rule, not significance test.",
+  "interpretation": "Adaptive development comparison on previously used splits, not independent final evaluation."
+}

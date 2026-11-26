@@ -1,0 +1,25 @@
+{
+  "status": "completed",
+  "candidates": 25,
+  "splits": 50,
+  "planned_pipeline_fits": 1250,
+  "test_opened": false,
+  "output": "/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification/outputs/results/pca_l2_v1_run_01",
+  "completed_pipeline_fits": 1250,
+  "started_utc": "2026-11-09T17:14:04.824513+00:00",
+  "kaggle_upload_performed": false,
+  "artifact_sha256": {
+    "fold_scores.csv": "e48ecb9d00dc979b96799f00549891cb7fed3550a6a800322a3dece6f7ee6710",
+    "settings.json": "05508dcc3763d67bf58492f6e6cc2d08f6373298fecb154b9ed67fc15bf2dc9d",
+    "split_indices.json": "6775abde7489363a871c73d4a16d254c190ae6bbf7b91d2d65d22abb207b010f",
+    "repeat_scores.csv": "8d388698fd4ee2db5019ad19b1d4e495d63db22e7f95d9fe211fb817ca0544a4",
+    "validation_probabilities.csv": "2f03edfa66f21659ece3e6a4c878530f89e18b1591ffe0b759e536e937ce95b8",
+    "paired_repeat_differences.csv": "bf4e74bca7b22e74e6f70ace7184617a0cd08f3b18e945142ce0c4d540c2694e",
+    "model_summary.csv": "55231460f8762c6ac6cf471a0d21bf77a37895c8446ef05922bb4f7210f624f2",
+    "comparison.csv": "d92376e07134890ed6edcaaef8cbb9746db8dd42929557e09c5dc70a5f7b013d",
+    "pca_diagnostics.json": "2b37af02fffe552d5b5a51c0ddea2e70ce8a686fb837cb269c2825959cdb8789",
+    "decision.json": "f0957fbb96d1d6de3896ae6a3ecb06a5a4eb642f657809c9584924a13dd56fcc",
+    "warnings.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "finished_utc": "2026-11-09T17:14:23.745960+00:00"
+}

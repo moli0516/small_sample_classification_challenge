@@ -1,0 +1,502 @@
+[
+  {
+    "repeat": 0,
+    "split_seed": 0,
+    "fold": 0,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 0,
+    "split_seed": 0,
+    "fold": 1,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 0,
+    "split_seed": 0,
+    "fold": 2,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 0,
+    "split_seed": 0,
+    "fold": 3,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 0,
+    "split_seed": 0,
+    "fold": 4,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 1,
+    "split_seed": 1,
+    "fold": 0,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 1,
+    "split_seed": 1,
+    "fold": 1,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 1,
+    "split_seed": 1,
+    "fold": 2,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 1,
+    "split_seed": 1,
+    "fold": 3,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 1,
+    "split_seed": 1,
+    "fold": 4,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 2,
+    "split_seed": 2,
+    "fold": 0,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 2,
+    "split_seed": 2,
+    "fold": 1,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 2,
+    "split_seed": 2,
+    "fold": 2,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 2,
+    "split_seed": 2,
+    "fold": 3,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 2,
+    "split_seed": 2,
+    "fold": 4,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 3,
+    "split_seed": 3,
+    "fold": 0,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 3,
+    "split_seed": 3,
+    "fold": 1,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 3,
+    "split_seed": 3,
+    "fold": 2,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 3,
+    "split_seed": 3,
+    "fold": 3,
+    "model": "lightgbm",
+    "unique_probabilities": 49,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 3,
+    "split_seed": 3,
+    "fold": 4,
+    "model": "lightgbm",
+    "unique_probabilities": 49,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 4,
+    "split_seed": 4,
+    "fold": 0,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 4,
+    "split_seed": 4,
+    "fold": 1,
+    "model": "lightgbm",
+    "unique_probabilities": 49,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 4,
+    "split_seed": 4,
+    "fold": 2,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 4,
+    "split_seed": 4,
+    "fold": 3,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 4,
+    "split_seed": 4,
+    "fold": 4,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 5,
+    "split_seed": 5,
+    "fold": 0,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 5,
+    "split_seed": 5,
+    "fold": 1,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 5,
+    "split_seed": 5,
+    "fold": 2,
+    "model": "lightgbm",
+    "unique_probabilities": 49,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 5,
+    "split_seed": 5,
+    "fold": 3,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 5,
+    "split_seed": 5,
+    "fold": 4,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 6,
+    "split_seed": 6,
+    "fold": 0,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 6,
+    "split_seed": 6,
+    "fold": 1,
+    "model": "lightgbm",
+    "unique_probabilities": 49,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 6,
+    "split_seed": 6,
+    "fold": 2,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 6,
+    "split_seed": 6,
+    "fold": 3,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 6,
+    "split_seed": 6,
+    "fold": 4,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 7,
+    "split_seed": 7,
+    "fold": 0,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 7,
+    "split_seed": 7,
+    "fold": 1,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 7,
+    "split_seed": 7,
+    "fold": 2,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 7,
+    "split_seed": 7,
+    "fold": 3,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 7,
+    "split_seed": 7,
+    "fold": 4,
+    "model": "lightgbm",
+    "unique_probabilities": 49,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 8,
+    "split_seed": 8,
+    "fold": 0,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 8,
+    "split_seed": 8,
+    "fold": 1,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 8,
+    "split_seed": 8,
+    "fold": 2,
+    "model": "lightgbm",
+    "unique_probabilities": 49,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 8,
+    "split_seed": 8,
+    "fold": 3,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 8,
+    "split_seed": 8,
+    "fold": 4,
+    "model": "lightgbm",
+    "unique_probabilities": 47,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 9,
+    "split_seed": 9,
+    "fold": 0,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 9,
+    "split_seed": 9,
+    "fold": 1,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 9,
+    "split_seed": 9,
+    "fold": 2,
+    "model": "lightgbm",
+    "unique_probabilities": 49,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 9,
+    "split_seed": 9,
+    "fold": 3,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  },
+  {
+    "repeat": 9,
+    "split_seed": 9,
+    "fold": 4,
+    "model": "lightgbm",
+    "unique_probabilities": 50,
+    "feature_count": 150,
+    "actual_rounds": 50,
+    "actual_trees": 50
+  }
+]

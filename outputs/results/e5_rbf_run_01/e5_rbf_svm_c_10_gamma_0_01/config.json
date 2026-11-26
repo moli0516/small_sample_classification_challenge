@@ -1,0 +1,33 @@
+{
+  "experiment_id": "e5_rbf_svm_c_10_gamma_0_01",
+  "model_type": "svc",
+  "C": 10.0,
+  "gamma": 0.01,
+  "score_method": "decision_function",
+  "feature_selection_k": null,
+  "all_predictors": true,
+  "scaler": {
+    "copy": true,
+    "with_mean": true,
+    "with_std": true
+  },
+  "svc": {
+    "C": 10.0,
+    "break_ties": false,
+    "cache_size": 200,
+    "class_weight": null,
+    "coef0": 0.0,
+    "decision_function_shape": "ovr",
+    "degree": 3,
+    "gamma": 0.01,
+    "kernel": "rbf",
+    "max_iter": 10000,
+    "probability": false,
+    "random_state": 42,
+    "shrinking": true,
+    "tol": 0.001,
+    "verbose": false
+  },
+  "train_sha256": "7ef80ff93ef49c8c784445f3484f81a9ea6f0e30a6b59703ca5a15daf690b61f",
+  "canonical_splits_sha256": "ba128d2f5eed06c6c4c082982acfd6e54caeba142af31b6dc5d70ce3408491cf"
+}

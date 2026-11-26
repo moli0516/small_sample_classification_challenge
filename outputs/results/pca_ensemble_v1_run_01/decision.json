@@ -1,0 +1,19 @@
+{
+  "selected_candidate": "no_pca_l2_alpha0.05",
+  "selected_mean_auc": 0.9081107137628877,
+  "selection_rule": "Highest mean across all six blends; exact ties: PCA first, then ascending alpha, then no-PCA. No fallback.",
+  "screening_passed": false,
+  "automatic_promotion": false,
+  "fits_performed": 0,
+  "test_opened": false,
+  "reference": "l1_xgb_lgbm",
+  "candidate": "no_pca_l2_alpha0.05",
+  "comparison": "blend_vs_baseline",
+  "alpha": 0.05,
+  "mean_difference": -0.00022570424744337015,
+  "difference_sd": 0.00026525126553922726,
+  "wins": 0,
+  "losses": 5,
+  "ties": 5,
+  "interpretation": "Adaptive development comparison after prior tuning; not nested CV, independent evaluation, or a significance test. Screening does not authorize a submission or prove PCA-specific benefit."
+}

@@ -1,0 +1,5 @@
+candidate,reference,mean_difference,difference_sd,wins,losses,ties
+candidate_hybrid,original_hybrid,-0.04709763264111089,0.007743293894082817,0,10,0
+candidate_hybrid,original_gmm,-0.03846299433255954,0.010155197535784232,0,10,0
+candidate_hybrid,reference_trial25,-0.018032446619403064,0.008567076261387141,1,9,0
+candidate_gmm,original_gmm,-0.1456174059434929,0.013709507471208127,0,10,0

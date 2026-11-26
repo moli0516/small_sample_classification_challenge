@@ -25,7 +25,12 @@ are noise.
 - The same 250 labels were reused across successive tuning and selection steps. All
   development results are adaptive estimates, not independent generalisation evidence.
 
-Final prediction file: `outputs/submissions/trial21_A095_manual_v1/submission.csv, `
+Final submissions (the two entries selected on the competition platform):
+
+1. Primary, CV-selected: `outputs/submissions/generative_optuna_trial21_v1/standalone/submission.csv`
+2. Secondary, highest observed public score: `outputs/submissions/trial21_A095_manual_v1/submission.csv`
+   (95% Trial 21 + 5% original hybrid; assembled from frozen probability files
+   without refitting; see `lineage.json` and `prediction_manifest.json` in that folder).
 
 ## Method Overview
 
@@ -157,9 +162,10 @@ directories are kept whole:
 | `l1_c1_summary.json`                          | All-feature L1, C = 1, 0.862112                                    |
 | `rbf_svm_c_10_gamma_0_01_decision.json`       | Best RBF-SVM setting, 0.812385                                     |
 | `xgb_init_decision.json`                      | Initial shallow XGBoost grid, 0.839271                             |
-| `xgb_optuna_trail20_decision.json`            | Top-20 XGBoost, 0.890672 (nine wins over Trial 20); full k comparison in feature_selection_k_comparison.csv                                  |
+| `xgb_optuna_trial20_decision.json`            | XGBoost Optuna Trial 20, 0.881937                                  |
 | `xgb_k5_summary.json`, `xgb_k20_summary.json` | Top-5 (0.862745) and top-20 feature selection                      |
-| `top20_xgb_decision.json`                     | Top-20 XGBoost, 0.890672                                           |
+| `top20_xgb_decision.json`                     | Top-20 XGBoost, 0.890672 (nine wins over Trial 20)                 |
+| `feature_selection_k_comparison.csv`          | Full k comparison: k = 5, 10, 20 and all features, with wins       |
 | `linear_nonlinear_ensemble_comparison.csv`    | L1 + XGBoost (0.902878) and the fixed-LightGBM comparison          |
 | `tuned_three_model_ensemble_decision.json`    | Tuned three-model ensemble mean, 0.908336                          |
 | `trial25_reference_T.json`                    | Trial 25 reference T, 0.909210                                     |

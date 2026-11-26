@@ -1,0 +1,27 @@
+{
+  "status": "completed",
+  "action": "blend",
+  "started_utc": "2026-11-10T03:41:00.765227+00:00",
+  "competition_test_opened": false,
+  "competition_test_used_for_fitting": false,
+  "kaggle_upload_performed": false,
+  "completed_candidate_fits": 0,
+  "completed_projector_fits": 0,
+  "fit_accounting": "One candidate fit includes one sklearn GMM initialization and one custom EM run",
+  "planned_candidate_fits": 0,
+  "finished_utc": "2026-11-10T03:41:01.218154+00:00",
+  "artifact_sha256": {
+    "fold_scores.csv": "e6afcdf391e13cc35949edee57a56f0e78bf1ced0344f293a21d184e2d5c6399",
+    "settings.json": "39bf757b16a3b0b9690007554afc794e9fab2c7d967258330ad845bca02cd05c",
+    "split_indices.json": "1f43f338a84b4ed84502b37ba62d18a2561f5d4c25a0d46eb6dbe14778bd0ec7",
+    "repeat_scores.csv": "fa8ec4dfa8725f0c8fb1ffcdd21baade4ac179199a67ac7d3a52c1c172bee227",
+    "fit_diagnostics.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "candidate_specs.json": "e1a13550d351cda666687fdc34ba9f7797286d53ea3b57acd8e044871160ab85",
+    "cohort.csv": "e1d1d4dbcf8aeb8ad02530b39f67a0ee3d1399556293f79979021407e0d492df",
+    "predictions.npz": "d322c5957981f33293fa787a4802ebd819643cc9ec0248139a345d5317183378",
+    "model_summary.csv": "6fcb0970c6ebe34184759a418a9d30eb39d31870025fa2b0dfe75fa421da9ce5",
+    "comparison.csv": "454dcaa72d880dae963fe18c28ca798a979f6603e4babeddfe9730772cfb1339",
+    "decision.json": "c6ba920f6e44bb894c57fc3b6a5ddeaab0c01ecc056b5ab5b7f3154140a2e53d",
+    "complementarity.csv": "3fee5d0cb4183d49e29f4732ae608f6df3c3358974924981eec805aa16fb63f6"
+  }
+}

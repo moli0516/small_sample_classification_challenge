@@ -150,9 +150,19 @@ See `docs/generative_trial21_export_v1.md`, `docs/trial21_weights_v1.md` and
   with the `settings.json` and `prediction_manifest.json` versions from the
   submission package. Those versions are what the recorded hashes were computed
   over, so they must not be regenerated.
-- `clil.py` was renamed to `cil.py` after submission. The content hash is unchanged
-  (`d348c98361c50574baeae4464e1e807bd57f379967be51abef217142e06fc10f`), but the
-  stored `settings.json` files still contain `clil.py` path strings.
+- The unified CLI was added as `clil.py` (commit `7ddb2de`, 2026-10-24) and renamed to
+  `cli.py` (`04b1511`, 2026-11-19). Two commits changed it afterwards, both on
+  2026-11-19: `04b1511` (file name in the docstring, the test path, and the printed
+  `plan` help text) and `dda0330` (one help-text line, `requirements-lgbm-optuna.txt`
+  -> `requirements.txt`). No training or prediction logic changed. Its SHA256
+  changed from `d348c983...` to `8caab9a2...`.
+- Stored evidence files under `evidence/` record the CLI path as `cil.py` with SHA256
+  `d348c983...`, which matches the original `clil.py` content. `cil.py` does not
+  appear in this repository's git history. These records are left unmodified.
+- `src/experiments/lgbm_optuna_experiment.py` changed its reference from `clil.py` to
+  `cli.py` in `04b1511` (SHA256 `944c0854...` -> `8a2aa22b...`). Because of this,
+  strict source-hash verification against the recorded values fails, even at the
+  original path. Result files (`outputs/`, A095 hash) are unaffected.
 - The labelled CSV `data/raw/train.csv` has the recorded SHA256
   (`7ef80ff93ef49c8c784445f3484f81a9ea6f0e30a6b59703ca5a15daf690b61f`). Only the
   absolute-path key in the recorded binding differs, so the dry-runs stop with

@@ -143,6 +143,28 @@ check in the current environment and was not forced.
 See `docs/generative_trial21_export_v1.md`, `docs/trial21_weights_v1.md` and
 `docs/generative_blend_export_v1.md` for details.
 
+### Known reproducibility limitations
+
+- Strict historical provenance verification only passes at the original absolute
+  path (`/Users/moli/Documents/coding/DSAI4203_Project/small_sample_classification`)
+  with the `settings.json` and `prediction_manifest.json` versions from the
+  submission package. Those versions are what the recorded hashes were computed
+  over, so they must not be regenerated.
+- `clil.py` was renamed to `cil.py` after submission. The content hash is unchanged
+  (`d348c98361c50574baeae4464e1e807bd57f379967be51abef217142e06fc10f`), but the
+  stored `settings.json` files still contain `clil.py` path strings.
+- The labelled CSV `data/raw/train.csv` has the recorded SHA256
+  (`7ef80ff93ef49c8c784445f3484f81a9ea6f0e30a6b59703ca5a15daf690b61f`). Only the
+  absolute-path key in the recorded binding differs, so the dry-runs stop with
+  `ValueError: Reference does not bind this exact labelled CSV`.
+- The default output directories already exist, so the dry-runs need a fresh
+  `--output` path:
+
+  ```bash
+  python -m scripts.export_generative_trial21_v1 --dry-run --output outputs/repro_check/<new_dir>
+  python -m scripts.run_trial21_weights_v1 compare --dry-run --output outputs/repro_check/<new_dir>
+  ```
+
 ## Evidence
 
 `evidence/` holds copies of the result files that support the numbers in the

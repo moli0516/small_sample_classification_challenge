@@ -187,7 +187,8 @@ is subject to the limitations below.
   changed from `d348c983...` to `8caab9a2...`.
 - Stored evidence files under `evidence/` record the CLI path as `cil.py` with SHA256
   `d348c983...`, which matches the original `clil.py` content. `cil.py` does not
-  appear in this repository's git history. These records are left unmodified.
+  appear in this repository's git history. These records are left unmodified. The `settings.json` files under `outputs/results/` (e.g. `lgbm_optuna_v1_run_01`,
+  `ensemble_research_suite_v1_run_01/*`) record the path `clil.py` instead.
 - `src/experiments/lgbm_optuna_experiment.py` changed its reference from `clil.py` to
   `cli.py` in `04b1511` (SHA256 `944c0854...` -> `8a2aa22b...`). Because of this,
   strict source-hash verification against the recorded values fails, even at the

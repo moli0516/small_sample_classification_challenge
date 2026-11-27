@@ -2,12 +2,12 @@
 
 ## Deliverables / current branch
 
-The companion build_trial21_export_patch.py is a self-contained STANDARD-LIBRARY patch
-generator. It writes an additive unified diff only; no source files, git branch, commit,
-model fits, network calls, submissions or uploads are performed by the generator.
-The attached generated patch is equivalent; choose either route, not both.
+The companion patch generator has since been removed from the repository (commit `2b6fee8`).
+It was a self-contained STANDARD-LIBRARY tool that wrote an additive unified diff only: no
+source files, git branch, commit, model fits, network calls, submissions or uploads were
+performed by it. The attached generated patch remains equivalent and is kept as a historical
+record; the steps below apply to that patch.
 
-    python build_trial21_export_patch.py --output trial21_export.patch
     git apply --check trial21_export.patch
     git apply trial21_export.patch
     python -m pytest -q tests/test_generative_trial21_export_v1.py

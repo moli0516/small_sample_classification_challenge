@@ -143,6 +143,35 @@ check in the current environment and was not forced.
 See `docs/generative_trial21_export_v1.md`, `docs/trial21_weights_v1.md` and
 `docs/generative_blend_export_v1.md` for details.
 
+### Reproducing the final submission (A095)
+
+A095 is the secondary submission, `outputs/submissions/trial21_A095_manual_v1/submission.csv`:
+95% Trial 21 standalone GMM plus 5% of the original 0.5/0.5 hybrid,
+
+```
+A095 = 0.95*G_new + 0.05*H_old
+```
+
+where `G_new` is the Trial 21 standalone export
+(`outputs/submissions/generative_optuna_trial21_v1/standalone/submission.csv`)
+and `H_old` is the old K8-GMM/Trial 25 hybrid export
+(`outputs/submissions/generative_blend_gmm05_v1/submission.csv`). The file was
+assembled manually from frozen probability files; no single committed command
+writes that folder. The replay script reproduces the blend only: zero fits, no
+model loading, and both input SHA256 values are checked against the recorded
+A095 manifest before writing.
+
+```bash
+python -m scripts.replay_a095 --output outputs/repro_check/a095/submission.csv
+```
+
+Expected SHA256:
+`d772108c1815ccd7cef1018995c1d8873a42a87fedf6d47ab751971e22b991e9`.
+
+The script exits non-zero when the output hash differs from `--expected-sha256`
+and refuses to overwrite an existing output file. Refitting `G_new` or `H_old`
+is subject to the limitations below.
+
 ### Known reproducibility limitations
 
 - Strict historical provenance verification only passes at the original absolute

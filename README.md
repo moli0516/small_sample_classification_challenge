@@ -143,6 +143,32 @@ check in the current environment and was not forced.
 See `docs/generative_trial21_export_v1.md`, `docs/trial21_weights_v1.md` and
 `docs/generative_blend_export_v1.md` for details.
 
+### Trial21 standalone: running from the frozen bundle
+
+The export CLI above cannot run on a clean checkout, so the standalone CSV is
+produced by predicting from the frozen bundle instead:
+
+```bash
+python -m scripts.predict_trial21_from_bundle --output-dir outputs/repro_check/trial21_bundle
+```
+
+This predicts from the frozen bundle and does **not** retrain: zero fits and no
+source-provenance check. It loads
+`outputs/submissions/generative_optuna_trial21_v1/model_bundle.joblib`, verifies
+that bundle's SHA256 (`4ef86a6b…b989e212`) before writing anything, scores
+`data/raw/test.csv`, aligns to the id order of `data/raw/sample_submission.csv`
+and writes `<output-dir>/standalone/submission.csv`. It refuses to write into an
+existing output directory. `--bundle`, `--test`, `--template` and `--output-dir`
+are available for other locations.
+
+`scripts.export_generative_trial21_v1` itself is not what runs here: the full
+export CLI only passes its provenance check at the original absolute path with
+the original source versions, as described in
+[Known reproducibility limitations](#known-reproducibility-limitations).
+
+Expected SHA256 of the standalone CSV written this way:
+`5fff9fd424638f6296ec93d6586cd4c30a64efcec59dc94675fe1d460e3340a7`.
+
 ### Reproducing the final submission (A095)
 
 A095 is the secondary submission, `outputs/submissions/trial21_A095_manual_v1/submission.csv`:
